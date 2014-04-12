@@ -12,7 +12,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>464</width>
+            <width>452</width>
             <height>538</height>
         </rect>
     </property>
@@ -402,16 +402,20 @@
                                             <cstring>sampleTime</cstring>
                                         </property>
                                         <property stdset="1">
+                                            <name>specialValueText</name>
+                                            <string>Infinite</string>
+                                        </property>
+                                        <property stdset="1">
                                             <name>maxValue</name>
                                             <number>99999</number>
                                         </property>
                                         <property stdset="1">
                                             <name>minValue</name>
-                                            <number>1</number>
+                                            <number>0</number>
                                         </property>
                                         <property stdset="1">
                                             <name>value</name>
-                                            <number>500</number>
+                                            <number>0</number>
                                         </property>
                                         <property>
                                             <name>whatsThis</name>
@@ -1607,7 +1611,7 @@ You can enter your values with a suffix like m, u, n, p, k, M, G, T&lt;br&gt;Exa
                                         </property>
                                         <property>
                                             <name>buddy</name>
-                                            <cstring>winSize</cstring>
+                                            <cstring>ui_winSize</cstring>
                                         </property>
                                         <property>
                                             <name>hAlign</name>
@@ -1726,7 +1730,7 @@ You can enter your values with a suffix like m, u, n, p, k, M, G, T&lt;br&gt;Exa
                                         <class>QSpinBox</class>
                                         <property stdset="1">
                                             <name>name</name>
-                                            <cstring>winSize</cstring>
+                                            <cstring>ui_winSize</cstring>
                                         </property>
                                         <property stdset="1">
                                             <name>maxValue</name>
@@ -2608,7 +2612,7 @@ You can enter your values with a suffix like m, u, n, p, k, M, G, T&lt;br&gt;Exa
                         </property>
                         <attribute>
                             <name>title</name>
-                            <string>QtDMM</string>
+                            <string>GUI</string>
                         </attribute>
                         <vbox>
                             <property stdset="1">
@@ -5957,7 +5961,7 @@ You can enter your values with a suffix like m, u, n, p, k, M, G, T&lt;br&gt;Exa
     <tabstop>manualScaleBut</tabstop>
     <tabstop>ui_scaleMin</tabstop>
     <tabstop>ui_scaleMax</tabstop>
-    <tabstop>winSize</tabstop>
+    <tabstop>ui_winSize</tabstop>
     <tabstop>sizeUnit</tabstop>
     <tabstop>winLength</tabstop>
     <tabstop>lengthUnit</tabstop>

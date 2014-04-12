@@ -44,7 +44,7 @@
 #include <xpm/help.xpm>
 #include <xpm/icon.xpm>
 
-#define VERSION_STRING "0.8"
+#define VERSION_STRING "0.8.1"
 
 MainWin::MainWin( QWidget *parent, const char *name ) :
   QMainWindow( parent, name ),

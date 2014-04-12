@@ -280,7 +280,7 @@ ConfigDlg::applySLOT()
   m_cfg->setString( "Scale", "minimum", ui_scaleMin->text() );
   m_cfg->setString( "Scale", "maximum", ui_scaleMax->text() );
   
-  m_cfg->setInt( "Window", "size", winSize->value() );
+  m_cfg->setInt( "Window", "size", ui_winSize->value() );
   m_cfg->setInt( "Window", "size-unit", sizeUnit->currentItem() );
   m_cfg->setInt( "Window", "length", winLength->value() );
   m_cfg->setInt( "Window", "length-unit", lengthUnit->currentItem() );
@@ -463,7 +463,7 @@ ConfigDlg::scaleDefaultSLOT()
   ui_scaleMin->setText( m_cfg->getString( "Scale", "minimum", "-3.999" ));
   ui_scaleMax->setText( m_cfg->getString( "Scale", "maximum", "3.999" ));
   
-  winSize->setValue( m_cfg->getInt( "Window", "size", 600 ));
+  ui_winSize->setValue( m_cfg->getInt( "Window", "size", 600 ));
   sizeUnit->setCurrentItem( m_cfg->getInt( "Window", "size-unit", 0 ));
   winLength->setValue( m_cfg->getInt( "Window", "length", 3600 ));
   lengthUnit->setCurrentItem( m_cfg->getInt( "Window", "length-unit", 0 ));
@@ -477,7 +477,7 @@ ConfigDlg::scaleFactorySLOT()
   ui_scaleMin->setText( "-3.999" );
   ui_scaleMax->setText( "3.999" );
   
-  winSize->setValue( 600 );
+  ui_winSize->setValue( 600 );
   sizeUnit->setCurrentItem( 0 );
   winLength->setValue( 3600 );
   lengthUnit->setCurrentItem( 0 );
@@ -699,7 +699,7 @@ ConfigDlg::speed() const
 int
 ConfigDlg::windowSeconds() const
 {
-  int sec = winSize->text().toInt();
+  int sec = ui_winSize->text().toInt();
   
   switch (sizeUnit->currentItem())
   {
@@ -1126,7 +1126,7 @@ ConfigDlg::setSampleTimeSLOT( int sampleTime )
 void
 ConfigDlg::setGraphSizeSLOT( int size, int length )
 {
-  winSize->setValue( size );
+  ui_winSize->setValue( size );
   winLength->setValue( length );
   
   applySLOT();
@@ -1205,4 +1205,45 @@ QString
 ConfigDlg::dmmName() const
 {
   return ui_model->currentText();
+}
+
+void
+ConfigDlg::zoomInSLOT( double fac )
+{
+  double val = ui_winSize->value();
+  
+  if (val > 10)
+  {
+    val /= fac;
+  }
+  else
+  {
+    val /= 2.;
+  }
+  
+  val = QMAX( 1, val );
+  
+  ui_winSize->setValue( (int)val );
+  
+  emit accepted();
+}
+
+void
+ConfigDlg::zoomOutSLOT( double fac )
+{
+  double val = ui_winSize->value();
+  
+  if (val > 10)
+  {
+    val *= fac;
+  }
+  else
+  {
+    val *= 2.;
+  }
+  
+  val = QMAX( 2, val );
+  ui_winSize->setValue( (int)val );
+  
+  emit accepted();
 }

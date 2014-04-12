@@ -95,6 +95,8 @@ signals:
   void graphSize( int, int );
   void sampleTime( int );
   void externalTriggered();
+  void zoomIn( double );
+  void zoomOut( double );
   
 public slots:
   void clearSLOT();
@@ -169,6 +171,11 @@ protected:
   
   void paintEvent( QPaintEvent * );
   void resizeEvent( QResizeEvent * );
+  void mousePressEvent( QMouseEvent * );
+  void mouseMoveEvent( QMouseEvent * );
+  void mouseReleaseEvent( QMouseEvent * );
+  void wheelEvent( QWheelEvent * );
+
   double createYScale( int h, double & ystep );
   double createTimeScale( int w, double & xstep, double & hUnitFact,
                           double & maxUnit, QString & hUnit );
@@ -187,10 +194,7 @@ protected:
   void paintData( QPainter *p, int w, int h, double xfactor, 
                   double yfactor, bool color, bool printer );
   void paintThresholds( QPainter *p, int w, int h, double xfactor, 
-                  double yfactor, bool color, bool printer );
-  void mousePressEvent( QMouseEvent * );
-  void mouseMoveEvent( QMouseEvent * );
-  void mouseReleaseEvent( QMouseEvent * );
+                  double yfactor, bool color, bool printer );    
   void drawCursor( const QPoint & );
   void fillInfoBox( const QPoint & );
   void drawPoint( PointMode, QPainter *, int, int );

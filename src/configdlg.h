@@ -113,6 +113,8 @@ public slots:
   void setGraphSizeSLOT( int,int );
   void setShowTipsSLOT( bool );
   void setCurrentTipSLOT( int );
+  void zoomInSLOT( double );
+  void zoomOutSLOT( double );
   
 signals:
   void accepted();

@@ -35,6 +35,8 @@
 #include <qscrollbar.h>
 #include <qprinter.h>
 
+#include <math.h> // RedHat needs it
+
 #include <xpm/icon.xpm>
 
 #include <iostream.h>
@@ -49,7 +51,7 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   m_pointer( 0 ),
   m_ystep( 1 ),
   m_sampleTime( 1 ),
-  m_sampleLength( 500 ),
+  m_sampleLength( 0 ),
   m_running( false ),
   m_mode( DMMGraph::Manual ),
   m_mouseDown( false ),
@@ -678,14 +680,14 @@ DMMGraph::addValue( double val )
   m_sampleCounter++;
   if (m_sampleCounter == m_sampleTime) m_sampleCounter = 0;
   
-  if (0 == m_remainingLength)
+  if (0 == m_remainingLength && m_sampleLength != 0)
   {
     qApp->beep();
     stopSLOT();
     return;
   }
   
-  m_remainingLength--;
+  m_remainingLength = QMAX( 0, m_remainingLength-1 );
 }
 
 double
@@ -891,18 +893,34 @@ DMMGraph::emitInfo()
 }
 
 void
+DMMGraph::wheelEvent( QWheelEvent *ev )
+{
+  if (ev->delta() > 0)
+  {
+    emit zoomIn( 1.1 );
+  }
+  else
+  {
+    emit zoomOut( 1.1 );
+  }
+}
+  
+void
 DMMGraph::mousePressEvent( QMouseEvent *ev )
 {
-  if (m_scaleMin == m_scaleMax) return;
-  if (ev->x() < 51) return;
-  
-  drawCursor( ev->pos() );
-  m_mpos = ev->pos();
-  m_mouseDown = true;
-  
-  m_infoBox->move( ev->globalPos().x()+4, ev->globalPos().y()+4 );
-  fillInfoBox( ev->pos() );
-  m_infoBox->show();
+  if (ev->button() == LeftButton)
+  {
+    if (m_scaleMin == m_scaleMax) return;
+    if (ev->x() < 51) return;
+
+    drawCursor( ev->pos() );
+    m_mpos = ev->pos();
+    m_mouseDown = true;
+
+    m_infoBox->move( ev->globalPos().x()+4, ev->globalPos().y()+4 );
+    fillInfoBox( ev->pos() );
+    m_infoBox->show();
+  }
 }
 
 void

@@ -80,6 +80,11 @@ MainWid::MainWid( QWidget *parent, const char *name ) :
   connect( m_external, SIGNAL( processExited() ),
            this, SLOT( exitedSLOT() ));  
   
+  connect( ui_graph, SIGNAL( zoomOut( double ) ),
+           m_configDlg, SLOT( zoomOutSLOT( double ) ));
+  connect( ui_graph, SIGNAL( zoomIn( double ) ),
+           m_configDlg, SLOT( zoomInSLOT( double ) ));
+  
   //resetSLOT();
   
   startTimer( 1000 );

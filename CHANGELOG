@@ -1,4 +1,8 @@
-13/10/2002  0.8
+15/10/2002 0.8.1
+           - Added include to fix compilation problems on RedHat based
+             systems
+           - Zoom IN/OUT of graph with wheelmouse
+13/10/2002 0.8
            - Added Protocol for ELV M9803R (Thanks to Ralph Fischer for providing
              me such a multimeter for testing)
            - Added Protocol for Voltraft VC 635 and VC 655
