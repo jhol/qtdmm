@@ -54,8 +54,10 @@ IntegrationPrefs::~IntegrationPrefs()
 void
 IntegrationPrefs::defaultsSLOT()
 {
-  ui_intColor->setColor( QColor( m_cfg->getRGB( "Graph", "integration", Qt::darkBlue.rgb() )));
-  ui_intThresholdColor->setColor( QColor( m_cfg->getRGB( "Graph", "integration-threshold", Qt::darkBlue.rgb() )));
+  ui_intColor->setColor( QColor( m_cfg->getRGB( "Graph", "integration",
+    QColor(Qt::darkBlue).rgb() )));
+  ui_intThresholdColor->setColor( QColor( m_cfg->getRGB( "Graph",
+    "integration-threshold", QColor(Qt::darkBlue).rgb() )));
   ui_intLineMode->setCurrentItem( m_cfg->getInt( "Graph", "int-line-mode", 0 ));
   ui_intPointMode->setCurrentItem( m_cfg->getInt( "Graph", "int-point-mode", 1 ));  
   ui_showInt->setChecked( m_cfg->getBool( "Graph", "show-integration", false ));  
@@ -69,7 +71,7 @@ void
 IntegrationPrefs::factoryDefaultsSLOT()
 {
   ui_intColor->setColor( Qt::darkBlue );
-  ui_intThresholdColor->setColor( Qt::darkBlue.rgb() );
+  ui_intThresholdColor->setColor( QColor(Qt::darkBlue).rgb() );
   ui_intLineMode->setCurrentItem( 0 );
   ui_intPointMode->setCurrentItem( 1 );
   ui_intLineWidth->setValue( 1 );

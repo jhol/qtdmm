@@ -46,19 +46,24 @@ GraphPrefs::~GraphPrefs()
 void
 GraphPrefs::defaultsSLOT()
 {
-  ui_bgColor->setColor( QColor( m_cfg->getRGB( "Graph", "background", Qt::white.rgb() )));
-  ui_gridColor->setColor( QColor( m_cfg->getRGB( "Graph", "grid", Qt::gray.rgb() )));
-  ui_dataColor->setColor( QColor( m_cfg->getRGB( "Graph", "data", Qt::blue.rgb() )));
-  ui_cursorColor->setColor( QColor( m_cfg->getRGB( "Graph", "cursor", Qt::black.rgb() )));
-  ui_startColor->setColor( QColor( m_cfg->getRGB( "Graph", "start-trigger", Qt::magenta.rgb() )));
-  ui_extColor->setColor( QColor( m_cfg->getRGB( "Graph", "external-trigger", Qt::cyan.rgb() )));
+  ui_bgColor->setColor( QColor( m_cfg->getRGB( "Graph", "background",
+    QColor(Qt::white).rgb() )));
+  ui_gridColor->setColor( QColor( m_cfg->getRGB( "Graph", "grid",
+    QColor(Qt::gray).rgb() )));
+  ui_dataColor->setColor( QColor( m_cfg->getRGB( "Graph", "data",
+    QColor(Qt::blue).rgb() )));
+  ui_cursorColor->setColor( QColor( m_cfg->getRGB( "Graph", "cursor",
+    QColor(Qt::black).rgb() )));
+  ui_startColor->setColor( QColor( m_cfg->getRGB( "Graph", "start-trigger",
+    QColor(Qt::magenta).rgb() )));
+  ui_extColor->setColor( QColor( m_cfg->getRGB( "Graph", "external-trigger",
+    QColor(Qt::cyan).rgb() )));
   
   ui_lineMode->setCurrentItem( m_cfg->getInt( "Graph", "line-mode", 1 ));
   ui_pointMode->setCurrentItem( m_cfg->getInt( "Graph", "point-mode", 0 ));
   ui_crosshair->setChecked( m_cfg->getBool( "Graph", "crosshair-cursor", true ));
   
   ui_lineWidth->setValue( m_cfg->getInt( "Graph", "line-width", 2 ) );
-  
 }
 
 void
@@ -68,8 +73,8 @@ GraphPrefs::factoryDefaultsSLOT()
   ui_gridColor->setColor( Qt::gray );
   ui_dataColor->setColor( Qt::blue );
   ui_cursorColor->setColor( Qt::black );
-  ui_startColor->setColor( Qt::magenta.rgb() );
-  ui_extColor->setColor( Qt::cyan.rgb() );
+  ui_startColor->setColor( QColor(Qt::magenta).rgb() );
+  ui_extColor->setColor( QColor(Qt::cyan).rgb() );
   ui_lineMode->setCurrentItem( 1 );
   ui_pointMode->setCurrentItem( 0 );  
   ui_lineWidth->setValue( 2 );

@@ -310,7 +310,8 @@ ConfigDlg::cancelSLOT()
   {
     QString color;
     color.sprintf( "color_%d", i );
-    QColorDialog::setCustomColor( i, m_cfg->getRGB( "Custom colors", color, Qt::white.rgb() ) );
+    QColorDialog::setCustomColor( i, m_cfg->getRGB( "Custom colors", color,
+      QColor(Qt::white).rgb() ) );
   }
 
   for (int i=0; i<NumItems; ++i)

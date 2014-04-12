@@ -52,7 +52,8 @@ GuiPrefs::defaultsSLOT()
   
   ui_showDisplay->setChecked( m_cfg->getBool( "Display", "show", true ));
   ui_bgColorDisplay->setColor( QColor( m_cfg->getRGB( "Display", "display-background", QColor( 212,220,207 ).rgb() )));
-  ui_textColor->setColor( QColor( m_cfg->getRGB( "Display", "display-text", Qt::black.rgb() )));
+  ui_textColor->setColor( QColor( m_cfg->getRGB( "Display", "display-text",
+    QColor(Qt::black).rgb() )));
   
   ui_showBar->setChecked( m_cfg->getBool( "Display", "display-bar", true ));
   ui_showMinMax->setChecked( m_cfg->getBool( "Display", "display-min-max", true ));
