@@ -21,9 +21,11 @@
 #ifndef SCALEPREFS_HH
 #define SCALEPREFS_HH
 
-#include <uiscaleprefs.h>
+#include <prefwidget.h>
 
-class ScalePrefs : public UIScalePrefs
+#include <ui_uiscaleprefs.h>
+
+class ScalePrefs : public PrefWidget, public Ui::UIScalePrefs
 {
   Q_OBJECT
 public:

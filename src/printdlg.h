@@ -21,11 +21,12 @@
 #ifndef PRINTDLG_HH
 #define PRINTDLG_HH
 
-#include <uiprintdlg.h>
+#include <ui_uiprintdlg.h>
+
 #include <qlineedit.h>
 #include <qmultilineedit.h>
 
-class PrintDlg : public UIPrintDlg
+class PrintDlg : public QDialog, public Ui::UIPrintDlg
 {
   Q_OBJECT
 public:

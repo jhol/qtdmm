@@ -21,9 +21,11 @@
 #ifndef INTEGRATIONPREFS_HH
 #define INTEGRATIONPREFS_HH
 
-#include <uiintegrationprefs.h>
+#include <prefwidget.h>
 
-class IntegrationPrefs : public UIIntegrationPrefs
+#include <ui_uiintegrationprefs.h>
+
+class IntegrationPrefs : public PrefWidget, public Ui::UIIntegrationPrefs
 {
   Q_OBJECT
 public:

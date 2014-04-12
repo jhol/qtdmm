@@ -43,8 +43,9 @@
 #include <xpm/icon.xpm>
 
 ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
-  UIConfigDlg( parent, name )
+  QDialog( parent, name )
 {
+  setupUi(this);
   setIcon(QPixmap((const char **)icon_xpm));
   
   ui_list->header()->hide();

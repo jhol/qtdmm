@@ -21,9 +21,10 @@
 #ifndef CONFIGDLG_HH
 #define CONFIGDLG_HH
 
-#include <uiconfigdlg.h>
 #include <dmmgraph.h>
 #include <readevent.h>
+
+#include <ui_uiconfigdlg.h>
 
 class SimpleCfg;
 class QPrinter;
@@ -35,7 +36,7 @@ class GraphPrefs;
 class IntegrationPrefs;
 class ExecutePrefs;
 
-class ConfigDlg : public UIConfigDlg
+class ConfigDlg : public QDialog, public Ui::UIConfigDlg
 {
   Q_OBJECT
 public:

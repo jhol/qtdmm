@@ -140,8 +140,10 @@ struct DMMInfo dmm_info[] = {
                             };
 
 DmmPrefs::DmmPrefs( QWidget *parent, const char *name ) :
-  UIDmmPrefs( parent, name )
+  PrefWidget( parent, name )
 {
+  setupUi(this);
+
   m_label = tr( "Multimeter settings" );
   m_description = tr( "<b>Here you can configure the serial port"
                       " and protocol for your DMM. There is"

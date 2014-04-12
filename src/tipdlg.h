@@ -21,9 +21,9 @@
 #ifndef TIPDLG_HH
 #define TIPDLG_HH
 
-#include <uitipdlg.h>
+#include <ui_uitipdlg.h>
 
-class TipDlg : public UITipDlg
+class TipDlg : public QDialog, public Ui::UITipDlg
 {
   Q_OBJECT
 public:

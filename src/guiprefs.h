@@ -21,9 +21,11 @@
 #ifndef GUIPREFS_HH
 #define GUIPREFS_HH
 
-#include <uiguiprefs.h>
+#include <prefwidget.h>
 
-class GuiPrefs : public UIGuiPrefs
+#include <ui_uiguiprefs.h>
+
+class GuiPrefs : public PrefWidget, public Ui::UIGuiPrefs
 {
   Q_OBJECT
 public:

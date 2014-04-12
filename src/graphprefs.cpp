@@ -29,8 +29,10 @@
 #include <graph.xpm>
 
 GraphPrefs::GraphPrefs( QWidget *parent, const char *name ) :
-  UIGraphPrefs( parent, name )
+  PrefWidget( parent, name )
 {
+  setupUi(this);
+
   m_label = tr( "Graph settings" );
   m_description = tr( "<b>Here you can configure the colors and"
                       " drawing style for the graph.</b>" );

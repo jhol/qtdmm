@@ -27,8 +27,10 @@
 #include <gui.xpm>
 
 GuiPrefs::GuiPrefs( QWidget *parent, const char *name ) :
-  UIGuiPrefs( parent, name )
+  PrefWidget( parent, name )
 {
+  setupUi(this);
+
   m_label = tr( "GUI settings" );
   m_description = tr( "<b>Here you can configure QtDMM's visual"
                       " appearance and behaviour.</b>" );

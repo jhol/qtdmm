@@ -49,7 +49,7 @@
 #include <iostream>
 
 MainWin::MainWin( QWidget *parent, const char *name ) :
-  QMainWindow( parent, name ),
+  Q3MainWindow( parent, name ),
   m_running( false )
 {
   setIcon( QPixmap((const char **)icon_xpm) );

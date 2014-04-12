@@ -21,10 +21,12 @@
 #ifndef RECORDERPREFS_HH
 #define RECORDERPREFS_HH
 
-#include <uirecorderprefs.h>
 #include <dmmgraph.h>
+#include <prefwidget.h>
 
-class RecorderPrefs : public UIRecorderPrefs
+#include <ui_uirecorderprefs.h>
+
+class RecorderPrefs : public PrefWidget, public Ui::UIRecorderPrefs
 {
   Q_OBJECT
 public:

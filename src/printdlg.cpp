@@ -25,8 +25,10 @@
 #include <qwhatsthis.h>
 
 PrintDlg::PrintDlg( QWidget *parent, const char *name ) :
-  UIPrintDlg( parent, name, true )
+  QDialog( parent, name, true )
 {
+  setupUi(this);
+
   connect( configBut, SIGNAL( clicked() ),
            this, SLOT( configSLOT() ));
   connect( helpBut, SIGNAL( clicked() ),

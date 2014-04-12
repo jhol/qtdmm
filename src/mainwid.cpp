@@ -38,10 +38,12 @@
 #include <iostream>
 
 MainWid::MainWid( QWidget *parent, const char *name ) :
-  UIMainWid( parent, name ),
+  Q3Frame( parent, name ),
   m_display( 0 ),
   m_tipDlg( 0 )
 {
+  setupUi(this);
+
   setIcon( QPixmap((const char **)icon_xpm ) );
   
   m_dmm = new DMM( this );

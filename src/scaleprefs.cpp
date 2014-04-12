@@ -37,8 +37,10 @@
 #define DAY_SECS      60*60*24
 
 ScalePrefs::ScalePrefs( QWidget *parent, const char *name ) :
-  UIScalePrefs( parent, name )
+  PrefWidget( parent, name )
 {
+  setupUi(this);
+
   m_label = tr( "Scale settings" );
   m_description = tr( "<b>Here you can configure the vertical scale"
                       " of the recorder and the length (in time)"

@@ -21,8 +21,10 @@
 #ifndef DMMPREFS_HH
 #define DMMPREFS_HH
 
-#include <uidmmprefs.h>
+#include <prefwidget.h>
 #include <readevent.h>
+
+#include <ui_uidmmprefs.h>
 
 struct DMMInfo
 {
@@ -41,7 +43,7 @@ struct DMMInfo
   bool  dtr;
 };
 
-class DmmPrefs : public UIDmmPrefs
+class DmmPrefs : public PrefWidget, public Ui::UIDmmPrefs
 {
   Q_OBJECT
 public:

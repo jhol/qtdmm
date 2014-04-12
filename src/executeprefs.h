@@ -21,9 +21,11 @@
 #ifndef EXECUTEPREFS_HH
 #define EXECUTEPREFS_HH
 
-#include <uiexecuteprefs.h>
+#include <prefwidget.h>
 
-class ExecutePrefs : public UIExecutePrefs
+#include <ui_uiexecuteprefs.h>
+
+class ExecutePrefs : public PrefWidget, public Ui::UIExecutePrefs
 {
   Q_OBJECT
 public:

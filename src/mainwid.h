@@ -21,7 +21,8 @@
 #ifndef MAINWID_HH
 #define MAINWID_HH
 
-#include <uimainwid.h>
+#include <ui_uimainwid.h>
+
 #include <qprinter.h>
 
 class DMM;
@@ -31,7 +32,7 @@ class ConfigDlg;
 class DisplayWid;
 class TipDlg;
 
-class MainWid : public UIMainWid
+class MainWid : public Q3Frame, public Ui::UIMainWid
 {
   Q_OBJECT
 public:

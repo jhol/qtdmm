@@ -34,8 +34,10 @@
 #define DAY_SECS      60*60*24
 
 RecorderPrefs::RecorderPrefs( QWidget *parent, const char *name ) :
-  UIRecorderPrefs( parent, name )
+  PrefWidget( parent, name )
 {
+  setupUi(this);
+
   m_label = tr( "Recorder settings" );
   m_description = tr( "<b>Here you can configure the sampling"
                       " frequency and start options for the"

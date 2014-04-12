@@ -31,8 +31,10 @@
 #include <execute.xpm>
 
 ExecutePrefs::ExecutePrefs( QWidget *parent, const char *name ) :
-  UIExecutePrefs( parent, name )
+  PrefWidget( parent, name )
 {
+  setupUi(this);
+
   m_label = tr( "External application" );
   m_description = tr( "<b>Here you can configure if an external"
                       " command is to be started and when.</b>" );

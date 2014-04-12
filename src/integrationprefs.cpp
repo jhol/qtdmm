@@ -31,8 +31,10 @@
 #include <integration.xpm>
 
 IntegrationPrefs::IntegrationPrefs( QWidget *parent, const char *name ) :
-  UIIntegrationPrefs( parent, name )
+  PrefWidget( parent, name )
 {
+  setupUi(this);
+
   m_label = tr( "Integration" );
   m_description = tr( "<b>Here you can configure the parameter"
                       " for the integration curve.</b>" );

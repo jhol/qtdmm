@@ -27,8 +27,10 @@
 #include <display.xpm>
 
 DisplayPrefs::DisplayPrefs( QWidget *parent, const char *name ) :
-  UIDisplayPrefs( parent, name )
+  PrefWidget( parent, name )
 {
+  setupUi(this);
+
   m_label = tr( "Display settings" );
   m_description = tr( "<b>Here you can configure the visual"
                       " appearance of the DMM display.</b>" );

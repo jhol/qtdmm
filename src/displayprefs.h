@@ -21,9 +21,11 @@
 #ifndef DISPLAYPREFS_HH
 #define DISPLAYPREFS_HH
 
-#include <uidisplayprefs.h>
+#include <ui_uidisplayprefs.h>
 
-class DisplayPrefs : public UIDisplayPrefs
+#include <QDialog>
+
+class DisplayPrefs : public PrefWidget, public Ui::UIDisplayPrefs
 {
   Q_OBJECT
 public:

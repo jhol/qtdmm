@@ -76,10 +76,12 @@ const char *TipDlg::s_tipText[] = {
     0 };
   
 TipDlg::TipDlg( QWidget *parent, const char *name ) :
-  UITipDlg( parent, name ),
+  QDialog( parent, name ),
   m_numTips(0),
   m_curTip(0)
 {
+  setupUi(this);
+
   ui_tip->setPaper( backgroundColor() );
   
   connect( ui_closeBut, SIGNAL( clicked() ),

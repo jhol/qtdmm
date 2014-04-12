@@ -21,9 +21,10 @@
 #ifndef GRAPHPREFS_HH
 #define GRAPHPREFS_HH
 
-#include <uigraphprefs.h>
+#include <prefwidget.h>
+#include <ui_uigraphprefs.h>
 
-class GraphPrefs : public UIGraphPrefs
+class GraphPrefs : public PrefWidget, public Ui::UIGraphPrefs
 {
   Q_OBJECT
 public:
