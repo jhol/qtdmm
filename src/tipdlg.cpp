@@ -22,6 +22,7 @@
 #include <qtextview.h>
 #include <qpushbutton.h>
 #include <qcheckbox.h>
+#include <QCloseEvent>
 
 const char *TipDlg::s_tipText[] = {
     "<font size=+2>Welcome</font><p>QtDMM is a small DMM "

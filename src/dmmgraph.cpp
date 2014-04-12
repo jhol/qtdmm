@@ -35,6 +35,10 @@
 #include <qtooltip.h>
 #include <qstringlist.h>
 
+#include <QWidget>
+#include <QMouseEvent>
+#include <QWheelEvent>
+
 #include <dmmgraph.h>
 
 #include <math.h> // RedHat needs it
@@ -983,7 +987,7 @@ DMMGraph::wheelEvent( QWheelEvent *ev )
 void
 DMMGraph::mousePressEvent( QMouseEvent *ev )
 {
-  if (ev->button() == LeftButton)
+  if (ev->button() == Qt::LeftButton)
   {
     if (m_scaleMin == m_scaleMax || m_scaleMin == 1e40) return;
     if (ev->x() < m_graphRect.x()) return;
@@ -1001,7 +1005,7 @@ DMMGraph::mousePressEvent( QMouseEvent *ev )
       m_infoBox->show();
     }
   }
-  else if(ev->button() == RightButton)
+  else if(ev->button() == Qt::RightButton)
   {
     m_popup->clear();
     
@@ -1037,7 +1041,7 @@ DMMGraph::mousePressEvent( QMouseEvent *ev )
 
     m_popup->popup( ev->globalPos() );
   }
-  else if (ev->button() == MidButton)
+  else if (ev->button() == Qt::MidButton)
   {
     m_mouseDown = false;
     m_mousePan = true;

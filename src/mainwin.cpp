@@ -29,6 +29,8 @@
 #include <qmessagebox.h>
 #include <qlabel.h>
 #include <qstatusbar.h>
+#include <QCloseEvent>
+
 #include <displaywid.h>
 
 #include <connect_on.xpm>
