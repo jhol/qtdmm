@@ -24,7 +24,6 @@
 #include <ui_uiprintdlg.h>
 
 #include <qlineedit.h>
-#include <qmultilineedit.h>
 
 class PrintDlg : public QDialog, public Ui::UIPrintDlg
 {
