@@ -21,7 +21,7 @@
 #ifndef MAINWIN_HH
 #define MAINWIN_HH
 
-#include <qmainwindow.h>
+#include <Q3MainWindow>
 
 class MainWid;
 class Q3Action;
@@ -29,7 +29,7 @@ class Q3ToolBar;
 class QLabel;
 class DisplayWid;
 
-class MainWin : public QMainWindow
+class MainWin : public Q3MainWindow
 {
   Q_OBJECT
 public:
