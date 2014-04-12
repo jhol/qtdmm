@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Form interface generated from reading ui file 'uiprintdlg.ui'
 **
-** Created: Wed May 9 20:39:29 2001
+** Created: Sun Sep 2 19:18:45 2001
 **      by:  The User Interface Compiler (uic)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -28,21 +28,22 @@ public:
     UIPrintDlg( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
     ~UIPrintDlg();
 
-    QFrame* Line4;
-    QPushButton* configBut;
-    QLabel* TextLabel2;
-    QLabel* TextLabel1;
     QLabel* TextLabel3;
     QLabel* printerLabel;
+    QPushButton* configBut;
+    QFrame* Frame5;
+    QLabel* TextLabel1;
     QLineEdit* printTitle;
+    QLabel* TextLabel2;
     QMultiLineEdit* printComment;
-    QFrame* Line3;
     QPushButton* helpBut;
     QPushButton* printBut;
     QPushButton* cancelBut;
 
 protected:
-    QGridLayout* UIPrintDlgLayout;
+    QVBoxLayout* UIPrintDlgLayout;
+    QHBoxLayout* Layout2;
+    QVBoxLayout* Frame5Layout;
     QHBoxLayout* Layout28;
     bool event( QEvent* );
 };

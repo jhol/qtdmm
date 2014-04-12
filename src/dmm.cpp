@@ -213,7 +213,7 @@ DMM::open()
     return false;
   }
 
-  m_error = tr( "Connected" );
+  m_error = tr( "Connecting ..." );
   emit error( m_error );
   
   m_readerThread->setHandle( m_handle );
@@ -334,7 +334,7 @@ DMM::event( QEvent *ev )
       }
       else if (ReaderThread::NotConnected == m_readerThread->status())
       {
-        m_error = tr( "Not Connected" );
+        m_error = tr( "Not connected" );
       }
     }
     emit error( m_error );

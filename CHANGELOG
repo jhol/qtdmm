@@ -1,3 +1,11 @@
+01/09/2001 Added more DMM's
+           Added import of data
+           Configuration dialog is nonmodal now
+           Added some GUI chrome
+           Persistent printer settings
+           Added support for 22-805 Radioshack DMM (Roger M.)
+           Added support for Metex/Voltcraft ME-11 (Dough LaRue)
+           Added support for Voltcraft ME-22T (Radek Liboska PhD)
 09/05/2001 Added support for Voltcraft M-4660 (Michael Petruzelka)
 08/05/2001 Added support for PeakTech 451 (Dr. Ralf Wieland)
 15/04/2001 Initial release version 0.1

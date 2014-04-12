@@ -262,6 +262,8 @@ SimpleCfg::save()
   {
     QTextStream s(&file);
     
+    s << m_comment;
+    
     QMap<QString,SimpleCfgGroup *>::Iterator it;
         
     for (it=map.begin(); it != map.end(); ++it)
@@ -517,3 +519,8 @@ SimpleCfg::removeEmpty()
   }
 }
   
+void
+SimpleCfg::setComment( const QString & comment )
+{
+  m_comment = comment;
+}

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Form interface generated from reading ui file 'uiconfigdlg.ui'
 **
-** Created: Wed May 9 20:39:28 2001
+** Created: Sun Sep 2 19:18:45 2001
 **      by:  The User Interface Compiler (uic)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -14,7 +14,9 @@
 class QVBoxLayout; 
 class QHBoxLayout; 
 class QGridLayout; 
+class ColorButton;
 class QButtonGroup;
+class QCheckBox;
 class QComboBox;
 class QGroupBox;
 class QLabel;
@@ -23,7 +25,6 @@ class QPushButton;
 class QRadioButton;
 class QSpinBox;
 class QTabWidget;
-class QTextView;
 class QWidget;
 
 class UIConfigDlg : public QDialog
@@ -34,18 +35,15 @@ public:
     UIConfigDlg( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
     ~UIConfigDlg();
 
-    QPushButton* helpBut;
-    QPushButton* okBut;
-    QPushButton* cancelBut;
     QTabWidget* tabWidget;
-    QWidget* samplePage;
+    QWidget* recorderPage;
     QButtonGroup* ButtonGroup1;
     QLabel* sampLabel;
-    QLineEdit* sampleEvery;
     QComboBox* sampleUnit;
     QLabel* sampLabel_2;
-    QLineEdit* sampleTime;
     QComboBox* timeUnit;
+    QSpinBox* sampleEvery;
+    QSpinBox* sampleTime;
     QGroupBox* GroupBox1;
     QButtonGroup* ButtonGroup32;
     QRadioButton* manualBut;
@@ -66,6 +64,8 @@ public:
     QRadioButton* raisingBut;
     QLabel* TextLabel6_2;
     QRadioButton* fallingBut;
+    QPushButton* ui_defaultRecorder;
+    QPushButton* ui_factoryRecorder;
     QWidget* scalePage;
     QButtonGroup* ButtonGroup36;
     QRadioButton* autoScaleBut;
@@ -79,33 +79,61 @@ public:
     QLabel* TextLabel11;
     QLabel* TextLabel12;
     QComboBox* sizeUnit;
-    QLineEdit* winSize;
-    QLineEdit* winLength;
     QComboBox* lengthUnit;
+    QSpinBox* winSize;
+    QSpinBox* winLength;
+    QPushButton* ui_defaultScale;
+    QPushButton* ui_factoryScale;
     QWidget* dmmPage;
     QLabel* TextLabel1_2;
     QComboBox* modelCombo;
     QButtonGroup* ButtonGroup11;
-    QLabel* TextLabel1_3;
+    QLabel* ui_bitsLabel;
     QComboBox* bitsCombo;
-    QLabel* TextLabel2_2;
+    QLabel* ui_stopLabel;
     QComboBox* baudRate;
-    QLabel* TextLabel1;
+    QLabel* ui_baudLabel;
     QComboBox* port;
     QLabel* TextLabel2;
     QComboBox* stopBitsCombo;
-    QButtonGroup* ButtonGroup7;
+    QButtonGroup* ui_protocol;
     QComboBox* protocolCombo;
     QLabel* TextLabel1_4;
     QSpinBox* ignoreSpin;
     QLabel* message;
-    QWidget* copyTab;
-    QTextView* TextView1;
+    QPushButton* ui_defaultDMM;
+    QPushButton* ui_factoryDMM;
+    QWidget* qtdmmTab;
+    QGroupBox* GroupBox7;
+    ColorButton* ui_bgColor;
+    QLabel* TextLabel2_2;
+    ColorButton* ui_gridColor;
+    QLabel* TextLabel3_2;
+    ColorButton* ui_dataColor;
+    QLabel* label;
+    ColorButton* ui_cursorColor;
+    QLabel* label2;
+    QLabel* TextLabel2_3;
+    QLabel* TextLabel1;
+    QSpinBox* ui_lineWidth;
+    QGroupBox* GroupBox4;
+    ColorButton* ui_bgColorDisplay;
+    QLabel* TextLabel2_2_2;
+    ColorButton* ui_textColor;
+    QLabel* TextLabel2_2_3;
+    QCheckBox* ui_alertUnsavedData;
+    QCheckBox* ui_saveWindowCheck;
+    QCheckBox* ui_textLabel;
+    QPushButton* ui_defaultPreferences;
+    QPushButton* ui_factoryPreferences;
+    QPushButton* helpBut;
+    QPushButton* ui_applyBut;
+    QPushButton* okBut;
+    QPushButton* cancelBut;
 
 protected:
-    QGridLayout* UIConfigDlgLayout;
-    QHBoxLayout* Layout15;
-    QVBoxLayout* samplePageLayout;
+    QVBoxLayout* UIConfigDlgLayout;
+    QVBoxLayout* recorderPageLayout;
     QGridLayout* ButtonGroup1Layout;
     QVBoxLayout* GroupBox1Layout;
     QVBoxLayout* ButtonGroup32Layout;
@@ -119,14 +147,30 @@ protected:
     QGridLayout* Layout14;
     QHBoxLayout* Layout9;
     QHBoxLayout* Layout10;
+    QHBoxLayout* Layout52;
     QVBoxLayout* scalePageLayout;
     QVBoxLayout* ButtonGroup36Layout;
     QHBoxLayout* Layout15_2;
     QGridLayout* ButtonGroup37Layout;
+    QHBoxLayout* Layout51;
     QVBoxLayout* dmmPageLayout;
     QGridLayout* ButtonGroup11Layout;
-    QGridLayout* ButtonGroup7Layout;
-    QGridLayout* copyTabLayout;
+    QGridLayout* ui_protocolLayout;
+    QHBoxLayout* Layout50;
+    QVBoxLayout* qtdmmTabLayout;
+    QVBoxLayout* GroupBox7Layout;
+    QHBoxLayout* Layout24_2;
+    QHBoxLayout* Layout19;
+    QHBoxLayout* Layout20;
+    QHBoxLayout* Layout23_2;
+    QHBoxLayout* Layout17;
+    QHBoxLayout* Layout18;
+    QHBoxLayout* Layout48;
+    QHBoxLayout* GroupBox4Layout;
+    QHBoxLayout* Layout19_2;
+    QHBoxLayout* Layout19_3;
+    QHBoxLayout* Layout49;
+    QHBoxLayout* Layout105;
     bool event( QEvent* );
 };
 

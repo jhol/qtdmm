@@ -53,16 +53,25 @@ public:
   void print( QPrinter *prt, const QString &, const QString & );
   void setThresholds( double falling, double raising );
   void setScale( bool autoScale, double min, double max );
+  void setColors( const QColor & bg, const QColor & grid,
+                  const QColor & data, const QColor & cursor );
+  void setLine( int w );
+  
+  bool dirty() const { return m_dirty; }
+  void setAlertUnsaved( bool on ) { m_alertUnsaved = on; }
   
 signals:
   void info( const QString & );
   void running( bool );
+  void graphSize( int, int );
+  void sampleTime( int );
   
 public slots:
   void clearSLOT();
   void startSLOT();
   void stopSLOT();
   void exportDataSLOT();
+  void importDataSLOT();
   
 protected:
   QScrollBar     *scrollbar;
@@ -98,6 +107,13 @@ protected:
   double          m_fallingThreshold;
   double          m_lastVal;
   bool            m_lastValValid;
+  QColor          m_bgColor;
+  QColor          m_gridColor;
+  QColor          m_dataColor;
+  QColor          m_cursorColor;
+  int             m_lineWidth;
+  bool            m_dirty;
+  bool            m_alertUnsaved;
   
   void paintEvent( QPaintEvent * );
   void resizeEvent( QResizeEvent * );

@@ -1,7 +1,7 @@
 //======================================================================
-// File:		printdlg.h
+// File:		colorbutton.cpp
 // Author:	Matthias Toussaint
-// Created:	Wed Apr 11 16:53:46 CEST 2001
+// Created:	Sam Jan 27 23:30:28 CET 2001
 //----------------------------------------------------------------------
 // Permission to use, copy, modify, and distribute this software and its
 // documentation  for any  purpose and  without fee is  hereby  granted,
@@ -15,36 +15,54 @@
 // thereof.  In no event will the author be liable  for any lost revenue
 // or profits or other special, indirect and consequential damages.
 //----------------------------------------------------------------------
-// (c) 2001 Matthias Toussaint
+// (c) 2000 Matthias Toussaint
 //======================================================================
 
-#ifndef PRINTDLG_HH
-#define PRINTDLG_HH
+#include <colorbutton.h>
+#include <qcolordialog.h>
+#include <qpainter.h>
 
-#include <uiprintdlg.h>
-#include <qlineedit.h>
-#include <qmultilineedit.h>
-
-class PrintDlg : public UIPrintDlg
+ColorButton::ColorButton( QWidget *parent, const char *name ) :
+  QPushButton( parent, name )
 {
-  Q_OBJECT
-public:
-  PrintDlg( QWidget *parent=0, const char *name=0 );
-  virtual ~PrintDlg();
-
-  void setPrinter( QPrinter * prt );
-    
-  QString title() const { return printTitle->text(); }
-  QString comment() const { return printComment->text(); }
+  setAutoDefault( false );
   
-protected:
-  QPrinter *m_printer;
+  connect( this, SIGNAL( clicked() ), this, SLOT( clickedSLOT() ));
+}
+
+ColorButton::~ColorButton()
+{
+}
+
+QColor
+ColorButton::color() const
+{
+  return backgroundColor();
+}
+
+void
+ColorButton::setColor( const QColor & c )
+{
+  setBackgroundColor( c );
+}
+
+void
+ColorButton::clickedSLOT()
+{
+  QColor c = QColorDialog::getColor( color(), this );
   
-protected slots:
-  void configSLOT();
-  void helpSLOT();
-  void createPrinterString();
+  if (c.isValid())
+  {
+    setColor( c );
+  
+    emit valueChanged();
+    emit valueChanged( c );
+  }
+}
 
-};
-
-#endif // PRINTDLG_HH
+void
+ColorButton::drawButtonLabel( QPainter *p )
+{
+  p->setBrush( color() );
+  p->drawRoundRect( 6, 6, width()-12, height()-12, 30, 30 );
+}

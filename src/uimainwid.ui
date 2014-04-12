@@ -2,7 +2,7 @@
 <class>UIMainWid</class>
 <author>Matthias Toussaint</author>
 <widget>
-    <class>QWidget</class>
+    <class>QFrame</class>
     <property stdset="1">
         <name>name</name>
         <cstring>UIMainWid</cstring>
@@ -12,13 +12,29 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>570</width>
-            <height>360</height>
+            <width>645</width>
+            <height>451</height>
         </rect>
     </property>
     <property stdset="1">
         <name>caption</name>
         <string>QtDMM: (c) 2001 M. Toussaint</string>
+    </property>
+    <property stdset="1">
+        <name>icon</name>
+        <pixmap>image0</pixmap>
+    </property>
+    <property stdset="1">
+        <name>iconText</name>
+        <string>QtDMM 0.4</string>
+    </property>
+    <property stdset="1">
+        <name>frameShape</name>
+        <enum>StyledPanel</enum>
+    </property>
+    <property stdset="1">
+        <name>frameShadow</name>
+        <enum>Raised</enum>
     </property>
     <property>
         <name>layoutMargin</name>
@@ -29,46 +45,12 @@
     <grid>
         <property stdset="1">
             <name>margin</name>
-            <number>8</number>
+            <number>5</number>
         </property>
         <property stdset="1">
             <name>spacing</name>
-            <number>4</number>
+            <number>5</number>
         </property>
-        <widget row="4"  column="0"  rowspan="1"  colspan="4" >
-            <class>Line</class>
-            <property stdset="1">
-                <name>name</name>
-                <cstring>Line1</cstring>
-            </property>
-            <property stdset="1">
-                <name>orientation</name>
-                <enum>Horizontal</enum>
-            </property>
-        </widget>
-        <widget row="0"  column="1" >
-            <class>QPushButton</class>
-            <property stdset="1">
-                <name>name</name>
-                <cstring>connectBut</cstring>
-            </property>
-            <property stdset="1">
-                <name>text</name>
-                <string>Connect</string>
-            </property>
-            <property stdset="1">
-                <name>autoDefault</name>
-                <bool>false</bool>
-            </property>
-            <property stdset="1">
-                <name>toggleButton</name>
-                <bool>true</bool>
-            </property>
-            <property>
-                <name>whatsThis</name>
-                <string>Click here to connect to your multi meter.</string>
-            </property>
-        </widget>
         <spacer row="0"  column="2" >
             <property>
                 <name>name</name>
@@ -97,19 +79,19 @@
                 <cstring>TextLabel7</cstring>
             </property>
             <property stdset="1">
+                <name>sizePolicy</name>
+                <sizepolicy>
+                    <hsizetype>1</hsizetype>
+                    <vsizetype>5</vsizetype>
+                </sizepolicy>
+            </property>
+            <property stdset="1">
                 <name>text</name>
                 <string>&lt;center&gt;&lt;b&gt;QtDMM&lt;/b&gt;&lt;br&gt;&amp;copy; 2001&lt;br&gt;M.Toussaint&lt;/center&gt;</string>
             </property>
             <property stdset="1">
                 <name>textFormat</name>
                 <enum>RichText</enum>
-            </property>
-            <property stdset="1">
-                <name>sizePolicy</name>
-                <sizepolicy>
-                    <hsizetype>1</hsizetype>
-                    <vsizetype>5</vsizetype>
-                </sizepolicy>
             </property>
             <property stdset="1">
                 <name>alignment</name>
@@ -122,42 +104,11 @@
                 <name>wordwrap</name>
             </property>
         </widget>
-        <widget row="1"  column="1" >
-            <class>QPushButton</class>
-            <property stdset="1">
-                <name>name</name>
-                <cstring>resetBut</cstring>
-            </property>
-            <property stdset="1">
-                <name>text</name>
-                <string>Reset</string>
-            </property>
-            <property stdset="1">
-                <name>toggleButton</name>
-                <bool>false</bool>
-            </property>
-            <property stdset="1">
-                <name>autoDefault</name>
-                <bool>false</bool>
-            </property>
-            <property>
-                <name>whatsThis</name>
-                <string>Click this button to reset the memory for the min/max values to the left of the main display.</string>
-            </property>
-        </widget>
         <widget row="0"  column="0"  rowspan="2"  colspan="1" >
             <class>QFrame</class>
             <property stdset="1">
                 <name>name</name>
-                <cstring>Frame3</cstring>
-            </property>
-            <property stdset="1">
-                <name>frameShadow</name>
-                <enum>Sunken</enum>
-            </property>
-            <property stdset="1">
-                <name>frameShape</name>
-                <enum>StyledPanel</enum>
+                <cstring>ui_displayFrame</cstring>
             </property>
             <property stdset="1">
                 <name>palette</name>
@@ -380,6 +331,14 @@
                     </inactive>
                 </palette>
             </property>
+            <property stdset="1">
+                <name>frameShape</name>
+                <enum>StyledPanel</enum>
+            </property>
+            <property stdset="1">
+                <name>frameShadow</name>
+                <enum>Sunken</enum>
+            </property>
             <property>
                 <name>layoutMargin</name>
             </property>
@@ -399,7 +358,7 @@
                     <class>QLabel</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>minValue</cstring>
+                        <cstring>ui_minValue</cstring>
                     </property>
                     <property stdset="1">
                         <name>sizePolicy</name>
@@ -407,6 +366,13 @@
                             <hsizetype>0</hsizetype>
                             <vsizetype>1</vsizetype>
                         </sizepolicy>
+                    </property>
+                    <property stdset="1">
+                        <name>minimumSize</name>
+                        <size>
+                            <width>70</width>
+                            <height>0</height>
+                        </size>
                     </property>
                     <property stdset="1">
                         <name>palette</name>
@@ -633,20 +599,13 @@
                         <name>font</name>
                         <font>
                             <family>adobe-courier</family>
-                            <pointsize>18</pointsize>
+                            <pointsize>16</pointsize>
                             <bold>1</bold>
                         </font>
                     </property>
                     <property stdset="1">
                         <name>alignment</name>
                         <set>AlignVCenter|AlignRight</set>
-                    </property>
-                    <property stdset="1">
-                        <name>minimumSize</name>
-                        <size>
-                            <width>70</width>
-                            <height>0</height>
-                        </size>
                     </property>
                     <property>
                         <name>hAlign</name>
@@ -660,7 +619,7 @@
                     <class>QLabel</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>minUnit</cstring>
+                        <cstring>ui_minUnit</cstring>
                     </property>
                     <property stdset="1">
                         <name>sizePolicy</name>
@@ -915,7 +874,7 @@
                     <class>QLabel</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>maxUnit</cstring>
+                        <cstring>ui_maxUnit</cstring>
                     </property>
                     <property stdset="1">
                         <name>sizePolicy</name>
@@ -1170,7 +1129,7 @@
                     <class>QLabel</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>TextLabel2</cstring>
+                        <cstring>ui_label1</cstring>
                     </property>
                     <property stdset="1">
                         <name>sizePolicy</name>
@@ -1409,7 +1368,7 @@
                     <class>QLabel</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>maxValue</cstring>
+                        <cstring>ui_maxValue</cstring>
                     </property>
                     <property stdset="1">
                         <name>sizePolicy</name>
@@ -1417,6 +1376,13 @@
                             <hsizetype>0</hsizetype>
                             <vsizetype>1</vsizetype>
                         </sizepolicy>
+                    </property>
+                    <property stdset="1">
+                        <name>minimumSize</name>
+                        <size>
+                            <width>70</width>
+                            <height>0</height>
+                        </size>
                     </property>
                     <property stdset="1">
                         <name>palette</name>
@@ -1643,20 +1609,13 @@
                         <name>font</name>
                         <font>
                             <family>adobe-courier</family>
-                            <pointsize>18</pointsize>
+                            <pointsize>16</pointsize>
                             <bold>1</bold>
                         </font>
                     </property>
                     <property stdset="1">
                         <name>alignment</name>
                         <set>AlignVCenter|AlignRight</set>
-                    </property>
-                    <property stdset="1">
-                        <name>minimumSize</name>
-                        <size>
-                            <width>70</width>
-                            <height>0</height>
-                        </size>
                     </property>
                     <property>
                         <name>hAlign</name>
@@ -1670,7 +1629,7 @@
                     <class>QLabel</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>TextLabel1</cstring>
+                        <cstring>ui_label2</cstring>
                     </property>
                     <property stdset="1">
                         <name>sizePolicy</name>
@@ -1924,7 +1883,21 @@
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>value</cstring>
+                                <cstring>ui_value</cstring>
+                            </property>
+                            <property stdset="1">
+                                <name>sizePolicy</name>
+                                <sizepolicy>
+                                    <hsizetype>0</hsizetype>
+                                    <vsizetype>1</vsizetype>
+                                </sizepolicy>
+                            </property>
+                            <property stdset="1">
+                                <name>minimumSize</name>
+                                <size>
+                                    <width>120</width>
+                                    <height>0</height>
+                                </size>
                             </property>
                             <property stdset="1">
                                 <name>palette</name>
@@ -1981,9 +1954,9 @@
                                             <blue>255</blue>
                                         </color>
                                         <color>
-                                            <red>214</red>
+                                            <red>212</red>
                                             <green>220</green>
-                                            <blue>201</blue>
+                                            <blue>207</blue>
                                         </color>
                                         <color>
                                             <red>0</red>
@@ -2053,9 +2026,9 @@
                                             <blue>255</blue>
                                         </color>
                                         <color>
-                                            <red>214</red>
+                                            <red>212</red>
                                             <green>220</green>
-                                            <blue>201</blue>
+                                            <blue>207</blue>
                                         </color>
                                         <color>
                                             <red>0</red>
@@ -2125,9 +2098,9 @@
                                             <blue>255</blue>
                                         </color>
                                         <color>
-                                            <red>214</red>
+                                            <red>212</red>
                                             <green>220</green>
-                                            <blue>201</blue>
+                                            <blue>207</blue>
                                         </color>
                                         <color>
                                             <red>0</red>
@@ -2160,20 +2133,6 @@
                                 <string>0.000</string>
                             </property>
                             <property stdset="1">
-                                <name>sizePolicy</name>
-                                <sizepolicy>
-                                    <hsizetype>0</hsizetype>
-                                    <vsizetype>1</vsizetype>
-                                </sizepolicy>
-                            </property>
-                            <property stdset="1">
-                                <name>minimumSize</name>
-                                <size>
-                                    <width>120</width>
-                                    <height>0</height>
-                                </size>
-                            </property>
-                            <property stdset="1">
                                 <name>alignment</name>
                                 <set>AlignCenter</set>
                             </property>
@@ -2189,7 +2148,7 @@
                             <class>QLabel</class>
                             <property stdset="1">
                                 <name>name</name>
-                                <cstring>unit</cstring>
+                                <cstring>ui_unit</cstring>
                             </property>
                             <property stdset="1">
                                 <name>sizePolicy</name>
@@ -2475,7 +2434,7 @@
                     <class>DMMGraph</class>
                     <property stdset="1">
                         <name>name</name>
-                        <cstring>graph</cstring>
+                        <cstring>ui_graph</cstring>
                     </property>
                     <property stdset="1">
                         <name>sizePolicy</name>
@@ -2485,8 +2444,15 @@
                         </sizepolicy>
                     </property>
                     <property stdset="1">
+                        <name>minimumSize</name>
+                        <size>
+                            <width>0</width>
+                            <height>60</height>
+                        </size>
+                    </property>
+                    <property stdset="1">
                         <name>cursor</name>
-                        <cursor>2</cursor>
+                        <cursor>0</cursor>
                     </property>
                     <property>
                         <name>whatsThis</name>
@@ -2494,337 +2460,6 @@
 The maximum resolution for data aquisition is one second, but may also be configured to sample once a week or what ever you want.
 &lt;p&gt;
 &lt;b&gt;Note:&lt;/b&gt; Connecting to the DMM as well as a change of the measuring unit automatically clears the graph.</string>
-                    </property>
-                </widget>
-                <widget>
-                    <class>QLayoutWidget</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>Layout4</cstring>
-                    </property>
-                    <property>
-                        <name>layoutSpacing</name>
-                    </property>
-                    <vbox>
-                        <property stdset="1">
-                            <name>margin</name>
-                            <number>0</number>
-                        </property>
-                        <property stdset="1">
-                            <name>spacing</name>
-                            <number>4</number>
-                        </property>
-                        <widget>
-                            <class>QPushButton</class>
-                            <property stdset="1">
-                                <name>name</name>
-                                <cstring>startBut</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>text</name>
-                                <string>&amp;Start</string>
-                            </property>
-                            <property stdset="1">
-                                <name>autoDefault</name>
-                                <bool>false</bool>
-                            </property>
-                            <property stdset="1">
-                                <name>enabled</name>
-                                <bool>false</bool>
-                            </property>
-                            <property>
-                                <name>whatsThis</name>
-                                <string>Click here to start the transient recorder &lt;i&gt;(Only in manual mode. See configuration dialog)&lt;/i&gt;</string>
-                            </property>
-                        </widget>
-                        <widget>
-                            <class>QPushButton</class>
-                            <property stdset="1">
-                                <name>name</name>
-                                <cstring>stopBut</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>text</name>
-                                <string>Sto&amp;p</string>
-                            </property>
-                            <property stdset="1">
-                                <name>autoDefault</name>
-                                <bool>false</bool>
-                            </property>
-                            <property stdset="1">
-                                <name>enabled</name>
-                                <bool>false</bool>
-                            </property>
-                            <property>
-                                <name>whatsThis</name>
-                                <string>Click here to stop the transient recorder.</string>
-                            </property>
-                        </widget>
-                        <widget>
-                            <class>QPushButton</class>
-                            <property stdset="1">
-                                <name>name</name>
-                                <cstring>clearBut</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>text</name>
-                                <string>&amp;Clear</string>
-                            </property>
-                            <property stdset="1">
-                                <name>autoDefault</name>
-                                <bool>false</bool>
-                            </property>
-                            <property>
-                                <name>whatsThis</name>
-                                <string>Click here to clear the graph &lt;i&gt;(Warning: You can't undo that)&lt;/i&gt;</string>
-                            </property>
-                        </widget>
-                        <spacer>
-                            <property>
-                                <name>name</name>
-                                <cstring>Spacer1_2</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>orientation</name>
-                                <enum>Vertical</enum>
-                            </property>
-                            <property stdset="1">
-                                <name>sizeType</name>
-                                <enum>Expanding</enum>
-                            </property>
-                            <property>
-                                <name>sizeHint</name>
-                                <size>
-                                    <width>20</width>
-                                    <height>20</height>
-                                </size>
-                            </property>
-                        </spacer>
-                        <widget>
-                            <class>QPushButton</class>
-                            <property stdset="1">
-                                <name>name</name>
-                                <cstring>configBut</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>text</name>
-                                <string>Config ...</string>
-                            </property>
-                            <property stdset="1">
-                                <name>autoDefault</name>
-                                <bool>false</bool>
-                            </property>
-                            <property>
-                                <name>whatsThis</name>
-                                <string>Click here to call the configuration dialog. In this dialog you can configure the sampling rate, scaling of the graph, port settings etc. &lt;i&gt;(Note: You have to be disconnected in order to be able to call the configuration dialog)&lt;/i&gt;</string>
-                            </property>
-                        </widget>
-                    </vbox>
-                </widget>
-            </hbox>
-        </widget>
-        <widget row="5"  column="0"  rowspan="1"  colspan="4" >
-            <class>QLayoutWidget</class>
-            <property stdset="1">
-                <name>name</name>
-                <cstring>Layout27</cstring>
-            </property>
-            <property>
-                <name>layoutSpacing</name>
-            </property>
-            <hbox>
-                <property stdset="1">
-                    <name>margin</name>
-                    <number>0</number>
-                </property>
-                <property stdset="1">
-                    <name>spacing</name>
-                    <number>4</number>
-                </property>
-                <widget>
-                    <class>QPushButton</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>helpBut</cstring>
-                    </property>
-                    <property stdset="1">
-                        <name>text</name>
-                        <string></string>
-                    </property>
-                    <property stdset="1">
-                        <name>pixmap</name>
-                        <pixmap>image0</pixmap>
-                    </property>
-                    <property stdset="1">
-                        <name>minimumSize</name>
-                        <size>
-                            <width>26</width>
-                            <height>26</height>
-                        </size>
-                    </property>
-                    <property stdset="1">
-                        <name>autoDefault</name>
-                        <bool>false</bool>
-                    </property>
-                    <property>
-                        <name>toolTip</name>
-                        <string>Direct help</string>
-                    </property>
-                </widget>
-                <widget>
-                    <class>QPushButton</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>quitBut</cstring>
-                    </property>
-                    <property stdset="1">
-                        <name>text</name>
-                        <string>&amp;Quit</string>
-                    </property>
-                    <property stdset="1">
-                        <name>autoDefault</name>
-                        <bool>false</bool>
-                    </property>
-                    <property>
-                        <name>whatsThis</name>
-                        <string>You guessed it :) Click here to quit the program. All settings are saved in the file &lt;tt&gt;".qtdmmrc"&lt;/tt&gt;</string>
-                    </property>
-                </widget>
-                <spacer>
-                    <property>
-                        <name>name</name>
-                        <cstring>Spacer2</cstring>
-                    </property>
-                    <property stdset="1">
-                        <name>orientation</name>
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property stdset="1">
-                        <name>sizeType</name>
-                        <enum>Expanding</enum>
-                    </property>
-                    <property>
-                        <name>sizeHint</name>
-                        <size>
-                            <width>20</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <widget>
-                    <class>QPushButton</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>printBut</cstring>
-                    </property>
-                    <property stdset="1">
-                        <name>text</name>
-                        <string>&amp;Print ...</string>
-                    </property>
-                    <property stdset="1">
-                        <name>autoDefault</name>
-                        <bool>false</bool>
-                    </property>
-                    <property>
-                        <name>whatsThis</name>
-                        <string>Click here to print the graph. &lt;i&gt;(Note: This will always print the visible portion of your window)&lt;/i&gt;</string>
-                    </property>
-                </widget>
-                <widget>
-                    <class>QPushButton</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>exportBut</cstring>
-                    </property>
-                    <property stdset="1">
-                        <name>text</name>
-                        <string>&amp;Export ...</string>
-                    </property>
-                    <property stdset="1">
-                        <name>autoDefault</name>
-                        <bool>false</bool>
-                    </property>
-                    <property>
-                        <name>whatsThis</name>
-                        <string>Click here to export the sampled data as tab separated list. The data format is:&lt;br&gt;
-&lt;b&gt;DD.MM.YYYY&lt;/b&gt; TAB &lt;b&gt;HH:MM:SS&lt;/b&gt; TAB &lt;b&gt;value&lt;/b&gt; TAB &lt;b&gt;unit&lt;/b&gt;&lt;p&gt;
-&lt;i&gt;(Note: This will always export all your data. Depending the way you configured the recorder this may result in huge files!)&lt;/i&gt;</string>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
-        <widget row="6"  column="0"  rowspan="1"  colspan="4" >
-            <class>QLayoutWidget</class>
-            <property stdset="1">
-                <name>name</name>
-                <cstring>Layout27</cstring>
-            </property>
-            <property>
-                <name>layoutSpacing</name>
-            </property>
-            <hbox>
-                <property stdset="1">
-                    <name>margin</name>
-                    <number>0</number>
-                </property>
-                <property stdset="1">
-                    <name>spacing</name>
-                    <number>1</number>
-                </property>
-                <widget>
-                    <class>QLabel</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>statusBar</cstring>
-                    </property>
-                    <property stdset="1">
-                        <name>frameShape</name>
-                        <enum>Panel</enum>
-                    </property>
-                    <property stdset="1">
-                        <name>frameShadow</name>
-                        <enum>Sunken</enum>
-                    </property>
-                    <property stdset="1">
-                        <name>text</name>
-                        <string>Not connected</string>
-                    </property>
-                    <property stdset="1">
-                        <name>sizePolicy</name>
-                        <sizepolicy>
-                            <hsizetype>7</hsizetype>
-                            <vsizetype>1</vsizetype>
-                        </sizepolicy>
-                    </property>
-                    <property>
-                        <name>whatsThis</name>
-                        <string>Here you find some status information and error messages that may occur, when you have problems connecting to your DMM.</string>
-                    </property>
-                </widget>
-                <widget>
-                    <class>QLabel</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>infoLabel</cstring>
-                    </property>
-                    <property stdset="1">
-                        <name>text</name>
-                        <string>1/10000</string>
-                    </property>
-                    <property stdset="1">
-                        <name>frameShape</name>
-                        <enum>Panel</enum>
-                    </property>
-                    <property stdset="1">
-                        <name>frameShadow</name>
-                        <enum>Sunken</enum>
-                    </property>
-                    <property stdset="1">
-                        <name>minimumSize</name>
-                        <size>
-                            <width>200</width>
-                            <height>0</height>
-                        </size>
                     </property>
                 </widget>
             </hbox>
@@ -2850,19 +2485,11 @@ The maximum resolution for data aquisition is one second, but may also be config
 <images>
     <image>
         <name>image0</name>
-        <data format="XPM.GZ" length="676">789ca5d1c10ac2300c00d07bbf222cb7229dce1e06e227281e05f1d04c410f53d07910f1df6dbab6a3dbf46228acd9a369dae612b69b15c85cdc1bd39c2ba84ee606f2f0a8ebe76ebf7c89ac28c00e0db36c22320515acaf9723cfd1ce71ea825313d272ce2971aa8d2eb5710b47e30fc1901b8e443002798a820148b5d4093ab1e03e89a0ff35224ce46bf6c41285cd7a82b18b8160844488c3f82e3a217f2445940ab1f8c6d21ba5700ffd6aaadd8b86d5027d791fbf68ece542a1a124f143de0bf1014a2f8801</data>
+        <data format="XPM.GZ" length="1407">789ca591cb4e84301486f73c453367478c0373894e8c8fa07169625c94d2520aa3898e0b637c77fb53ee148764ce81a45ffaf19f02eb903d3f3db0701d7c9ef829174c68fec1c2f4eb78fc7e79bdff0956db0db357bc63f1ea2a585d33c11edfdf24d664d7145505cc1dc6b74a010b879bc861098c23345000b707343001ee391ac88137091a2881871d1a6880628f06a60e53e95001956a4ea51d4ae9307388aa5ee74c750ef96ae810f715f51de289af040d1dcfa8a9938ecbe7d827b193ba15791dec3ba736e773e87c4e2f6926a7defd2767c17bc9aa2f7616cc5af02f96fc53a53cd2d051592b75c3c4d8c9542dc8b67cb35a41db3bcf478e8b689ed75a5b25cf47394d8431f69655ccc471427714339dc5753bc598366be260c3d48e31bef7d29562ea0f634c81a8e9ac4e212a8a62c6a18c04aa927ce751ca7efcacec4b7ea72c1b69e288b982f37b17fc01c4ad690c</data>
     </image>
     <image>
         <name>image1</name>
-        <data format="XPM.GZ" length="646">789c6dd2c10ac2300c00d07bbf2234b7229d1be245fc04c5a3201e4615f430059d0711ff5ddb2e6bb236ec90eed134cb5a19d8ef36602af5ecdbfeeac05dda0798d3abebde87e3faa374d3807fa0d633a52d38d8de6f679fe33fc776e196f53cd010188256a3600a292882096246517815ca99884606e18044a3a40d91824820924265a7923a2e8bcd05f33db1173e002913175f2a6be6d3294871a2d95fa00e8a94ee017b69d339d90df1e77c57ea072ede6758</data>
+        <data format="XPM.GZ" length="646">789c6dd2c10ac2300c00d07bbf2234b7229d1b7a123f41f128888751053d4c41e741c47fd7b6cb9aac0d3ba47b34cdb25606f6bb0d984a3dfbb6bf3a7097f601e6f4eabaf7e1b8fe28dd34e01fa8f54c690b0eb6f7dbd9e7f8cfb15db8653d0f340486a0d52898420a8a60829851145e857226a291413820d1286943a4201288a450d9a9a48ecb6273c17c4fec850f40cac4c597ca9af9740a529c68f617a88322a57bc05eda744e7643fc39df95fa012c9b6757</data>
     </image>
 </images>
-<connections>
-    <connection>
-        <sender>connectBut</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>configBut</receiver>
-        <slot>setDisabled(bool)</slot>
-    </connection>
-</connections>
 </UI>

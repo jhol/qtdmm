@@ -10,10 +10,12 @@ HEADERS   = configdlg.h \
             dmmbar.h \
             dmmgraph.h \
             mainwid.h \
+            mainwin.h \
             simplecfg.h \
             printdlg.h \
             readerthread.h \
-            readevent.h
+            readevent.h \
+            colorbutton.h
 
 INTERFACES = uiconfigdlg.ui \
              uimainwid.ui \
@@ -25,12 +27,14 @@ SOURCES   = main.cpp \
             dmmbar.cpp \
             dmmgraph.cpp \
             mainwid.cpp \
+            mainwin.cpp \
             simplecfg.cpp \
             printdlg.cpp \
-            readerthread.cpp 
+            readerthread.cpp \
+            colorbutton.cpp
 
 LIBS      = 
 TARGET    = qtdmm
-VERSION   = 0.1
+VERSION   = 0.4
 DESTDIR   = ../bin
 

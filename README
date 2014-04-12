@@ -17,5 +17,11 @@ but does it's job quite well.
 
 QtDMM is distributed under the GNU Public License, version 2.
 
+You'll find 3 'official' icon files for QtDMM in this directory:
+
+- qtdmm-16x16.xpm
+- qtdmm-32.32.xpm
+- qtdmm-48x48.xpm
+
 -- Matthias Toussaint <qtdmm@mtoussaint.de>
 

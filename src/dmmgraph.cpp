@@ -29,6 +29,10 @@
 #include <qfiledialog.h>
 #include <qfile.h>
 #include <qtextstream.h>
+#include <qdatetime.h>
+#include <qmessagebox.h>
+
+#include <icon.xpm>
 
 DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   QWidget( parent, name ),
@@ -39,12 +43,14 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   m_autoScale( true ),
   m_pointer( 0 ),
   m_ystep( 1 ),
-  m_sampleTime( 2 ),
+  m_sampleTime( 1 ),
   m_sampleLength( 500 ),
   m_running( false ),
   m_mode( DMMGraph::Manual ),
   m_mouseDown( false ),
-  m_lastValValid( false )
+  m_lastValValid( false ),
+  m_dirty( false ),
+  m_alertUnsaved( true )
 {
   m_array = new QArray<double> (m_length);
   
@@ -177,7 +183,7 @@ DMMGraph::paint( QPainter *p, int w, int h,
                  double maxUnit, double hUnitFact, const QString & hUnit,
                  bool color, bool printer )
 {
-  p->setBrush( Qt::white );
+  p->setBrush( m_bgColor );
   p->setPen( Qt::black );
   p->drawRect( 0, 0, w, h );
   
@@ -194,7 +200,7 @@ DMMGraph::paintHorizontalGrid( QPainter *p, int w, int h, double yfactor, double
 {
   if (color)
   {
-    p->setPen( Qt::gray );
+    p->setPen( m_gridColor );
   }
   else
   {
@@ -207,7 +213,7 @@ DMMGraph::paintHorizontalGrid( QPainter *p, int w, int h, double yfactor, double
 
   if (color)
   {
-    p->setPen( QPen( Qt::gray, 0, Qt::DotLine ) );
+    p->setPen( QPen( m_gridColor, 0, Qt::DotLine ) );
   }
   else
   {
@@ -246,7 +252,7 @@ DMMGraph::paintVerticalGrid( QPainter *p, int w, int h, double xfactor, double x
 {
   if (color)
   {
-    p->setPen( QPen( Qt::gray, 0, Qt::DotLine ) );
+    p->setPen( QPen( m_gridColor, 0, Qt::DotLine ) );
   }
   else
   {
@@ -278,7 +284,7 @@ DMMGraph::paintData( QPainter *p, int w, int h, double xfactor, double yfactor, 
   int x = (int)qRound( (m_pointer-scrollbar->value()-1)/xfactor ) + 51;
   if (!printer && x>50 && x <= w)
   {
-    p->setPen( Qt::darkRed );
+    p->setPen( m_cursorColor );
     p->drawLine( x, 1, x, h-1-20 );
   }
 
@@ -286,11 +292,11 @@ DMMGraph::paintData( QPainter *p, int w, int h, double xfactor, double yfactor, 
 
   if (color)
   {
-    p->setPen( QPen( Qt::blue, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
+    p->setPen( QPen( m_dataColor, m_lineWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
   }
   else
   {
-    p->setPen( QPen( Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
+    p->setPen( QPen( Qt::black, m_lineWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
   }
   
   p->moveTo( 51, y );
@@ -323,8 +329,8 @@ DMMGraph::setGraphSize( int size, int length )
   m_size = size/m_sampleTime;
   m_length = length/m_sampleTime + 1;
   
-  scrollbar->setMaxValue( m_length-m_size );
-  scrollbar->setLineStep( m_size/10 );
+  scrollbar->setMaxValue( m_length-1-m_size );
+  scrollbar->setLineStep( (m_size-1)/10 );
   scrollbar->setPageStep( m_size );
   
   m_array->resize( m_length );
@@ -407,11 +413,13 @@ DMMGraph::addValue( double val )
   m_lastVal = val;
   
   if (!m_running) return;
-  
+    
   m_sum += val;
   
   if (0 == m_sampleCounter)
   {
+    m_dirty = true;
+
     if (!m_first)
     {
       val = m_sum / (double)m_sampleTime;
@@ -575,7 +583,7 @@ DMMGraph::createTimeScale( int w, double & xstep, double & hUnitFact,
   
   hUnit = tr( "[sec]" );
   hUnitFact = xfactor*m_sampleTime;
-  maxUnit = m_length*m_sampleTime;
+  maxUnit = (m_length-1)*m_sampleTime;
   
   if (ddiv > 60)
   {
@@ -716,6 +724,7 @@ DMMGraph::clearSLOT()
   
   m_graphStart = QDateTime::currentDateTime();
   m_first = true;
+  m_dirty = false;
   
   update();
 }
@@ -843,7 +852,132 @@ DMMGraph::exportDataSLOT()
       ts << line;
     }
     
+    m_dirty = false;
+    
     file.close();
+  }
+}
+
+void
+DMMGraph::importDataSLOT()
+{
+  if (m_dirty && m_alertUnsaved)
+  {
+    QMessageBox question( tr("QtDMM: Unsaved data" ),
+                          tr("<font size=+2><b>Unsaved data</b></font><p>"
+                             "Importing data will overwrite your measured data"
+                             "<p>Do you want to export your unsaved data first?" ),
+                             QMessageBox::Information,
+                             QMessageBox::Yes | QMessageBox::Default,
+                             QMessageBox::No,
+                             QMessageBox::Cancel | QMessageBox::Escape );
+    
+    question.setButtonText( QMessageBox::Yes, tr("Export data first") );
+    question.setButtonText( QMessageBox::No, tr("Import & overwrite data") );
+    question.setIconPixmap( QPixmap((const char **)icon_xpm ) );
+    
+    switch (question.exec())
+    {
+    case QMessageBox::Yes:
+      exportDataSLOT();
+      return;
+    case QMessageBox::Cancel:
+      return;
+    }
+  }
+  
+  QString fn = QFileDialog::getOpenFileName( QString::null, 
+                                             "All files (*.*)", 
+                                             this );
+    
+  int cnt = 0;
+  int sample = 0;
+  
+  if (!fn.isNull()) 
+  { 
+    // First pass -> figure out size and sample time              
+    QFile file( fn );      
+    
+    if (file.open( IO_ReadOnly ))
+    {
+      QTextStream ts( &file );
+
+      QString line = ts.readLine();
+
+      if (!line.isNull())
+      {
+        QTime startTime = QTime( line.mid( 11, 2 ).toInt(), 
+                                 line.mid( 14, 2 ).toInt(),
+                                 line.mid( 17, 2 ).toInt() );
+        QDate startDate = QDate( line.mid( 6, 4 ).toInt(), 
+                                 line.mid( 3, 2 ).toInt(),
+                                 line.mid( 0, 2 ).toInt() );
+
+        cnt++;
+
+        while (!(line = ts.readLine()).isNull())
+        {
+          QTime nowTime = QTime( line.mid( 11, 2 ).toInt(), 
+                                 line.mid( 14, 2 ).toInt(),
+                                 line.mid( 17, 2 ).toInt() );   
+          QDate nowDate = QDate( line.mid( 6, 4 ).toInt(), 
+                                 line.mid( 3, 2 ).toInt(),
+                                 line.mid( 0, 2 ).toInt() );
+
+          sample += QDateTime( startDate, startTime ).secsTo( 
+              QDateTime( nowDate, nowTime ) );
+
+          startTime = nowTime;
+          startDate = nowDate;
+
+          cnt++;
+
+        }
+      }
+      file.close();
+    }
+    
+    int size = m_size*m_sampleTime;
+    int length = (m_length-1)*m_sampleTime;
+    
+    if (cnt > 1)
+    {
+      if (sample/(cnt-1) != m_sampleTime)
+      {
+        emit sampleTime( m_sampleTime );
+      }
+      m_sampleTime = sample/(cnt-1);
+    }
+    
+    if (cnt*m_sampleTime > length)
+    {
+      if (size > cnt*m_sampleTime) size = cnt*m_sampleTime;
+      emit graphSize( size, cnt*m_sampleTime );
+      setGraphSize( size, cnt*m_sampleTime );
+    }
+    
+    m_scaleMin =  1e40;
+    m_scaleMax = -1e40;
+    
+    if (file.open( IO_ReadOnly ))
+    {
+      int i = 0;
+      
+      QTextStream ts( &file );
+      QString line;
+      
+      while (!(line = ts.readLine()).isNull())
+      {
+        (*m_array)[i++] = line.mid( 20, 6 ).toDouble();
+      }
+            
+      m_sampleCounter = m_pointer = cnt;
+      setScale( true, 0, 0 );
+      
+      file.close();
+      m_dirty = false;
+      update();
+    }
   }
 }
 
@@ -878,4 +1012,24 @@ DMMGraph::setScale( bool autoScale, double min, double max )
   }
   
   resizeEvent( 0 );
+}
+
+void
+DMMGraph::setColors( const QColor & bg, const QColor & grid,
+                     const QColor & data, const QColor & cursor )
+{
+  m_bgColor     = bg;
+  m_gridColor   = grid;
+  m_dataColor   = data;
+  m_cursorColor = cursor;
+  
+  update();
+}
+
+void
+DMMGraph::setLine( int w )
+{
+  m_lineWidth = w;
+  
+  update();
 }

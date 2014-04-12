@@ -27,6 +27,8 @@
 #include <dmmgraph.h>
 #include <readevent.h>
 
+class QPrinter;
+
 struct DMMInfo
 {
   char *name;
@@ -61,15 +63,47 @@ public:
   int bits() const;
   int stopBits() const;
   int ignoreLines() const;
+  QColor bgColor() const;
+  QColor gridColor() const;
+  QColor dataColor() const;
+  QColor cursorColor() const;
+  QColor displayBgColor() const;
+  QColor displayTextColor() const;
+  int lineWidth() const;
+  void writePrinter( QPrinter * );
+  void readPrinter( QPrinter * );
+  void setWinRect( const QRect & );
+  QRect winRect() const;
+  bool saveWindowPosition() const;
+  bool alertUnsavedData() const;
+  bool useTextLabel() const;
   
+public slots:
+  void connectSLOT( bool );
+  void applySLOT();
+  void setSampleTimeSLOT( int );
+  void setGraphSizeSLOT( int,int );
+  
+signals:
+  void accepted();
+
 protected:
   SimpleCfg *m_cfg;
-
+  QPrinter  *m_printer;
+  QRect      m_winRect;
+  
 protected slots:
-  void applySLOT();
   void cancelSLOT();
   void helpSLOT();
   void modelSLOT( int );
+  void recorderDefaultSLOT();
+  void recorderFactorySLOT();
+  void scaleDefaultSLOT();
+  void scaleFactorySLOT();
+  void dmmDefaultSLOT();
+  void dmmFactorySLOT();
+  void preferencesDefaultSLOT();
+  void preferencesFactorySLOT();
   
 };
 

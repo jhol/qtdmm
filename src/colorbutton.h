@@ -1,7 +1,7 @@
 //======================================================================
-// File:		printdlg.h
+// File:		colorbutton.h
 // Author:	Matthias Toussaint
-// Created:	Wed Apr 11 16:53:46 CEST 2001
+// Created:	Sam Jan 27 23:28:24 CET 2001
 //----------------------------------------------------------------------
 // Permission to use, copy, modify, and distribute this software and its
 // documentation  for any  purpose and  without fee is  hereby  granted,
@@ -15,36 +15,36 @@
 // thereof.  In no event will the author be liable  for any lost revenue
 // or profits or other special, indirect and consequential damages.
 //----------------------------------------------------------------------
-// (c) 2001 Matthias Toussaint
+// (c) 2000 Matthias Toussaint
 //======================================================================
 
-#ifndef PRINTDLG_HH
-#define PRINTDLG_HH
+#ifndef COLORBUTTON_HH
+#define COLORBUTTON_HH
 
-#include <uiprintdlg.h>
-#include <qlineedit.h>
-#include <qmultilineedit.h>
+#include <qpushbutton.h>
 
-class PrintDlg : public UIPrintDlg
+class QPainter;
+
+class ColorButton : public QPushButton
 {
   Q_OBJECT
 public:
-  PrintDlg( QWidget *parent=0, const char *name=0 );
-  virtual ~PrintDlg();
+  ColorButton( QWidget *parent=0, const char *name=0 );
+  virtual ~ColorButton();
 
-  void setPrinter( QPrinter * prt );
+  QColor color() const;
+  void setColor( const QColor & );
+  
+signals:
+  void valueChanged();
+  void valueChanged( const QColor & );
     
-  QString title() const { return printTitle->text(); }
-  QString comment() const { return printComment->text(); }
-  
-protected:
-  QPrinter *m_printer;
-  
 protected slots:
-  void configSLOT();
-  void helpSLOT();
-  void createPrinterString();
+  void clickedSLOT();
+
+protected:
+  void drawButtonLabel( QPainter * );
 
 };
 
-#endif // PRINTDLG_HH
+#endif // COLORBUTTON_HH

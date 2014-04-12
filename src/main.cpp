@@ -19,14 +19,13 @@
 //======================================================================
 
 #include <qapplication.h>
-#include <mainwid.h>
+#include <mainwin.h>
 
 int
 main( int argc, char **argv )
 {
   QApplication app( argc, argv );
-  
-  MainWid *mainWin = new MainWid( 0 );
+  MainWin *mainWin = new MainWin( 0 );
   
   app.setMainWidget( mainWin );
   mainWin->show();

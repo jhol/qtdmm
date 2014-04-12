@@ -23,9 +23,10 @@
 
 #include <uimainwid.h>
 #include <dmm.h>
-#include <configdlg.h>
 #include <printdlg.h>
 #include <qprinter.h>
+
+class ConfigDlg;
 
 class MainWid : public UIMainWid
 {
@@ -34,15 +35,32 @@ public:
   MainWid( QWidget *parent=0, const char *name=0 );
   virtual ~MainWid();
 
-protected slots:
+  bool closeWin();
+  QRect winRect() const;
+
+signals:
+  void running( bool );
+  void info( const QString & );
+  void error( const QString & );
+  void useTextLabel( bool );
+  void winGeometry( const QRect & );
+  void setConnect( bool );
+  
+public slots:
   void valueSLOT( double, const QString &, const QString &, const QString & );
   void resetSLOT();
   void connectSLOT( bool );
   void quitSLOT();
   void helpSLOT();
+  void clearSLOT();
+  void startSLOT();
+  void stopSLOT();
   void configSLOT();
   void printSLOT();
+  void exportSLOT();
+  void importSLOT();
   void runningSLOT( bool );
+  void applySLOT();
   
 protected:
   DMM       *m_dmm;
@@ -54,6 +72,7 @@ protected:
   QPrinter   m_printer;
   
   void readConfig();
+  QRect parentRect() const;
 };
 
 #endif // MAINWID_HH

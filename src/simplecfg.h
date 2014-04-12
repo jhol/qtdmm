@@ -226,6 +226,14 @@ public:
   /// Destructor
   virtual ~SimpleCfg();
   
+  /** Set header comment for configuration file
+  
+      \param comment This string will be printed at the beginning of the
+       file. MAKE SHURE IT CONTAINS COMMENT SIGNS AT THE VERY BEGINNING
+       OF EACH LINE (#)
+    */
+  void setComment( const QString & comment );
+  
   /** Retrieve filename
       \return filename
     */
@@ -407,6 +415,7 @@ protected:
   QMap<QString,SimpleCfgGroup *> map;
   QString                        fname;
   QString                        curGroup;
+  QString                        m_comment;
   
 };
 
