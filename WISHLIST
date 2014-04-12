@@ -2,10 +2,4 @@
   jacob@wiersma-online.de
 - check printing
 - fix import/export
-- QM 1538 vik.olliver@uiactive.com
-- Presets for Voltcraft M-4650CR
-  1200,7,n,2
-  Display 4 1/2
-  Protokoll: 14 bytes ascii, continuous
-- autoscrolling
 

@@ -79,6 +79,8 @@ protected:
   void readVC820Continuous( ReadEvent * );
   void readM9803RContinuous( ReadEvent * );
   void readIsoTechContinuous( ReadEvent * );
+  void readVC940Continuous( ReadEvent * );
+  void readQM1537Continuous( ReadEvent * );
   char *vc820Digit( int );
   
 };

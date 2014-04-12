@@ -15,7 +15,7 @@
 // thereof.  In no event will the author be liable  for any lost revenue
 // or profits or other special, indirect and consequential damages.
 //----------------------------------------------------------------------
-// (c) 2001 Matthias Toussaint
+// (c) 2001-2007 Matthias Toussaint
 //======================================================================
 
 #include <dmm.h>
@@ -341,6 +341,12 @@ DMM::customEvent( QCustomEvent *ev )
       case ReadEvent::IsoTech:
         readIsoTechContinuous( re );
         break;
+      case ReadEvent::VC940Continuous:
+        readVC940Continuous( re );
+        break;
+      case ReadEvent::QM1537Continuous:
+        readQM1537Continuous( re );
+        break;
       }
     }
     else
@@ -383,7 +389,7 @@ DMM::insertComma( const QString & val, int pos )
 QString 
 DMM::insertCommaIT( const QString & val, int pos )
 {
-  return val.left(pos) + "." + val.right(4-pos);
+  return val.left(pos) + "." + val.mid(pos);
 }
 
 void
@@ -396,6 +402,176 @@ void
 DMM::setNumValues( int numValues )
 {
   m_readerThread->setNumValues( numValues );
+}
+
+void DMM::readVC940Continuous( ReadEvent *re )
+{
+  QString val;
+  QString special;
+  QString unit;
+  
+  // Just guessing
+  for (int i=0; i<4; ++i)
+  {
+    val += re->string()[i];
+  }
+  if (re->string()[4]&0x0f != 0x0a)
+  {
+    val += re->string()[4];
+  }
+  
+  double scale = 1.0;
+  
+  int function = re->string()[6] & 0x0f;
+  int range    = re->string()[5] & 0x0f;
+  
+  switch (function)
+  {
+    case 0:
+      insertCommaIT( val, 3 );
+      special = "AC";
+      unit = "mV";
+      scale = 1e-3;
+      break;
+    case 1:
+      insertCommaIT( val, range );
+      special = "DC";
+      unit = "V";
+      break;
+    case 2:
+      insertCommaIT( val, range );
+      special = "AC";
+      unit = "V";
+      break;
+    case 3:
+      insertCommaIT( val, 3 );
+      special = "DC";
+      unit = "mV";
+      scale = 1e-3;
+      break;
+    case 4:
+      unit = "Ohm";
+      switch (range)
+      {
+        case 1:
+          insertCommaIT( val, 3 );
+          break;
+        case 2:
+          insertCommaIT( val, 4 );
+          break;
+        case 3:
+          break;
+        case 4:
+          insertCommaIT( val, 3 );
+          unit = "kOhm";
+          scale = 1e3;
+          break;
+        case 5:
+          insertCommaIT( val, 1 );
+          unit = "MOhm";
+          scale = 1e6;
+          break;
+        case 6:
+          insertCommaIT( val, 2 );
+          unit = "MOhm";
+          scale = 1e6;
+          break;
+      }
+      special = "OH";
+      break;
+    case 5:
+      unit = "F";
+      switch (range)
+      {
+        case 1:
+          insertCommaIT( val, 2 );
+          unit = "nF";
+          scale = 1e-9;
+          break;
+        case 2:
+          insertCommaIT( val, 3 );
+          unit = "nF";
+          scale = 1e-9;
+          break;
+        case 3:
+          insertCommaIT( val, 4 );
+          unit = "nF";
+          scale = 1e-9;
+          break;
+        case 4:
+          insertCommaIT( val, 2 );
+          unit = "uF";
+          scale = 1e-6;
+          break;
+        case 5:
+          insertCommaIT( val, 3 );
+          unit = "uF";
+          scale = 1e-6;
+          break;
+        case 6:
+          insertCommaIT( val, 4 );
+          unit = "uF";
+          scale = 1e-6;
+          break;
+        case 7:
+          insertCommaIT( val, 2 );
+          unit = "mF";
+          scale = 1e-3;
+          break;
+      }
+      special = "CA";
+      break;
+    case 6:
+      special = "TE";
+      unit = "C";
+      break;
+    case 7:
+      special = "DC";
+      switch (range)
+      {
+        case 0:
+          insertCommaIT( val, 3 );
+          break;
+        case 1:
+          insertCommaIT( val, 4 );
+          break;
+      }
+      unit = "uA";
+      scale = 1e-6;
+      break;
+    case 8:
+      special = "DC";
+      switch (range)
+      {
+        case 0:
+          insertCommaIT( val, 2 );
+          break;
+        case 1:
+          insertCommaIT( val, 3 );
+          break;
+      }
+      unit = "mA";
+      scale = 1e-3;
+      break;
+    case 9:
+      special = "DC";
+      unit = "A";
+      break;
+    case 10:   // what the heck is this?
+      special = "FR";
+      unit = "Hz";
+      break;
+    case 11:
+      special = "DI";
+      unit = "";
+      break;
+  }
+  
+  double d_val = val.toDouble() * scale;
+  
+  emit value( d_val, val, unit, special, true, re->id() );
+
+  m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
 }
 
 void DMM::readASCII( ReadEvent *re )
@@ -456,6 +632,147 @@ void DMM::readASCII( ReadEvent *re )
         
   emit value( d_val, val, unit, special, true, re->id() );
 
+  m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
+}
+
+void DMM::readQM1537Continuous( ReadEvent *re )
+{
+  QString val;
+  QString special;
+  QString unit;
+  const char *pStr = re->string();
+
+  if (pStr[0]!=0x0A)
+    return;
+
+  if (pStr[1] == '-')
+  {
+    val = " -";
+  }
+  else
+  {
+    val = "  ";
+  }
+  
+  if ((pStr[2] == ';') &&
+      (pStr[3] == '0') &&
+      (pStr[4] == ':') &&
+      (pStr[5] == ';'))
+  {
+     val += "  0L";
+  }
+  else
+  {
+    val += pStr[2];
+    val += pStr[3];
+    val += pStr[4];
+    val += pStr[5];
+  }
+         
+  bool showBar = true;
+  bool doACDC = false;
+  bool doUnits = true;
+  
+  switch (pStr[7])
+  {
+    case 0x31:
+      val = insertComma (val,1);
+      break;
+    case 0x32:
+      val = insertComma (val,2);
+      break;
+    case 0x34:
+      val = insertComma (val,3);
+      break;
+    // default case is no comma/decimal point at all.
+  }
+
+  double d_val = val.toDouble();
+
+  /* OK, now let's figure out what we're looking at. */
+  if (pStr[11] & 0x80)
+  {
+    /* Voltage, including diode test */
+    unit = "V";
+    if (pStr[10] & 0x04)
+    {
+      /* Diode test */
+      special = "DI";
+      unit = "V";
+    }
+    else
+      doACDC = true;
+  }
+  else if (pStr[11] & 0x40)
+  {
+    /* Current */
+    unit = "A";
+    doACDC = true;
+  }
+  else if (pStr[11] & 0x20)
+  {
+    /* Resistance, including continuity test */
+    unit = "Ohm";
+    special = "OH";
+  }
+  else if (pStr[11] & 0x08)
+  {
+    /* Frequency */
+    unit = "Hz";
+    special = "HZ";
+  }
+  else if (pStr[11] & 0x04)
+  {
+    /* Capacitance */
+    unit = "F";
+    special = "CA";
+  }
+  else if (pStr[10] & 0x02)
+  {
+    /* Duty cycle */
+    unit = "%";
+    special = "PC";
+    doUnits = false;
+  }
+
+  if (doACDC)
+  {
+    if (pStr[8] & 0x08)
+      special = "AC";
+    else
+      special = "DC";
+  }
+
+  if (doUnits)
+  {
+    if (pStr[9] & 0x02)
+    {
+      d_val /= 1e9;
+      unit.prepend ('n');
+    }
+    else if (pStr[10] & 0x80)
+    {
+      d_val /= 1e6;
+      unit.prepend ('u');
+    }
+    else if (pStr[10] & 0x40)
+    {
+      d_val /= 1e3;
+      unit.prepend ('m');
+    }
+    else if (pStr[10] & 0x20)
+    {
+      d_val *= 1e3;
+      unit.prepend ('k');
+    }
+    else if (pStr[10] & 0x10)
+    {
+      d_val *= 1e6;
+      unit.prepend ('M');
+    }
+  }
+   
+  emit value( d_val, val, unit, special, showBar, re->id() );
   m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
 }
 
@@ -1017,6 +1334,16 @@ void DMM::readVC820Continuous( ReadEvent *re )
   {
     unit    = "%";
     special = "PC";
+  }
+  else if (in[13] & 0x04)
+  {
+    unit    = "C";
+    special = "TE";
+  } 
+  else if (in[13] & 0x02)
+  {
+    unit    = "F";
+    special = "TE";
   }
   else 
   {

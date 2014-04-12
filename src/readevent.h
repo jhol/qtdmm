@@ -34,7 +34,9 @@ public:
     Voltcraft15Continuous,
     M9803RContinuous,
     VC820Continuous,
-    IsoTech
+    IsoTech,
+    VC940Continuous,
+    QM1537Continuous
   };
     
   ReadEvent( char *str, int len, int id, DataFormat df );

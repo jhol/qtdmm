@@ -176,11 +176,15 @@ ReaderThread::formatLength() const
   case ReadEvent::M9803RContinuous:
     return 11;
   case ReadEvent::PeakTech10:
-    return 12;
+    return 11;
   case ReadEvent::VC820Continuous:
     return 14;
   case ReadEvent::IsoTech:
     return 22;
+  case ReadEvent::VC940Continuous:
+    return 12;
+  case ReadEvent::QM1537Continuous:
+    return 14;
   }
   
   return 0;
@@ -216,6 +220,14 @@ ReaderThread::readDMM()
   {
     readIsoTech();
   }
+  else if (m_format == ReadEvent::QM1537Continuous)
+  {
+    readQM1537Continuous();
+  }
+  else if (m_format == ReadEvent::VC940Continuous)
+  {
+    readVC940();
+  }
 }
 
 bool
@@ -235,6 +247,11 @@ ReaderThread::checkFormat()
         m_fifo[m_length] == 0x0a) return true; 
   }
   else if (m_format == ReadEvent::M9803RContinuous && m_length >= 10)
+  {
+    if (m_fifo[(m_length-1+FIFO_LENGTH)%FIFO_LENGTH] == 0x0d && 
+        m_fifo[m_length] == 0x0a) return true; 
+  }
+  else if (m_format == ReadEvent::VC940Continuous && m_length >= 12)
   {
     if (m_fifo[(m_length-1+FIFO_LENGTH)%FIFO_LENGTH] == 0x0d && 
         m_fifo[m_length] == 0x0a) return true; 
@@ -266,6 +283,10 @@ ReaderThread::checkFormat()
     }
     
     return true;
+  }
+  else if (m_format == ReadEvent::QM1537Continuous)
+  {
+    if (m_fifo[m_length] == 0x0d) return true;
   }
   
   return false;
@@ -304,49 +325,19 @@ void ReaderThread::readIsoTech()
 {
 }
 
+void ReaderThread::readQM1537Continuous()
+{
+}
+
+void ReaderThread::readVC820()
+{
+}
+
+void ReaderThread::readVC940()
+{
+}
+
 void
 ReaderThread::readPeakTech10()
 {
-/*  char byte;
-  int  i = -1;
-  int  retval;
-  bool flag = false;
-  
-  while(false == flag)
-  {    
-    if (-1 == m_handle) 
-    {
-      m_status = ReaderThread::NotConnected;
-      return;
-    }
-
-    retval = ::read( m_handle, &byte, 1);
-
-    if (-1 == retval)
-    {
-      m_status = ReaderThread::Error;
-
-      return;
-    }
-    else if (0 == retval)
-    {
-      m_status = ReaderThread::Timeout;
-
-      return;
-    }
-    else
-    {
-      // wait for #
-      // (Dr. Ralf Wieland)
-      if(byte=='#')
-      {
-	      flag=true;
-	      for(i=0; i<11; i++)
-        {
-	        retval = ::read( m_handle, &byte, 1);
-	        m_buffer[i] = byte;
-	      }
-      }
-    }
-  } */
 }  

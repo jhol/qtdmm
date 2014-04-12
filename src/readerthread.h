@@ -74,6 +74,9 @@ protected:
   void readM9803RContinuous();
   void readPeakTech10();
   void readIsoTech();
+  void readQM1537Continuous();
+  void readVC820();
+  void readVC940();
   
   int formatLength() const;
   bool checkFormat();

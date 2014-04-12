@@ -44,7 +44,7 @@
 #include <help.xpm>
 #include <icon.xpm>
 
-#define VERSION_STRING "0.8.9"
+#define VERSION_STRING "0.8.10"
 
 #include <iostream>
 

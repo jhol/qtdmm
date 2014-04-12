@@ -1,7 +1,18 @@
+30/09/2007 0.8.10
+           - Added Sinometer MAS-343
+           - Adedd PeakTech 3330
+           - Bugfix in VC820 protocoll
+           - Added Voltrcaft VC940
+           - Added Digitech QM1537
+           - Added Uni-Trend UT30A and UT30E
+           - Added Digitek DT-9062
+           - Confirmation Voltcraft M-3860
+           - Added PeakTech 4360
+ 
 19/08/2007 0.8.9
            - Added Voltcraft M-3610D
            - Added Iso-Tech IDM 73
-
+           
 19/11/2006 0.8.8
            - Make it compile with gcc 4.1
            - Added Digitech QM1538

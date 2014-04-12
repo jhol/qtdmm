@@ -400,6 +400,11 @@
                             <string>6000</string>
                         </property>
                     </item>
+                    <item>
+                        <property name="text">
+                            <string>40000</string>
+                        </property>
+                    </item>
                     <property name="name">
                         <cstring>displayCombo</cstring>
                     </property>
@@ -477,7 +482,7 @@
                     </item>
                     <item>
                         <property name="text">
-                            <string>10 bytes ASCII, continuous (PeakTech 451)</string>
+                            <string>11 bytes ASCII, continuous (PeakTech 451)</string>
                         </property>
                     </item>
                     <item>
@@ -502,7 +507,17 @@
                     </item>
                     <item>
                         <property name="text">
-                            <string>22 bytes ascii, continuous (IsoTech)</string>
+                            <string>22 bytes ASCII, continuous (IsoTech)</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>12 bytes binary, continuous (VC940)</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>14 bytes ASCII/binary, continuous (QM1537)</string>
                         </property>
                     </item>
                     <property name="name">

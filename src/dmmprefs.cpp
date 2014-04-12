@@ -36,24 +36,42 @@
 // when all needed parameter are found this hardcoded version will
 // be replaced by a file
 //    name
-//    baud (600=0,1200,1800,2400,4800,9600)
-//    protocol (14 bytes polling 'D'=0, 10 bytes continuous [PeakTech]
-//              14 continuous, 15 continuous, 11 bin continuous, 14 bin continuous)
+//    baud (600=0,1200,1800,2400,4800,9600,19200)
+//    protocol (0: 14 bytes polling 'D'
+//              1: 11 bytes continuous [PeakTech]
+//              2: 14 continuous
+//              3: 15 continuous
+//              4: 11 bin continuous (M9803R)
+//              5: 14 bin continuous (VC820)
+//              6: IsoTech
+//              7: VC940
+//              8: QM1537
 //    bits
 //    stopBits
 //    number of values (For DMM's that send several lines at once)
 //    parity (0,1,2 - None,Even,Odd) 
-//    display digits (0,1,2,3 - 3 1/2, 3 3/4, 4 1/2, 4 3/4)
+//    [don't ask for any logic behind the digits, changing would break configs]
+//    display digits (0,1,2,3 - 2000, 4000, 20000, 50000, 100000, 200000, 400000,
+//                              1000000, 6000, 40000)
 //
 struct DMMInfo dmm_info[] = { 
+                              {"Digitek DT-9062", 3, 5, 8, 1, 1, 0, 1},
+                              
                               {"Digitech QM1350", 0, 0, 7, 2, 1, 0, 1},
                               {"Digitech QM1538", 3, 5, 8, 1, 1, 0, 1},
+                              {"Digitech QM1537", 3, 8, 8, 1, 1, 0, 1},
+                              
                               {"ELV M9803R", 5, 4, 7, 1, 1, 1, 1},
+                              
                               {"Iso-Tech IDM 73", 6, 6, 7, 1, 1, 2, 8},
+                              
+                              {"MASTECH MAS-343", 0, 0, 7, 2, 1, 0, 1},
                               {"MASTECH MAS-345", 0, 0, 7, 2, 1, 0, 1},
                               {"MASTECH M9803R", 5, 4, 7, 1, 1, 1, 1},
+                              
                               {"McVoice M-345pro", 0, 0, 7, 2, 1, 0, 1},
                               {"McVoice M-980T", 5, 4, 7, 1, 1, 1, 1},
+                              
                               {"Metex M-3660D", 1, 0, 7, 2, 1, 0, 1},
                               {"Metex M-3830D", 1, 0, 7, 2, 4, 0, 1},
                               {"Metex M-3850D", 1, 0, 7, 2, 4, 0, 1},
@@ -63,13 +81,24 @@ struct DMMInfo dmm_info[] = {
                               {"Metex ME-32", 0, 0, 7, 2, 1, 0, 1},
                               {"Metex ME-42", 0, 0, 7, 2, 1, 0, 1},
                               {"Metex universal system 9160", 1, 0, 7, 2, 4, 0, 1},
+                              
+                              {"PeakTech 3330", 3, 5, 8, 1, 1, 0, 1},
                               {"PeakTech 4010", 5, 0, 7, 2, 1, 0, 1},
+                              {"Peaktech 4360", 0, 0, 7, 2, 1, 0, 1},
                               {"PeakTech 4390", 5, 0, 7, 2, 4, 0, 1},
                               {"PeakTech 451", 0, 1, 7, 2, 1, 0, 1},
+                              
                               {"Radioshack 22-805 DMM", 0, 0, 7, 2, 1, 0, 1},
                               {"Radioshack RS22-168A", 1, 0, 7, 2, 1, 0, 1},
+                              
+                              {"Sinometer MAS-343", 0, 0, 7, 2, 1, 0, 1},
+                              
+                              {"Uni-Trend UT30A", 3, 5, 8, 1, 1, 0, 1},
+                              {"Uni-Trend UT30E", 3, 5, 8, 1, 1, 0, 1},
+                             
                               {"Voltcraft M-3610D", 1, 0, 7, 2, 1, 0, 1},
                               {"Voltcraft M-3650D", 1, 0, 7, 2, 1, 0, 1},
+                              {"Voltcraft M-3860", 5, 0, 7, 2, 4, 0, 2},
                               {"Voltcraft M-4650CR", 1, 2, 7, 2, 1, 0, 2 },
                               {"Voltcraft M-4660", 1, 0, 7, 2, 4, 0, 3},
                               {"Voltcraft ME-11", 0, 0, 7, 2, 1, 0, 1},
@@ -78,8 +107,9 @@ struct DMMInfo dmm_info[] = {
                               {"Voltcraft VC 670", 4, 2, 7, 1, 1, 0, 3},
                               {"Voltcraft VC 820", 3, 5, 8, 1, 1, 0, 1},
                               {"Voltcraft VC 840", 3, 5, 8, 1, 1, 0, 1},
+                              {"Voltcraft VC 940", 3, 7, 8, 1, 1, 2, 9},
+                              
                               {"*Voltcraft ME-42", 0, 0, 7, 2, 1, 0, 1},
-                              {"*Voltcraft M-3860", 5, 0, 7, 2, 4, 0, 2},
                               {"*Voltcraft M-4660A", 5, 0, 7, 2, 4, 0, 3},
                               {"*Voltcraft M-4660M", 5, 0, 7, 2, 4, 0, 3},
                               {"*Voltcraft MXD-4660A", 5, 0, 7, 2, 4, 0, 3},
