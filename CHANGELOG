@@ -1,3 +1,7 @@
+02/03/2002 Added Voltcraft ME-42, M-3860, M-4660A, M-4660M, MXD-4660A,
+           Added protocol for Voltcraft VC 630, VC 650, VC 670
+           Bugfix in 14 byte, polling protocol
+           Fixed small configuration dialog bug
 15/12/2001 More drawing options and integration curve
 25/11/2001 Completed online help and minor internal cleanup.
 24/11/2001 Chromified display

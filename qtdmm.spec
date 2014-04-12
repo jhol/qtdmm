@@ -1,10 +1,11 @@
 Summary: Digital multimeter readout software.
 Name: QtDMM
-Version: 0.5
+Version: 0.7
 Release: 1
 Copyright: GPL
 Group: Applications/Engineering
-Source: http://www.mtoussaint.de/qtdmm-0.5.tgz
+Vendor: Matthias Toussaint
+Source: http://www.mtoussaint.de/qtdmm-%{version}.tgz
 URL: http://www.mtoussaint.de/qtdmm.html
 Packager: Radek Liboska <liboska@uochb.cas.cz>
 Buildroot: /tmp/%{name}-root
@@ -45,6 +46,10 @@ rm -rf $RPM_BUILD_ROOT
 %prefix/bin/qtdmm
 
 %changelog
+* Wed Mar  6 2002 Radek Liboska <liboska@uochb.cas.cz>
+- 0.7
+* Tue Nov 27 2001 Radek Liboska <liboska@uochb.cas.cz>
+- 0.6 
 * Tue Sep  4 2001 Radek Liboska <liboska@uochb.cas.cz>
 - 0.5 Second RPM release
 - 0.4 Initial RPM release

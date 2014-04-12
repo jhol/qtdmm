@@ -28,7 +28,7 @@ public:
   {
     Metex14 = 0,
     PeakTech10,
-    M9803R
+    Voltcraft14Continuous
   };
     
   ReadEvent( QString str, DataFormat df ) : 

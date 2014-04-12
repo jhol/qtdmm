@@ -271,7 +271,8 @@ DMM::event( QEvent *ev )
       ReadEvent *re = (ReadEvent *)ev;
       QString tmp = re->string();
 
-      if (re->format() == ReadEvent::Metex14)
+      if (re->format() == ReadEvent::Metex14 ||
+          re->format() == ReadEvent::Voltcraft14Continuous)
       {
         val     = tmp.mid( 3, 6 ); //.stripWhiteSpace();
         unit    = tmp.mid( 9, 4 ).stripWhiteSpace();

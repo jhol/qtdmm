@@ -25,6 +25,7 @@ int
 main( int argc, char **argv )
 {
   QApplication app( argc, argv );
+  
   MainWin *mainWin = new MainWin( 0 );
   
   app.setMainWidget( mainWin );

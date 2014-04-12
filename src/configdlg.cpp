@@ -48,6 +48,14 @@
 
 // when all needed parameter are found this hardcoded version will
 // be replaced by a file
+//    name
+//    baud (600=0,1200,1800,2400,4800,9600)
+//    protocol (14 bytes polling 'D'=0, 10 bytes continuous [PeakTech]
+//              14 continuous)
+//    bits
+//    stopBits
+//    ignoreLines (For DMM's that send several lines at once)
+//
 struct DMMInfo dmm_info[] = { 
                               {"Metex M-3660D", 1, 0, 7, 2, 0},
                               {"Metex M-3830D", 1, 0, 7, 2, 3},
@@ -63,7 +71,16 @@ struct DMMInfo dmm_info[] = {
                               {"Voltcraft ME-11", 0, 0, 7, 2, 0},
                               {"Voltcraft ME-22T", 3, 0, 7, 2, 0},
                               {"Voltcraft ME-32", 0, 0, 7, 2, 0},
-                              {"",0,0,0,0,0} 
+                              {"*Voltcraft ME-42", 0, 0, 7, 2, 0},
+                              {"*Voltcraft M-3860", 5, 0, 7, 2, 3},
+                              {"*Voltcraft M-4660A", 5, 0, 7, 2, 3},
+                              {"*Voltcraft M-4660M", 5, 0, 7, 2, 3},
+                              {"*Voltcraft MXD-4660A", 5, 0, 7, 2, 3},
+                              {"*Voltcraft VC 630", 4, 2, 7, 1, 0},
+                              {"*Voltcraft VC 650", 4, 2, 7, 1, 0},
+                              {"*Voltcraft VC 670", 4, 2, 7, 1, 0},
+                              
+                              {"",0,0,0,0,0} // End Of List
                             };
                       
 ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
@@ -827,6 +844,14 @@ ConfigDlg::modelSLOT( int id )
   ignoreSpin->setDisabled( id != 0 );
   if (id != 0) message->hide();
   else         message->show();
+  if (modelCombo->text(id)[0] == '*')
+  {
+    message2->show();
+  }
+  else
+  {
+    message2->hide();
+  }
   
   if (id > 0)
   {

@@ -12,8 +12,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>427</width>
-            <height>503</height>
+            <width>447</width>
+            <height>466</height>
         </rect>
     </property>
     <property stdset="1">
@@ -1915,7 +1915,7 @@ You have two choices:
                                 </property>
                                 <property stdset="1">
                                     <name>sizeLimit</name>
-                                    <number>15</number>
+                                    <number>12</number>
                                 </property>
                                 <property stdset="1">
                                     <name>autoCompletion</name>
@@ -2234,6 +2234,12 @@ You have two choices:
                                                 <string>10 bytes, continuous (PeakTech 451)</string>
                                             </property>
                                         </item>
+                                        <item>
+                                            <property>
+                                                <name>text</name>
+                                                <string>14 bytes, continuous (Voltcraft)</string>
+                                            </property>
+                                        </item>
                                         <property stdset="1">
                                             <name>name</name>
                                             <cstring>protocolCombo</cstring>
@@ -2317,6 +2323,34 @@ You have two choices:
                                     </size>
                                 </property>
                             </spacer>
+                            <widget>
+                                <class>QLabel</class>
+                                <property stdset="1">
+                                    <name>name</name>
+                                    <cstring>message2</cstring>
+                                </property>
+                                <property stdset="1">
+                                    <name>sizePolicy</name>
+                                    <sizepolicy>
+                                        <hsizetype>1</hsizetype>
+                                        <vsizetype>3</vsizetype>
+                                    </sizepolicy>
+                                </property>
+                                <property stdset="1">
+                                    <name>text</name>
+                                    <string>These protocoll settings have not yet been confirmed by a user. If you own this model and can confirm that it works. Please give me a note. &lt;u&gt;&lt;font color=blue&gt;qtdmm@mtoussaint.de&lt;/font&gt;&lt;/u&gt;</string>
+                                </property>
+                                <property stdset="1">
+                                    <name>alignment</name>
+                                    <set>WordBreak|AlignBottom|AlignLeft</set>
+                                </property>
+                                <property>
+                                    <name>vAlign</name>
+                                </property>
+                                <property>
+                                    <name>wordwrap</name>
+                                </property>
+                            </widget>
                             <widget>
                                 <class>QLabel</class>
                                 <property stdset="1">
@@ -2988,11 +3022,11 @@ You have two choices:
                         <vbox>
                             <property stdset="1">
                                 <name>margin</name>
-                                <number>11</number>
+                                <number>10</number>
                             </property>
                             <property stdset="1">
                                 <name>spacing</name>
-                                <number>6</number>
+                                <number>5</number>
                             </property>
                             <widget>
                                 <class>QGroupBox</class>
@@ -3013,11 +3047,11 @@ You have two choices:
                                 <grid>
                                     <property stdset="1">
                                         <name>margin</name>
-                                        <number>11</number>
+                                        <number>10</number>
                                     </property>
                                     <property stdset="1">
                                         <name>spacing</name>
-                                        <number>6</number>
+                                        <number>5</number>
                                     </property>
                                     <widget row="3"  column="0" >
                                         <class>QLayoutWidget</class>
@@ -3812,7 +3846,14 @@ You have two choices:
                                         </property>
                                         <property stdset="1">
                                             <name>text</name>
-                                            <string>Points:</string>
+                                            <string>Data points:</string>
+                                        </property>
+                                        <property stdset="1">
+                                            <name>alignment</name>
+                                            <set>AlignVCenter|AlignRight</set>
+                                        </property>
+                                        <property>
+                                            <name>hAlign</name>
                                         </property>
                                     </widget>
                                     <spacer row="1"  column="3" >
@@ -3893,7 +3934,14 @@ You have two choices:
                                         </property>
                                         <property stdset="1">
                                             <name>text</name>
-                                            <string>Points:</string>
+                                            <string>Integration points:</string>
+                                        </property>
+                                        <property stdset="1">
+                                            <name>alignment</name>
+                                            <set>AlignVCenter|AlignRight</set>
+                                        </property>
+                                        <property>
+                                            <name>hAlign</name>
                                         </property>
                                     </widget>
                                     <spacer row="0"  column="3" >
@@ -4533,10 +4581,6 @@ You have two choices:
                                                     <name>name</name>
                                                     <cstring>ui_commandExec</cstring>
                                                 </property>
-                                                <property stdset="1">
-                                                    <name>enabled</name>
-                                                    <bool>false</bool>
-                                                </property>
                                                 <property>
                                                     <name>whatsThis</name>
                                                     <string>Enter here the external command to be executed.</string>
@@ -4547,10 +4591,6 @@ You have two choices:
                                                 <property stdset="1">
                                                     <name>name</name>
                                                     <cstring>ui_browseExec</cstring>
-                                                </property>
-                                                <property stdset="1">
-                                                    <name>enabled</name>
-                                                    <bool>false</bool>
                                                 </property>
                                                 <property stdset="1">
                                                     <name>minimumSize</name>
@@ -5018,18 +5058,6 @@ You have two choices:
         <sender>ui_executeCommand</sender>
         <signal>toggled(bool)</signal>
         <receiver>ButtonGroup10</receiver>
-        <slot>setEnabled(bool)</slot>
-    </connection>
-    <connection>
-        <sender>ui_disconnectExec</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>ui_commandExec</receiver>
-        <slot>setEnabled(bool)</slot>
-    </connection>
-    <connection>
-        <sender>ui_disconnectExec</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>ui_browseExec</receiver>
         <slot>setEnabled(bool)</slot>
     </connection>
     <connection>

@@ -94,7 +94,7 @@ ReaderThread::readDMM()
   
   if (m_format == ReadEvent::Metex14)
   {
-    ::write( m_handle, "d\n", 2 );
+    ::write( m_handle, "D\n", 2 );
   
     do 
     {    
@@ -150,7 +150,7 @@ ReaderThread::readDMM()
       while ('\r' != byte);                                           
     }        
   }
-  else if (m_format == ReadEvent::M9803R)
+  else if (m_format == ReadEvent::Voltcraft14Continuous)
   {
     do 
     {    
@@ -176,16 +176,35 @@ ReaderThread::readDMM()
       }
       else
       { 
-        m_buffer[(++i)%100] = byte;
+        m_buffer[(++i)%14] = byte;
       }
     } 
-    while (0x0d != byte);
+    while ('\r' != byte);
 
-    for (int j=0; j<i; j++)
-    {
-      fprintf( stderr, "%02x ", m_buffer[j] );
-    }
-    fprintf( stderr, "\n");
+    // ignore additional lines
+    // <Michael Petruzelka>                          
+    for (int i=0; i<m_ignoreLines; i++)                                     
+    {                                                                 
+      do                                                              
+      {                                                               
+        retval = ::read( m_handle, &byte, 1);      
+                
+        // Do some errorchecking (mt)           
+        if (-1 == retval)
+        {
+          m_status = ReaderThread::Error;
+
+          return;
+        }
+        else if (0 == retval)
+        {
+          m_status = ReaderThread::Timeout;
+
+          return;
+        }
+      }                                                               
+      while ('\r' != byte);                                           
+    }        
   }
   else if (m_format == ReadEvent::PeakTech10)
   {
@@ -218,7 +237,8 @@ ReaderThread::readDMM()
         if(byte=='#')
         {
 	        flag=true;
-	        for(i=0; i<11; i++){
+	        for(i=0; i<11; i++)
+          {
 	          retval = ::read( m_handle, &byte, 1);
 	          m_buffer[i] = byte;
 	        }
