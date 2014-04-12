@@ -82,7 +82,7 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   
   m_drawArray.resize( m_length );
   
-  scrollbar = new QScrollBar( QScrollBar::Horizontal, this );
+  scrollbar = new QScrollBar( Qt::Horizontal, this );
   scrollbar->setGeometry( 0, height()-16, width(), 16 );
   scrollbar->setTracking( true );
   scrollbar->setCursor( Qt::ArrowCursor );
