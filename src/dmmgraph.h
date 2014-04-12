@@ -21,9 +21,9 @@
 #ifndef DMMGRAPH_HH
 #define DMMGRAPH_HH
 
-#include <qarray.h>
+#include <qvector.h>
 #include <qdatetime.h>
-#include <qpointarray.h>
+#include <qpoint.h>
 #include <qwidget.h>
 #include <Q3PopupMenu>
 
@@ -143,8 +143,8 @@ protected:
   double                    m_scaleMin;   
   double                    m_scaleMax;   
   bool                      m_autoScale;  
-  QArray<double>           *m_array;
-  QArray<double>           *m_arrayInt;
+  QVector<double>           m_array;
+  QVector<double>           m_arrayInt;
   int                       m_pointer;
   double                    m_yfactor;
   double                    m_xfactor;
@@ -193,7 +193,7 @@ protected:
   PointMode                 m_intPointMode;
   LineMode                  m_lineMode;
   LineMode                  m_intLineMode;
-  QPointArray               m_drawArray;
+  QVector<QPoint>           m_drawArray;
   double                    m_integrationScale;
   double                    m_integrationThreshold;
   double                    m_integrationOffset;

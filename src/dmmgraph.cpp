@@ -54,6 +54,8 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   m_scaleMin( 0 ),
   m_scaleMax( 0 ),
   m_autoScale( true ),
+  m_array(m_length),
+  m_arrayInt(m_length),
   m_pointer( 0 ),
   m_ystep( 1 ),
   m_sampleTime( 1 ),
@@ -71,17 +73,13 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   m_intPointMode( Square ),
   m_lineMode( Solid ),
   m_intLineMode( NoLine ),
+  m_drawArray( m_length ),
   m_integrationScale( 1.0 ),
   m_integrationThreshold( 0.0 ),
   m_integrationOffset( 0.0 ),
   m_includeZero( false ),
   m_mousePan( false )
 {
-  m_array    = new QArray<double> (m_length);
-  m_arrayInt = new QArray<double> (m_length);
-  
-  m_drawArray.resize( m_length );
-  
   scrollbar = new QScrollBar( Qt::Horizontal, this );
   scrollbar->setGeometry( 0, height()-16, width(), 16 );
   scrollbar->setTracking( true );
@@ -382,7 +380,7 @@ DMMGraph::paintData( QPainter *p, double xfactor,
   {
     y = (int)qRound( m_graphRect.y()+
         (m_scaleMax-m_integrationOffset-
-          (*m_arrayInt)[sv]*m_integrationScale)/yfactor );
+        m_arrayInt[sv]*m_integrationScale)/yfactor );
 
     if (color)
     {
@@ -396,7 +394,7 @@ DMMGraph::paintData( QPainter *p, double xfactor,
     }
 
     pCnt = 1;
-    m_drawArray.setPoint( 0, QPoint( m_graphRect.x(), y ) );
+    m_drawArray[0] = QPoint( m_graphRect.x(), y );
 
     for (int i=sv+1; i<m_pointer; i++)
     {
@@ -404,18 +402,18 @@ DMMGraph::paintData( QPainter *p, double xfactor,
       if (x <= m_graphRect.x()+m_graphRect.width())
       {
         y = (int)qRound( m_graphRect.y()+(m_scaleMax-m_integrationOffset-
-            (*m_arrayInt)[i]*m_integrationScale)/yfactor );
-        //y = (int)qRound( 1+(m_scaleMax-(*m_arrayInt)[i])/yfactor );
+            m_arrayInt[i]*m_integrationScale)/yfactor );
+        //y = (int)qRound( 1+(m_scaleMax-m_arrayInt[i])/yfactor );
 
-        m_drawArray.setPoint( pCnt++, QPoint( x, y ) );
+        m_drawArray[pCnt++] = QPoint( x, y );
       }
     }   
     if (pCnt)
-      p->drawPolyline( m_drawArray, 0, pCnt );
+      p->drawPolyline( m_drawArray.data(), pCnt );
     
-    //y = (int)qRound( 1+(m_scaleMax-(*m_arrayInt)[scrollbar->value()])/yfactor );
+    //y = (int)qRound( 1+(m_scaleMax-m_arrayInt[scrollbar->value()])/yfactor );
     y = (int)qRound( m_graphRect.y()+(m_scaleMax-m_integrationOffset-
-        (*m_arrayInt)[sv]*m_integrationScale)/yfactor );
+        m_arrayInt[sv]*m_integrationScale)/yfactor );
     
     if (color)
     {
@@ -432,8 +430,8 @@ DMMGraph::paintData( QPainter *p, double xfactor,
       if (x <= m_graphRect.x()+m_graphRect.width())
       {
         y = (int)qRound( m_graphRect.y()+(m_scaleMax-m_integrationOffset-
-            (*m_arrayInt)[i]*m_integrationScale)/yfactor );
-        //y = (int)qRound( 1+(m_scaleMax-(*m_arrayInt)[i])/yfactor );
+            m_arrayInt[i]*m_integrationScale)/yfactor );
+        //y = (int)qRound( 1+(m_scaleMax-m_arrayInt[i])/yfactor );
 
         drawPoint( m_intPointMode, p, x, y );
       }
@@ -442,7 +440,7 @@ DMMGraph::paintData( QPainter *p, double xfactor,
   
   // draw data curve
   //  
-  y = (int)qRound( m_graphRect.y()+(m_scaleMax-(*m_array)[sv])/yfactor );
+  y = (int)qRound( m_graphRect.y()+(m_scaleMax-m_array[sv])/yfactor );
 
   if (color)
   {
@@ -456,22 +454,22 @@ DMMGraph::paintData( QPainter *p, double xfactor,
   }
   
   pCnt = 1;
-  m_drawArray.setPoint( 0, QPoint( m_graphRect.x(), y ) );
+  m_drawArray[0] = QPoint( m_graphRect.x(), y );
 
   for (int i=sv+1; i<m_pointer; i++)
   {
     int x = (int)qRound( (i-sv)/xfactor ) + m_graphRect.x();
     if (x <= m_graphRect.x()+m_graphRect.width())
     {
-      int y = (int)qRound( m_graphRect.y()+(m_scaleMax-(*m_array)[i])/yfactor );
+      int y = (int)qRound( m_graphRect.y()+(m_scaleMax-m_array[i])/yfactor );
 
-      m_drawArray.setPoint( pCnt++, QPoint( x, y ) );
+      m_drawArray[pCnt++] = QPoint( x, y );
     }
   }   
   if (pCnt)
-    p->drawPolyline( m_drawArray, 0, pCnt );
+    p->drawPolyline( m_drawArray.data(), pCnt );
   
-  y = (int)qRound( m_graphRect.y()+(m_scaleMax-(*m_array)[sv])/yfactor );
+  y = (int)qRound( m_graphRect.y()+(m_scaleMax-m_array[sv])/yfactor );
 
   if (color)
   {
@@ -487,7 +485,7 @@ DMMGraph::paintData( QPainter *p, double xfactor,
     int x = (int)qRound( (i-sv)/xfactor ) + m_graphRect.x();
     if (x <= m_graphRect.x()+m_graphRect.width())
     {
-      int y = (int)qRound( m_graphRect.y()+(m_scaleMax-(*m_array)[i])/yfactor );
+      int y = (int)qRound( m_graphRect.y()+(m_scaleMax-m_array[i])/yfactor );
 
       drawPoint( m_pointMode, p, x, y );
     }
@@ -581,8 +579,8 @@ DMMGraph::setGraphSize( int size, int length )
   scrollbar->setLineStep( (m_size-1)/10 );
   scrollbar->setPageStep( m_size );
   
-  m_array->resize( m_length );
-  m_arrayInt->resize( m_length );
+  m_array.resize( m_length );
+  m_arrayInt.resize( m_length );
   if (m_pointer >= m_length)
   {
     m_pointer = m_length-1;
@@ -613,7 +611,7 @@ DMMGraph::startSLOT()
   m_graphStartDateTime = QDateTime::currentDateTime();
   m_externalStarted = false;
   
-  (*m_arrayInt)[0] = 0;
+  m_arrayInt[0] = 0;
 }
 
 void
@@ -704,8 +702,8 @@ DMMGraph::addValue( double val )
     {
       for (int i=1; i<m_length; i++)
       {
-        (*m_array)[i-1] = (*m_array)[i];
-        (*m_arrayInt)[i-1] = (*m_arrayInt)[i];
+        m_array[i-1] = m_array[i];
+        m_arrayInt[i-1] = m_arrayInt[i];
       }
       m_pointer = m_length-1;
     }
@@ -714,19 +712,19 @@ DMMGraph::addValue( double val )
     {
       if (m_lastVal <= m_integrationThreshold)
       {
-        (*m_arrayInt)[m_pointer] = 0.0;
+        m_arrayInt[m_pointer] = 0.0;
       }
       else
       {
-        (*m_arrayInt)[m_pointer] = (*m_arrayInt)[m_pointer-1]+val;
+        m_arrayInt[m_pointer] = m_arrayInt[m_pointer-1]+val;
       }
     }
     else
     {
-      (*m_arrayInt)[m_pointer] = QMAX( val, m_integrationThreshold );
+      m_arrayInt[m_pointer] = QMAX( val, m_integrationThreshold );
     }
     
-    (*m_array)[m_pointer++] = val;
+    m_array[m_pointer++] = val;
     bool resFlag = false;
 
     if (m_autoScale)
@@ -1179,7 +1177,7 @@ DMMGraph::drawCursor( const QPoint & pos )
   
     if (x < m_pointer)
     {
-      double y = (*m_array)[x];
+      double y = m_array[x];
       int Y = (int)qRound( m_graphRect.y()+(m_scaleMax-y)/m_yfactor );
       p.drawLine( m_graphRect.x(), Y, m_graphRect.x()+m_graphRect.width()-1, Y );  
     }
@@ -1203,7 +1201,7 @@ DMMGraph::fillInfoBox( const QPoint & pos )
     tmpStr += "\n";
   
     QString prefix ="";
-    double val = (*m_array)[x];
+    double val = m_array[x];
     
     //tmpStr += EngNumberValidator::engValue( val );
     
@@ -1278,7 +1276,7 @@ DMMGraph::exportDataSLOT()
       line.sprintf( "%02d.%02d.%04d\t%02d:%02d:%02d\t%06g\t%s\n",
           dt.date().day(), dt.date().month(), dt.date().year(),
           dt.time().hour(), dt.time().minute(), dt.time().second(),
-          (*m_array)[i],
+          m_array[i],
           m_unit/*.mid( 1, m_unit.length()-2 )*/.latin1() );
       
       ts << line;
@@ -1447,7 +1445,7 @@ DMMGraph::importDataSLOT()
         if (!line.isEmpty())
         {
           token = QStringList::split( "\t", line );
-          (*m_array)[i++] = token[2].toDouble();
+          m_array[i++] = token[2].toDouble();
         }
       }
             
@@ -1509,7 +1507,7 @@ DMMGraph::setScale( bool autoScale, bool includeZero, double min, double max )
     
     for (int i=0; i<m_pointer; i++)
     {
-      const double val = (*m_array)[i];
+      const double val = m_array[i];
       computeMinMax( val );
     }
 
