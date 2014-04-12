@@ -44,7 +44,7 @@ public:
   bool isOpen() const { return m_handle >= 0; }
   void setFormat( ReadEvent::DataFormat );
   void setName( const QString & );
-  void setPortSettings( int bits, int stopBits, int parity );
+  void setPortSettings( int bits, int stopBits, int parity, bool externalSetup );
   void setNumValues( int );
   void setConsoleLogging( bool on ) { m_consoleLogging = on; }
   
@@ -69,7 +69,8 @@ protected:
   QString                   m_name;
   struct termios            m_oldSettings;
   bool                      m_consoleLogging;
-  
+  bool                      m_externalSetup;
+      
   void timerEvent( QTimerEvent * );
   void customEvent( QCustomEvent * );
   QString insertComma( const QString &, int );
@@ -82,8 +83,8 @@ protected:
   void readVC940Continuous( ReadEvent * );
   void readQM1537Continuous( ReadEvent * );
   void readRS22812Continuous( ReadEvent * );
-  char *vc820Digit( int );
-  char *RS22812Digit( int );
+  const char *vc820Digit( int );
+  const char *RS22812Digit( int );
   
 };
 

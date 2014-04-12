@@ -1,5 +1,5 @@
 /* XPM */
-static char * decimal_small_xpm[] = {
+static const char * decimal_small_xpm[] = {
 "4 21 2 1",
 " 	c None",
 ".	c #000000",

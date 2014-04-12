@@ -26,7 +26,7 @@
 
 struct DMMInfo
 {
-  char *name;
+  const char *name;
   int   baud;
   int   protocol;
   int   bits;
@@ -34,6 +34,7 @@ struct DMMInfo
   int   numValues;
   int   parity;
   int   display;
+  bool  externalSetup;
 };
 
 class DmmPrefs : public UIDmmPrefs
@@ -48,6 +49,7 @@ public:
   int stopBits() const;
   int speed() const;
   int numValues() const;
+  bool externalSetup() const;
   ReadEvent::DataFormat format() const;
   int display() const;
   QString dmmName() const;
@@ -64,8 +66,9 @@ protected slots:
   void modelSLOT( int );
   void loadSLOT();
   void saveSLOT();
-  // empty finction as damn moc doesn't know about defines
+  // empty function as damn moc doesn't know about defines
   void scanDevicesSLOT();
+  void externalSetupSLOT();
   
 protected:
   QString m_path;

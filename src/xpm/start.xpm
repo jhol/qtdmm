@@ -1,5 +1,5 @@
 /* XPM */
-static char * start_xpm[] = {
+static const char * start_xpm[] = {
 "22 22 101 2",
 "  	c None",
 ". 	c #0C3651",

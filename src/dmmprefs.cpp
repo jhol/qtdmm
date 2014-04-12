@@ -20,6 +20,7 @@
 
 #include <qbuttongroup.h>
 #include <qcombobox.h>
+#include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qtoolbutton.h>
@@ -55,78 +56,86 @@
 //    [don't ask for any logic behind the digits, changing would break configs]
 //    display digits (0,1,2,3 - 2000, 4000, 20000, 50000, 100000, 200000, 400000,
 //                              1000000, 6000, 40000)
+//    External device setup 0, 1
 //- Added
+
+
+
+
 struct DMMInfo dmm_info[] = { 
-                              {"Digitek DT-9062", 3, 5, 8, 1, 1, 0, 1},
-                              {"Digitek INO2513", 3, 5, 8, 1, 1, 0, 1},  // no image
+                              {"Digitek DT-9062", 3, 5, 8, 1, 1, 0, 1, 0},
+                              {"Digitek INO2513", 3, 5, 8, 1, 1, 0, 1, 0},  // no image
                               
-                              {"Digitech QM1350", 0, 0, 7, 2, 1, 0, 1},  // no image
-                              {"Digitech QM1462", 3, 5, 8, 1, 1, 0, 1},  // no image
-                              {"Digitech QM1538", 3, 5, 8, 1, 1, 0, 1},  // no image
-                              {"Digitech QM1537", 3, 8, 8, 1, 1, 0, 1},  // no image
+                              {"Digitech QM1350", 0, 0, 7, 2, 1, 0, 1, 0},  // no image
+                              {"Digitech QM1462", 3, 5, 8, 1, 1, 0, 1, 0},  // no image
+                              {"Digitech QM1538", 3, 5, 8, 1, 1, 0, 1, 0},  // no image
+                              {"Digitech QM1537", 3, 8, 8, 1, 1, 0, 1, 0},  // no image
                               
-                              {"ELV M9803R", 5, 4, 7, 1, 1, 1, 1},       // no image
+                              {"ELV M9803R", 5, 4, 7, 1, 1, 1, 1, 0},       // no image
                               
-                              {"Iso-Tech IDM 73", 6, 6, 7, 1, 1, 2, 8},   // no image
+                              {"Iso-Tech IDM 73", 6, 6, 7, 1, 1, 2, 8, 0},   // no image
                               
-                              {"MASTECH MAS-343", 0, 0, 7, 2, 1, 0, 1},
-                              {"MASTECH MAS-345", 0, 0, 7, 2, 1, 0, 1},
-                              {"MASTECH M9803R", 5, 4, 7, 1, 1, 1, 1},
+                              {"MASTECH MAS-343", 0, 0, 7, 2, 1, 0, 1, 0},
+                              {"MASTECH MAS-345", 0, 0, 7, 2, 1, 0, 1, 0},
+                              {"MASTECH M9803R", 5, 4, 7, 1, 1, 1, 1, 0},
                               
-                              {"McVoice M-345pro", 0, 0, 7, 2, 1, 0, 1},
-                              {"McVoice M-980T", 5, 4, 7, 1, 1, 0, 1},
+                              {"McVoice M-345pro", 0, 0, 7, 2, 1, 0, 1, 0},
+                              {"McVoice M-980T", 5, 4, 7, 1, 1, 0, 1, 0},
                               
-                              {"Metex M-3660D", 1, 0, 7, 2, 1, 0, 1},
-                              {"Metex M-3830D", 1, 0, 7, 2, 4, 0, 1},      // no image
-                              {"Metex M-3850D", 1, 0, 7, 2, 4, 0, 1},
-                              {"Metex M-3850M", 5, 0, 7, 2, 4, 0, 1},
-                              {"Metex ME-11", 0, 0, 7, 2, 1, 0, 1},
-                              {"Metex ME-22", 3, 0, 7, 2, 1, 0, 1},
-                              {"Metex ME-32", 0, 0, 7, 2, 1, 0, 1},
-                              {"Metex ME-42", 0, 0, 7, 2, 1, 0, 1},
-                              {"Metex universal system 9160", 1, 0, 7, 2, 4, 0, 1},
+                              {"Metex M-3660D", 1, 0, 7, 2, 1, 0, 1, 0},
+                              {"Metex M-3830D", 1, 0, 7, 2, 4, 0, 1, 0},      // no image
+                              {"Metex M-3850D", 1, 0, 7, 2, 4, 0, 1, 0},
+                              {"Metex M-3850M", 5, 0, 7, 2, 4, 0, 1, 0},
+                              {"Metex M-3870D", 1, 0, 7, 1, 1, 0, 1, 0},
+                              {"Metex M-4650C", 1, 0, 7, 2, 4, 0, 2, 0}, 
+                              {"Metex ME-11", 0, 0, 7, 2, 1, 0, 1, 0},
+                              {"Metex ME-22", 3, 0, 7, 2, 1, 0, 1, 0},
+                              {"Metex ME-32", 0, 0, 7, 2, 1, 0, 1, 0},
+                              {"Metex ME-42", 0, 0, 7, 2, 1, 0, 1, 0},
+                              {"Metex universal system 9160", 1, 0, 7, 2, 4, 0, 1, 0},
                               
-                              {"PeakTech 3330", 3, 5, 8, 1, 1, 0, 1},
-                              {"PeakTech 4010", 5, 0, 7, 2, 1, 0, 1},
-                              {"PeakTech 4015A", 5, 0, 7, 2, 4, 0, 4},
-                              {"PeakTech 4360", 0, 0, 7, 2, 1, 0, 1},
-                              {"PeakTech 4390", 5, 0, 7, 2, 4, 0, 1},
-                              {"PeakTech 451", 0, 1, 7, 2, 1, 0, 1},       // no image
+                              {"PeakTech 3330", 3, 5, 8, 1, 1, 0, 1, 0},
+                              {"PeakTech 4010", 5, 0, 7, 2, 1, 0, 1, 0},
+                              {"PeakTech 4015A", 5, 0, 7, 2, 4, 0, 4, 0},
+                              {"PeakTech 4360", 0, 0, 7, 2, 1, 0, 1, 0},
+                              {"PeakTech 4390", 5, 0, 7, 2, 4, 0, 1, 0},
+                              {"PeakTech 451", 0, 1, 7, 2, 1, 0, 1, 0},       // no image
                               
-                              {"Radioshack 22-805 DMM", 0, 0, 7, 2, 1, 0, 1},
-                              {"Radioshack RS22-168A", 1, 0, 7, 2, 1, 0, 1},   // no image
-                              {"Radioshack 22-812", 4, 9, 8, 1, 1, 0, 1},
+                              {"Radioshack 22-805 DMM", 0, 0, 7, 2, 1, 0, 1, 0},
+                              {"Radioshack RS22-168A", 1, 0, 7, 2, 1, 0, 1, 0},   // no image
+                              {"Radioshack 22-812", 4, 9, 8, 1, 1, 0, 1, 0},
                               
-                              {"Tenma 72-7745", 3, 5, 8, 1, 1, 0, 1},
+                              {"Tenma 72-7745", 3, 5, 8, 1, 1, 0, 1, 0},
+                              {"Tenma 72-1016", 6, 6, 7, 1, 2, 2, 8, 0}, 
                               
-                              {"Sinometer MAS-343", 0, 0, 7, 2, 1, 0, 1},
+                              {"Sinometer MAS-343", 0, 0, 7, 2, 1, 0, 1, 0},
                               
-                              {"Uni-Trend UT30A", 3, 5, 8, 1, 1, 0, 1},
-                              {"Uni-Trend UT30E", 3, 5, 8, 1, 1, 0, 1},   // no image
+                              {"Uni-Trend UT30A", 3, 5, 8, 1, 1, 0, 1, 0},
+                              {"Uni-Trend UT30E", 3, 5, 8, 1, 1, 0, 1, 0},   // no image
                              
-                              {"Voltcraft M-3610D", 1, 0, 7, 2, 1, 0, 1},  // no image
-                              {"Voltcraft M-3650D", 1, 0, 7, 2, 1, 0, 1},
-                              {"Voltcraft M-3860", 5, 0, 7, 2, 4, 0, 2},   // no image
-                              {"Voltcraft M-4650CR", 1, 2, 7, 2, 1, 0, 2 }, // no image
-                              {"Voltcraft M-4660", 1, 0, 7, 2, 4, 0, 3},
-                              {"Voltcraft ME-11", 0, 0, 7, 2, 1, 0, 1},
-                              {"Voltcraft ME-22T", 3, 0, 7, 2, 1, 0, 1},
-                              {"Voltcraft ME-32", 0, 0, 7, 2, 1, 0, 1},
-                              {"Voltcraft VC 670", 4, 2, 7, 1, 1, 0, 3},
-                              {"Voltcraft VC 820", 3, 5, 8, 1, 1, 0, 1},
-                              {"Voltcraft VC 840", 3, 5, 8, 1, 1, 0, 1},
-                              {"Voltcraft VC 940", 3, 7, 8, 1, 1, 2, 9},
+                              {"Voltcraft M-3610D", 1, 0, 7, 2, 1, 0, 1, 0},  // no image
+                              {"Voltcraft M-3650D", 1, 0, 7, 2, 1, 0, 1, 0},
+                              {"Voltcraft M-3860", 5, 0, 7, 2, 4, 0, 2, 0},   // no image
+                              {"Voltcraft M-4650CR", 1, 2, 7, 2, 1, 0, 2, 0 }, // no image
+                              {"Voltcraft M-4660", 1, 0, 7, 2, 4, 0, 3, 0},
+                              {"Voltcraft ME-11", 0, 0, 7, 2, 1, 0, 1, 0},
+                              {"Voltcraft ME-22T", 3, 0, 7, 2, 1, 0, 1, 0},
+                              {"Voltcraft ME-32", 0, 0, 7, 2, 1, 0, 1, 0},
+                              {"Voltcraft VC 670", 4, 2, 7, 1, 1, 0, 3, 0},
+                              {"Voltcraft VC 820", 3, 5, 8, 1, 1, 0, 1, 0},
+                              {"Voltcraft VC 840", 3, 5, 8, 1, 1, 0, 1, 0},
+                              {"Voltcraft VC 940", 3, 7, 8, 1, 1, 2, 9, 0},
                               
-                              {"*Voltcraft ME-42", 0, 0, 7, 2, 1, 0, 1},
-                              {"*Voltcraft M-4660A", 5, 0, 7, 2, 4, 0, 3},
-                              {"*Voltcraft M-4660M", 5, 0, 7, 2, 4, 0, 3},
-                              {"*Voltcraft MXD-4660A", 5, 0, 7, 2, 4, 0, 3},
-                              {"*Voltcraft VC 630", 4, 2, 7, 1, 1, 0, 3},
-                              {"*Voltcraft VC 650", 4, 2, 7, 1, 1, 0, 3},
-                              {"*Voltcraft VC 635", 3, 3, 7, 1, 1, 0, 3},
-                              {"*Voltcraft VC 655", 3, 3, 7, 1, 1, 0, 3},
+                              {"*Voltcraft ME-42", 0, 0, 7, 2, 1, 0, 1, 0},
+                              {"*Voltcraft M-4660A", 5, 0, 7, 2, 4, 0, 3, 0},
+                              {"*Voltcraft M-4660M", 5, 0, 7, 2, 4, 0, 3, 0},
+                              {"*Voltcraft MXD-4660A", 5, 0, 7, 2, 4, 0, 3, 0},
+                              {"*Voltcraft VC 630", 4, 2, 7, 1, 1, 0, 3, 0},
+                              {"*Voltcraft VC 650", 4, 2, 7, 1, 1, 0, 3, 0},
+                              {"*Voltcraft VC 635", 3, 3, 7, 1, 1, 0, 3, 0},
+                              {"*Voltcraft VC 655", 3, 3, 7, 1, 1, 0, 3, 0},
                               
-                              {"",0,0,0,0,0,0,0} // End Of List
+                              {"",0,0,0,0,0,0,0,0} // End Of List
                             };
 
 DmmPrefs::DmmPrefs( QWidget *parent, const char *name ) :
@@ -151,6 +160,8 @@ DmmPrefs::DmmPrefs( QWidget *parent, const char *name ) :
   
   connect( ui_model, SIGNAL( activated( int ) ),
            this, SLOT( modelSLOT( int )));
+  connect( ui_externalSetup, SIGNAL( toggled( bool ) ),
+           this, SLOT( externalSetupSLOT()));
   connect( ui_load, SIGNAL( clicked() ),
            this, SLOT( loadSLOT()));
   connect( ui_save, SIGNAL( clicked() ),
@@ -243,6 +254,7 @@ DmmPrefs::defaultsSLOT()
   stopBitsCombo->setCurrentItem( m_cfg->getInt( "Port settings", "stop-bits", 2 )-1);
   parityCombo->setCurrentItem( m_cfg->getInt( "Port settings", "parity", 0 ) );  
   displayCombo->setCurrentItem( m_cfg->getInt( "DMM", "display", 1 ) );
+  ui_externalSetup->setChecked( m_cfg->getInt( "DMM", "exterrnal-setup", 0 ) == 1 );
   
   protocolCombo->setCurrentItem( m_cfg->getInt( "DMM", "data-format", 0 ));
   ui_numValues->setValue( m_cfg->getInt( "DMM", "number-of-values", 1 ));
@@ -273,6 +285,7 @@ DmmPrefs::factoryDefaultsSLOT()
   stopBitsCombo->setCurrentItem( 1 );
   parityCombo->setCurrentItem( 0 );  
   displayCombo->setCurrentItem( 1 );
+  ui_externalSetup->setChecked( false );
   
   protocolCombo->setCurrentItem( 0 );
   ui_numValues->setValue( 1 );
@@ -292,11 +305,23 @@ DmmPrefs::applySLOT()
   m_cfg->setInt( "Port settings", "parity", parityCombo->currentItem() );
   
   m_cfg->setInt( "DMM", "display", displayCombo->currentItem() );
+  m_cfg->setBool( "DMM", "external-setup", ui_externalSetup->isChecked() );
   
   m_cfg->setInt( "DMM", "data-format", protocolCombo->currentItem() );
   m_cfg->setInt( "DMM", "number-of-values", ui_numValues->value() );
   m_cfg->setString( "DMM", "model", 
       (ui_model->currentItem() == 0 ? "Manual" : dmm_info[ui_model->currentItem()-1].name ));
+}
+
+void DmmPrefs::externalSetupSLOT()
+{
+  if (ui_model->currentItem() == 0)
+  {
+    baudRate->setDisabled( ui_externalSetup->isChecked() );
+    bitsCombo->setDisabled( ui_externalSetup->isChecked() );
+    stopBitsCombo->setDisabled( ui_externalSetup->isChecked() );
+    parityCombo->setDisabled( ui_externalSetup->isChecked() );
+  }
 }
 
 void
@@ -318,6 +343,8 @@ DmmPrefs::modelSLOT( int id )
   stopBitsCombo->setDisabled( id != 0 );
   parityCombo->setDisabled( id != 0 );
   ui_numValues->setDisabled( id != 0 );
+  ui_externalSetup->setDisabled( id != 0 );
+  
   if (id != 0) message->hide();
   else         message->show();
   if (ui_model->text(id)[0] == '*')
@@ -338,6 +365,7 @@ DmmPrefs::modelSLOT( int id )
     parityCombo->setCurrentItem( dmm_info[id-1].parity );
     displayCombo->setCurrentItem( dmm_info[id-1].display );
     ui_numValues->setValue( dmm_info[id-1].numValues );
+    ui_externalSetup->setChecked( dmm_info[id-1].externalSetup );
     
     ui_filename->setText( "" );
   }
@@ -385,8 +413,12 @@ DmmPrefs::speed() const
   return 600;
 }
 
-int
-DmmPrefs::numValues() const
+bool DmmPrefs::externalSetup() const
+{
+  return ui_externalSetup->isChecked();
+}
+
+int DmmPrefs::numValues() const
 {
   return ui_numValues->value();
 }
@@ -447,7 +479,7 @@ DmmPrefs::loadSLOT()
     stopBitsCombo->setCurrentItem( cfg.getInt( "Port settings", "stop-bits", 2 )-1);
     parityCombo->setCurrentItem( cfg.getInt( "Port settings", "parity", 0 ) );  
     displayCombo->setCurrentItem( cfg.getInt( "DMM", "display", 1 ) );
-  
+    ui_externalSetup->setChecked( cfg.getBool( "DMM", "external-setup", false ) );
     protocolCombo->setCurrentItem( cfg.getInt( "DMM", "data-format", 0 ));
     ui_numValues->setValue( cfg.getInt( "DMM", "number-of-values", 1 ));
   }
@@ -487,7 +519,7 @@ DmmPrefs::saveSLOT()
     cfg.setInt( "Port settings", "parity", parityCombo->currentItem() );
   
     cfg.setInt( "DMM", "display", displayCombo->currentItem() );
-  
+    cfg.setBool( "DMM", "external-setup", ui_externalSetup->isChecked() );
     cfg.setInt( "DMM", "data-format", protocolCombo->currentItem() );
     cfg.setInt( "DMM", "number-of-values", ui_numValues->value() );
     

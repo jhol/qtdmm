@@ -1,5 +1,5 @@
 /* XPM */
-static char * DBM_small_xpm[] = {
+static const char * DBM_small_xpm[] = {
 "9 8 2 1",
 " 	c None",
 ".	c #000000",

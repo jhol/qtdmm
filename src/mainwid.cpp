@@ -397,7 +397,7 @@ MainWid::readConfig()
   m_dmm->setSpeed( m_configDlg->speed() );
   m_dmm->setFormat( m_configDlg->format() );
   m_dmm->setPortSettings( m_configDlg->bits(), m_configDlg->stopBits(), 
-                          m_configDlg->parity() );
+                          m_configDlg->parity(), m_configDlg->externalSetup() );
   
   ui_graph->setGraphSize( m_configDlg->windowSeconds(),
                           m_configDlg->totalSeconds() );

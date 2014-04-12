@@ -1,5 +1,5 @@
 /* XPM */
-static char * export_xpm[] = {
+static const char * export_xpm[] = {
 "22 22 117 2",
 "  	c None",
 ". 	c #6B6B6B",

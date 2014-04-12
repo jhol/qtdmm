@@ -1,5 +1,5 @@
 /* XPM */
-static char * gui_xpm[] = {
+static const char * gui_xpm[] = {
 "32 32 303 2",
 "  	c None",
 ". 	c #272727",

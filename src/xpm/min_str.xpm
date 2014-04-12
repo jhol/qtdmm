@@ -1,5 +1,5 @@
 /* XPM */
-static char * min_str_xpm[] = {
+static const char * min_str_xpm[] = {
 "15 8 2 1",
 " 	c None",
 ".	c #000000",

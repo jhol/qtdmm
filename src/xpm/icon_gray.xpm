@@ -1,5 +1,5 @@
 /* XPM */
-static char * icon_gray_xpm[] = {
+static const char * icon_gray_xpm[] = {
 "32 32 15 1",
 " 	c None",
 ".	c #000000",

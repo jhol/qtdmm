@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>610</width>
-            <height>640</height>
+            <height>682</height>
         </rect>
     </property>
     <property name="caption">
@@ -143,7 +143,187 @@
                 <property name="spacing">
                     <number>5</number>
                 </property>
-                <widget class="QLayoutWidget" row="0" column="1" rowspan="2" colspan="1">
+                <widget class="QLabel" row="3" column="0">
+                    <property name="name">
+                        <cstring>ui_parityLabel</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Parit&amp;y</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignVCenter|AlignRight</set>
+                    </property>
+                    <property name="buddy" stdset="0">
+                        <cstring>stopBitsCombo</cstring>
+                    </property>
+                    <property name="hAlign" stdset="0">
+                    </property>
+                </widget>
+                <widget class="QComboBox" row="3" column="1">
+                    <item>
+                        <property name="text">
+                            <string>None</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Even</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Odd</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>parityCombo</cstring>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>Parity for serial communication. May be None, Odd or Even.</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox" row="3" column="3">
+                    <item>
+                        <property name="text">
+                            <string>2000</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>4000</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>20000</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>50000</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>100000</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>200000</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>400000</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>1000000</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>6000</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>40000</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>displayCombo</cstring>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>Number of display digits.
+&lt;ul&gt;&lt;li&gt;3 1/2 - 2000 Counts&lt;/li&gt;
+&lt;li&gt;3 3/4 - 4000 Counts&lt;/li&gt;
+&lt;li&gt;4 1/2 - 20000 Counts&lt;/li&gt;
+&lt;li&gt;4 3/4 - 40000 Counts&lt;/li&gt;
+&lt;/ul&gt;</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox" row="2" column="1">
+                    <item>
+                        <property name="text">
+                            <string>5 bits</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>6 bits</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>7 bits</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>8 bits</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>bitsCombo</cstring>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>Number of bits for serial communication.</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="2" column="0">
+                    <property name="name">
+                        <cstring>ui_bitsLabel</cstring>
+                    </property>
+                    <property name="text">
+                        <string>&amp;Bits:</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignVCenter|AlignRight</set>
+                    </property>
+                    <property name="buddy" stdset="0">
+                        <cstring>bitsCombo</cstring>
+                    </property>
+                    <property name="hAlign" stdset="0">
+                    </property>
+                </widget>
+                <widget class="QComboBox" row="2" column="3">
+                    <item>
+                        <property name="text">
+                            <string>1 Stop bit</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>2 Stop bits</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>stopBitsCombo</cstring>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>Number of stop bits for serial communication.</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="1" column="0">
+                    <property name="name">
+                        <cstring>TextLabel2</cstring>
+                    </property>
+                    <property name="text">
+                        <string>&amp;Port:</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignVCenter|AlignRight</set>
+                    </property>
+                    <property name="buddy" stdset="0">
+                        <cstring>port</cstring>
+                    </property>
+                    <property name="hAlign" stdset="0">
+                    </property>
+                </widget>
+                <widget class="QLayoutWidget" row="1" column="1">
                     <property name="name">
                         <cstring>layout2</cstring>
                     </property>
@@ -217,136 +397,7 @@
                         </widget>
                     </hbox>
                 </widget>
-                <widget class="QLabel" row="2" column="0">
-                    <property name="name">
-                        <cstring>ui_bitsLabel</cstring>
-                    </property>
-                    <property name="text">
-                        <string>&amp;Bits:</string>
-                    </property>
-                    <property name="alignment">
-                        <set>AlignVCenter|AlignRight</set>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>bitsCombo</cstring>
-                    </property>
-                    <property name="hAlign" stdset="0">
-                    </property>
-                </widget>
-                <widget class="QLabel" row="3" column="0">
-                    <property name="name">
-                        <cstring>ui_parityLabel</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Parit&amp;y</string>
-                    </property>
-                    <property name="alignment">
-                        <set>AlignVCenter|AlignRight</set>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>stopBitsCombo</cstring>
-                    </property>
-                    <property name="hAlign" stdset="0">
-                    </property>
-                </widget>
-                <widget class="QComboBox" row="1" column="3" rowspan="2" colspan="1">
-                    <item>
-                        <property name="text">
-                            <string>1 Stop bit</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>2 Stop bits</string>
-                        </property>
-                    </item>
-                    <property name="name">
-                        <cstring>stopBitsCombo</cstring>
-                    </property>
-                    <property name="whatsThis" stdset="0">
-                        <string>Number of stop bits for serial communication.</string>
-                    </property>
-                </widget>
-                <widget class="QComboBox" row="3" column="3">
-                    <item>
-                        <property name="text">
-                            <string>2000</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>4000</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>20000</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>50000</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>100000</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>200000</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>400000</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>1000000</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>6000</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>40000</string>
-                        </property>
-                    </item>
-                    <property name="name">
-                        <cstring>displayCombo</cstring>
-                    </property>
-                    <property name="whatsThis" stdset="0">
-                        <string>Number of display digits.
-&lt;ul&gt;&lt;li&gt;3 1/2 - 2000 Counts&lt;/li&gt;
-&lt;li&gt;3 3/4 - 4000 Counts&lt;/li&gt;
-&lt;li&gt;4 1/2 - 20000 Counts&lt;/li&gt;
-&lt;li&gt;4 3/4 - 40000 Counts&lt;/li&gt;
-&lt;/ul&gt;</string>
-                    </property>
-                </widget>
-                <widget class="QLabel" row="1" column="2" rowspan="2" colspan="1">
-                    <property name="name">
-                        <cstring>ui_stopLabel</cstring>
-                    </property>
-                    <property name="text">
-                        <string>&amp;Stop bits:</string>
-                    </property>
-                    <property name="alignment">
-                        <set>AlignVCenter|AlignRight</set>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>stopBitsCombo</cstring>
-                    </property>
-                    <property name="hAlign" stdset="0">
-                    </property>
-                </widget>
-                <widget class="QComboBox" row="0" column="3">
+                <widget class="QComboBox" row="1" column="3">
                     <item>
                         <property name="text">
                             <string>600 baud</string>
@@ -392,6 +443,14 @@
                         <string>Select the baud rate for the DMM here. If you encounter problems connecting to your DMM try lowering the baud rate. I had some problems with my &lt;b&gt;Metex ME-32&lt;/b&gt;. The Documentation said 1200 baud but it only worked at 600.</string>
                     </property>
                 </widget>
+                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="4">
+                    <property name="name">
+                        <cstring>ui_externalSetup</cstring>
+                    </property>
+                    <property name="text">
+                        <string>External device setup</string>
+                    </property>
+                </widget>
                 <widget class="QLabel" row="3" column="2">
                     <property name="name">
                         <cstring>ui_displayLabel</cstring>
@@ -408,7 +467,23 @@
                     <property name="hAlign" stdset="0">
                     </property>
                 </widget>
-                <widget class="QLabel" row="0" column="2">
+                <widget class="QLabel" row="2" column="2">
+                    <property name="name">
+                        <cstring>ui_stopLabel</cstring>
+                    </property>
+                    <property name="text">
+                        <string>&amp;Stop bits:</string>
+                    </property>
+                    <property name="alignment">
+                        <set>AlignVCenter|AlignRight</set>
+                    </property>
+                    <property name="buddy" stdset="0">
+                        <cstring>stopBitsCombo</cstring>
+                    </property>
+                    <property name="hAlign" stdset="0">
+                    </property>
+                </widget>
+                <widget class="QLabel" row="1" column="2">
                     <property name="name">
                         <cstring>ui_baudLabel</cstring>
                     </property>
@@ -422,73 +497,6 @@
                         <cstring>baudRate</cstring>
                     </property>
                     <property name="hAlign" stdset="0">
-                    </property>
-                </widget>
-                <widget class="QLabel" row="0" column="0">
-                    <property name="name">
-                        <cstring>TextLabel2</cstring>
-                    </property>
-                    <property name="text">
-                        <string>&amp;Port:</string>
-                    </property>
-                    <property name="alignment">
-                        <set>AlignVCenter|AlignRight</set>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>port</cstring>
-                    </property>
-                    <property name="hAlign" stdset="0">
-                    </property>
-                </widget>
-                <widget class="QComboBox" row="2" column="1">
-                    <item>
-                        <property name="text">
-                            <string>5 bits</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>6 bits</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>7 bits</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>8 bits</string>
-                        </property>
-                    </item>
-                    <property name="name">
-                        <cstring>bitsCombo</cstring>
-                    </property>
-                    <property name="whatsThis" stdset="0">
-                        <string>Number of bits for serial communication.</string>
-                    </property>
-                </widget>
-                <widget class="QComboBox" row="3" column="1">
-                    <item>
-                        <property name="text">
-                            <string>None</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>Even</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>Odd</string>
-                        </property>
-                    </item>
-                    <property name="name">
-                        <cstring>parityCombo</cstring>
-                    </property>
-                    <property name="whatsThis" stdset="0">
-                        <string>Parity for serial communication. May be None, Odd or Even.</string>
                     </property>
                 </widget>
             </grid>
@@ -629,7 +637,7 @@
             <property name="sizeHint">
                 <size>
                     <width>20</width>
-                    <height>16</height>
+                    <height>60</height>
                 </size>
             </property>
         </spacer>

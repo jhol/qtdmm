@@ -696,6 +696,11 @@ ConfigDlg::parity() const
   return m_dmm->parity();
 }
 
+bool ConfigDlg::externalSetup() const
+{
+  return m_dmm->externalSetup();
+}
+
 int
 ConfigDlg::bits() const
 {

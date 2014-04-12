@@ -1,5 +1,5 @@
 /* XPM */
-static char * connect_off_xpm[] = {
+static const char * connect_off_xpm[] = {
 "22 22 18 1",
 " 	c None",
 ".	c #FFFF00",

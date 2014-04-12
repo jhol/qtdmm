@@ -1,5 +1,5 @@
 /* XPM */
-static char * Hz_xpm[] = {
+static const char * Hz_xpm[] = {
 "18 16 2 1",
 " 	c None",
 ".	c #000000",

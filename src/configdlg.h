@@ -72,6 +72,7 @@ public:
   bool showBar() const;
   ReadEvent::DataFormat format() const;
   int parity() const;
+  bool externalSetup() const;
   int display() const;
   int bits() const;
   int stopBits() const;

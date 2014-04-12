@@ -15,7 +15,7 @@
 // thereof.  In no event will the author be liable  for any lost revenue
 // or profits or other special, indirect and consequential damages.
 //----------------------------------------------------------------------
-// (c) 2001-2007 Matthias Toussaint
+// (c) 2001-2009 Matthias Toussaint
 //======================================================================
 
 #include <qapplication.h>
@@ -587,6 +587,8 @@ DMMGraph::setGraphSize( int size, int length )
     m_pointer = m_length-1;
   }
 
+  m_drawArray.resize( m_length );
+  
   emitInfo();
   
   resizeEvent( 0 );

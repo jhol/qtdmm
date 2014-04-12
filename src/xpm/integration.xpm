@@ -1,5 +1,5 @@
 /* XPM */
-static char * integration_xpm[] = {
+static const char * integration_xpm[] = {
 "32 32 82 1",
 " 	c None",
 ".	c #FFFFFF",

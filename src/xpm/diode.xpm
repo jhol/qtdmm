@@ -1,5 +1,5 @@
 /* XPM */
-static char * diode_xpm[] = {
+static const char * diode_xpm[] = {
 "17 14 2 1",
 " 	c None",
 ".	c #000000",

@@ -38,7 +38,8 @@ DMM::DMM( QObject *parent, const char *name ) :
   m_parity( 0 ),
   m_device( "/dev/ttyS0" ),
   m_oldStatus( ReaderThread::NotConnected ),
-  m_consoleLogging( false )
+  m_consoleLogging( false ),
+  m_externalSetup( false )
 {
   m_readerThread = new ReaderThread( this );
   m_readerThread->start();
@@ -51,8 +52,9 @@ DMM::~DMM()
 }
 
 void
-DMM::setPortSettings( int bits, int stopBits, int parity )
+DMM::setPortSettings( int bits, int stopBits, int parity, bool externalSetup )
 {
+  m_externalSetup = externalSetup;
   m_parity  = parity;
   m_c_cflag = CREAD | CLOCAL;
   
@@ -151,112 +153,115 @@ DMM::open()
     return false;
   }
   
-  fcntl( m_handle, F_SETFL, 0 );
-  tcgetattr( m_handle, &m_oldSettings );
-  
-  attr.c_oflag = 0;
-  attr.c_lflag = 0;
-  //attr.c_iflag = IGNBRK;
-  attr.c_cflag = m_c_cflag;
-  
-  // According to Thomas Hoffman flags should be like this
-  //
-  if (0 == m_parity)          // Ignore parity errors
+  if (!m_externalSetup)
   {
-    attr.c_iflag = IGNBRK | IGNPAR ;
-  }
-  else
-  {
-    attr.c_iflag = IGNBRK | INPCK | ISTRIP;
-  }
-  /*
-  if (0 == m_parity)          // Ignore parity errors
-  {
-    attr.c_iflag = IGNBRK | IGNPAR | INPCK;
-  }
-  else
-  {
-    attr.c_iflag = IGNBRK | IGNPAR;
-  }
-  */
-  //attr.c_cflag = CS7 | CSTOPB | CREAD | CLOCAL;
-  attr.c_cc[VTIME]= 0;
-  attr.c_cc[VMIN]= 1;
-  
-  if (600 == m_speed)
-  {
-    cfsetospeed( &attr, B600 ); 
-    cfsetispeed( &attr, B600 );
-  }
-  else if (1200 == m_speed)
-  {
-    cfsetospeed( &attr, B1200 ); 
-    cfsetispeed( &attr, B1200 );
-  }
-  else if (1800 == m_speed)
-  {
-    cfsetospeed( &attr, B1800 ); 
-    cfsetispeed( &attr, B1800 );
-  }
-  else if (2400 == m_speed)
-  {
-    cfsetospeed( &attr, B2400 ); 
-    cfsetispeed( &attr, B2400 );
-  }
-  else if (4800 == m_speed)
-  {
-    cfsetospeed( &attr, B4800 ); 
-    cfsetispeed( &attr, B4800 );
-  }
-  else if (9600 == m_speed)
-  {
-    cfsetospeed( &attr, B9600 ); 
-    cfsetispeed( &attr, B9600 );
-  }
-  else if (19200 == m_speed)
-  {
-    cfsetospeed( &attr, B19200 ); 
-    cfsetispeed( &attr, B19200 );
-  }
-  
-  m_error = tr( "Error configuring serial port." );
-  m_error += " ";
-  m_error += m_device;
-  m_error += ". ";
-  
-  if (-1 == tcsetattr( m_handle, TCSANOW, &attr )) 
-  {  
-    ::close(m_handle);
-    m_handle = -1;
+    fcntl( m_handle, F_SETFL, 0 );
+    tcgetattr( m_handle, &m_oldSettings );
     
-    emit error( m_error );
+    attr.c_oflag = 0;
+    attr.c_lflag = 0;
+    //attr.c_iflag = IGNBRK;
+    attr.c_cflag = m_c_cflag;
     
-    return false;
-  }
+    // According to Thomas Hoffman flags should be like this
+    //
+    if (0 == m_parity)          // Ignore parity errors
+    {
+      attr.c_iflag = IGNBRK | IGNPAR ;
+    }
+    else
+    {
+      attr.c_iflag = IGNBRK | INPCK | ISTRIP;
+    }
+    /*
+    if (0 == m_parity)          // Ignore parity errors
+    {
+      attr.c_iflag = IGNBRK | IGNPAR | INPCK;
+    }
+    else
+    {
+      attr.c_iflag = IGNBRK | IGNPAR;
+    }
+    */
+    //attr.c_cflag = CS7 | CSTOPB | CREAD | CLOCAL;
+    attr.c_cc[VTIME]= 0;
+    attr.c_cc[VMIN]= 1;
+    
+    if (600 == m_speed)
+    {
+      cfsetospeed( &attr, B600 ); 
+      cfsetispeed( &attr, B600 );
+    }
+    else if (1200 == m_speed)
+    {
+      cfsetospeed( &attr, B1200 ); 
+      cfsetispeed( &attr, B1200 );
+    }
+    else if (1800 == m_speed)
+    {
+      cfsetospeed( &attr, B1800 ); 
+      cfsetispeed( &attr, B1800 );
+    }
+    else if (2400 == m_speed)
+    {
+      cfsetospeed( &attr, B2400 ); 
+      cfsetispeed( &attr, B2400 );
+    }
+    else if (4800 == m_speed)
+    {
+      cfsetospeed( &attr, B4800 ); 
+      cfsetispeed( &attr, B4800 );
+    }
+    else if (9600 == m_speed)
+    {
+      cfsetospeed( &attr, B9600 ); 
+      cfsetispeed( &attr, B9600 );
+    }
+    else if (19200 == m_speed)
+    {
+      cfsetospeed( &attr, B19200 ); 
+      cfsetispeed( &attr, B19200 );
+    }
+    
+    m_error = tr( "Error configuring serial port." );
+    m_error += " ";
+    m_error += m_device;
+    m_error += ". ";
+    
+    if (-1 == tcsetattr( m_handle, TCSANOW, &attr )) 
+    {  
+      ::close(m_handle);
+      m_handle = -1;
+      
+      emit error( m_error );
+      
+      return false;
+    }
+    
+    mdlns = 0;
+    if (-1 == ioctl( m_handle, TIOCMGET, &mdlns )) 
+    {
+      ::close(m_handle);
+      m_handle = -1;
+      
+      emit error( m_error );
+      
+      return false;
+    }
   
-  mdlns = 0;
-  if (-1 == ioctl( m_handle, TIOCMGET, &mdlns )) 
-  {
-    ::close(m_handle);
-    m_handle = -1;
+    mdlns &= ~TIOCM_RTS;
+    if (-1 == ioctl( m_handle, TIOCMSET, &mdlns )) 
+    {
+      ::close(m_handle);
+      m_handle = -1;
+      
+      emit error( m_error );
+      
+      return false;
+    }
     
-    emit error( m_error );
-    
-    return false;
+    tcsetattr( m_handle, TCSAFLUSH, &attr );
   }
-
-  mdlns &= ~TIOCM_RTS;
-  if (-1 == ioctl( m_handle, TIOCMSET, &mdlns )) 
-  {
-    ::close(m_handle);
-    m_handle = -1;
-    
-    emit error( m_error );
-    
-    return false;
-  }
-  
-  tcsetattr( m_handle, TCSAFLUSH, &attr );
   
   m_error = tr( "Connecting ..." );
   emit error( m_error );
@@ -283,9 +288,11 @@ DMM::close()
   
   if (-1 != m_handle)
   {
-    // restore
-    ::tcsetattr( m_handle, TCSANOW, &m_oldSettings );
-    
+    if (!m_externalSetup)
+    {
+      // restore
+      ::tcsetattr( m_handle, TCSANOW, &m_oldSettings );
+    }
     ::close( m_handle );
     m_handle = -1;
   }
@@ -721,10 +728,10 @@ void DMM::readRS22812Continuous( ReadEvent *re )
   m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
 }
 
-char *DMM::RS22812Digit( int byte )
+const char *DMM::RS22812Digit( int byte )
 {
-  int     digit[10] = { 0xd7, 0x50, 0xb5, 0xf1, 0x72, 0xe3, 0xe7, 0x51, 0xf7, 0xf3 };
-  char *c_digit[10] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+  int           digit[10] = { 0xd7, 0x50, 0xb5, 0xf1, 0x72, 0xe3, 0xe7, 0x51, 0xf7, 0xf3 };
+  const char *c_digit[10] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
      
   byte &= 0x0f7;
      
@@ -1497,6 +1504,7 @@ void DMM::readVC820Continuous( ReadEvent *re )
     unit    = "%";
     special = "PC";
   }
+  /* Can't find the reason for this any more
   else if (in[13] & 0x04)
   {
     unit    = "C";
@@ -1507,6 +1515,12 @@ void DMM::readVC820Continuous( ReadEvent *re )
     unit    = "F";
     special = "TE";
   }
+  */
+  else if (in[13] & 0x01)
+  {
+    unit    = "C";
+    special = "TE";
+  } 
   else 
   {
     std::cerr << "Unknown unit!" << std::endl;
@@ -1545,10 +1559,10 @@ void DMM::readVC820Continuous( ReadEvent *re )
   m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
 }
 
-char *DMM::vc820Digit( int byte )
+const char *DMM::vc820Digit( int byte )
 {
-  int     digit[10] = { 0x7d, 0x05, 0x5b, 0x1f, 0x27, 0x3e, 0x7e, 0x15, 0x7f, 0x3f };
-  char *c_digit[10] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+  int           digit[10] = { 0x7d, 0x05, 0x5b, 0x1f, 0x27, 0x3e, 0x7e, 0x15, 0x7f, 0x3f };
+  const char *c_digit[10] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
   
   byte &= 0x7f;
   

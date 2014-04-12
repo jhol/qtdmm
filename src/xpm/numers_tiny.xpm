@@ -1,5 +1,5 @@
 /* XPM */
-static char * numers_tiny_xpm[] = {
+static const char * numers_tiny_xpm[] = {
 "80 14 2 1",
 " 	c None",
 ".	c #000000",
