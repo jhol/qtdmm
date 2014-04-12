@@ -187,8 +187,8 @@ ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
   connect( ui_factoryDefaults, SIGNAL( clicked() ),
            this, SLOT( factoryDefaultsSLOT() ));
   
-  connect( ui_list, SIGNAL( selectionChanged( QListViewItem * ) ),
-           this, SLOT( pageSelectedSLOT( QListViewItem * )));
+  connect( ui_list, SIGNAL( selectionChanged( Q3ListViewItem * ) ),
+           this, SLOT( pageSelectedSLOT( Q3ListViewItem * )));
   
   // init stuff
   //
@@ -394,7 +394,7 @@ ConfigDlg::readPrinter( QPrinter * printer )
 }
 
 void
-ConfigDlg::pageSelectedSLOT( QListViewItem *item )
+ConfigDlg::pageSelectedSLOT( Q3ListViewItem *item )
 {
   int id = ((ConfigItem *)item)->id();
   PrefWidget *wid = (PrefWidget *)ui_stack->widget( id );

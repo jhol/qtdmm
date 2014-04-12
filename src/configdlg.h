@@ -160,7 +160,7 @@ protected:
   ExecutePrefs      *m_execute;
   
 protected slots:
-  void pageSelectedSLOT( QListViewItem *item );
+  void pageSelectedSLOT( Q3ListViewItem *item );
   void factoryDefaultsSLOT();
   
 };
