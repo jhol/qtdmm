@@ -23,7 +23,7 @@
 #include <Q3ToolBar>
 #include <qiconset.h>
 #include <qtoolbutton.h>
-#include <qpopupmenu.h>
+#include <Q3PopupMenu>
 #include <qmenubar.h>
 #include <Q3Action>
 #include <qmessagebox.h>
@@ -406,7 +406,7 @@ MainWin::createMenu()
 {
   QMenuBar *menu = menuBar();
   
-  QPopupMenu *file = new QPopupMenu( menu );
+  Q3PopupMenu *file = new Q3PopupMenu( menu );
   m_exportAction->addTo( file );
   m_importAction->addTo( file );
   file->insertSeparator();
@@ -418,7 +418,7 @@ MainWin::createMenu()
   
   menu->insertItem( tr("File"), file );
   
-  QPopupMenu *dmm = new QPopupMenu( menu );
+  Q3PopupMenu *dmm = new Q3PopupMenu( menu );
   m_connectAction->addTo( dmm );
   m_resetAction->addTo( dmm );
   dmm->insertSeparator();
@@ -426,7 +426,7 @@ MainWin::createMenu()
   
   menu->insertItem( tr("DMM"), dmm );
   
-  QPopupMenu *recorder = new QPopupMenu( menu );
+  Q3PopupMenu *recorder = new Q3PopupMenu( menu );
   m_startAction->addTo( recorder );
   m_stopAction->addTo( recorder );
   recorder->insertSeparator();
@@ -436,7 +436,7 @@ MainWin::createMenu()
   
   menu->insertItem( tr("Recorder"), recorder );
   
-  QPopupMenu *help = new QPopupMenu( menu );
+  Q3PopupMenu *help = new Q3PopupMenu( menu );
   m_versionAction->addTo( help );
   m_showTipsAction->addTo( help );
   m_helpAction->addTo( help );
