@@ -30,8 +30,9 @@
 #include <qprocess.h>
 #include <printdlg.h>
 #include <dmm.h>
+#include <displaywid.h>
 
-#include <icon.xpm>
+#include <xpm/icon.xpm>
 
 MainWid::MainWid( QWidget *parent, const char *name ) :
   UIMainWid( parent, name )
@@ -146,7 +147,7 @@ void
 MainWid::valueSLOT( double dval,
                     const QString & val, const QString & u, const QString & s )
 {
-  ui_value->setText( val );
+  ui_display->setValue( val );
   
   if (m_lastUnit != s)
   {
@@ -154,6 +155,8 @@ MainWid::valueSLOT( double dval,
     ui_graph->setUnit( u );
   }
   m_lastUnit = s;
+  
+  ui_display->setMode( s );
   
   QString tmpUnit = u;
   
@@ -165,20 +168,22 @@ MainWid::valueSLOT( double dval,
   if (dval > m_max)
   {
     m_max = dval;  
-    ui_maxValue->setText( val );
-    ui_maxUnit->setText( u );
+    ui_display->setMaxUnit( u );
+    ui_display->setMaxValue( val );
   }
   
   if (dval < m_min)
   {
     m_min = dval;  
-    ui_minValue->setText( val );
-    ui_minUnit->setText( u );
+    ui_display->setMinUnit( u );
+    ui_display->setMinValue( val );
   }
   
-  ui_unit->setText( tmpUnit );
+  ui_display->setUnit( tmpUnit );
   
   ui_graph->addValue( dval );
+  
+  ui_display->update();
 }
 
 void
@@ -187,10 +192,10 @@ MainWid::resetSLOT()
   m_min =  1.0E9;
   m_max = -1.0E9;
   
-  ui_minValue->setText( "" );
-  ui_maxValue->setText( "" );
-  ui_minUnit->setText( "" );
-  ui_maxUnit->setText( "" );
+  ui_display->setMinValue( "" );
+  ui_display->setMaxValue( "" );
+  ui_display->setMinUnit( "" );
+  ui_display->setMaxUnit( "" );
 }
 
 void
@@ -294,6 +299,7 @@ MainWid::readConfig()
   
   ui_graph->setSampleTime( m_configDlg->sampleStep() );
   ui_graph->setSampleLength( m_configDlg->sampleLength() );
+  ui_graph->setCrosshair( m_configDlg->crosshair() );
   
   ui_graph->setThresholds( m_configDlg->fallingThreshold(), 
                            m_configDlg->raisingThreshold() );
@@ -305,7 +311,9 @@ MainWid::readConfig()
   ui_graph->setColors( m_configDlg->bgColor(), 
                        m_configDlg->gridColor(),
                        m_configDlg->dataColor(),
-                       m_configDlg->cursorColor() );
+                       m_configDlg->cursorColor(),
+                       m_configDlg->startColor(),
+                       m_configDlg->externalColor() );
   
   ui_graph->setExternal( m_configDlg->startExternal(),
                          m_configDlg->externalFalling(),
@@ -315,16 +323,7 @@ MainWid::readConfig()
   cg.setColor( QColorGroup::Background, m_configDlg->displayBgColor() );
   cg.setColor( QColorGroup::Foreground, m_configDlg->displayTextColor() );
   
-  ui_displayFrame->setPalette( QPalette( cg, cg, cg ) );
-  ui_minValue->setPalette( QPalette( cg, cg, cg ) );
-  ui_minUnit->setPalette( QPalette( cg, cg, cg ) );
-  ui_maxUnit->setPalette( QPalette( cg, cg, cg ) );
-  ui_label1->setPalette( QPalette( cg, cg, cg ) );
-  ui_label2->setPalette( QPalette( cg, cg, cg ) );
-  ui_value->setPalette( QPalette( cg, cg, cg ) );
-  ui_unit->setPalette( QPalette( cg, cg, cg ) );
-  ui_label2->setPalette( QPalette( cg, cg, cg ) );
-  ui_maxValue->setPalette( QPalette( cg, cg, cg ) );
+  ui_display->setPalette( QPalette( cg, cg, cg ) );
       
   ui_graph->setLine( m_configDlg->lineWidth() );
   

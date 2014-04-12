@@ -32,7 +32,7 @@
 #include <qmessagebox.h>
 #include <qregexp.h>
 
-#include <icon.xpm>
+#include <xpm/icon.xpm>
 
 #include <iostream.h>
 
@@ -53,7 +53,8 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   m_lastValValid( false ),
   m_dirty( false ),
   m_alertUnsaved( true ),
-  m_externalStarted( false )
+  m_externalStarted( false ),
+  m_crosshair( true )
 {
   m_array = new QArray<double> (m_length);
   
@@ -319,31 +320,40 @@ DMMGraph::paintData( QPainter *p, int w, int h, double xfactor,
 }
 
 void
-DMMGraph::paintThresholds( QPainter *p, int w, int h, double xfactor, 
+DMMGraph::paintThresholds( QPainter *p, int w, int /* h */, double /* xfactor */, 
                            double yfactor, bool color, bool printer )
 {
-  if (!m_externalThreshold) return;
-  
-  if (printer && !color)
+  if (m_startExternal)
   {
-    p->setPen( Qt::gray );
-  }
-  else
-  {
-    p->setPen( Qt::magenta );
-  }
-  
-  if (m_externalFalling)
-  {
-    p->drawLine( 50, (int)qRound( 1+(m_scaleMax-m_fallingThreshold)/yfactor ),
-                 w, (int)qRound( 1+(m_scaleMax-m_fallingThreshold)/yfactor) );
-  }
-  else
-  {
-    p->drawLine( 50, (int)qRound( 1+(m_scaleMax-m_raisingThreshold)/yfactor ),
-                 w, (int)qRound( 1+(m_scaleMax-m_raisingThreshold)/yfactor) );
+    if (printer && !color)
+    {
+      p->setPen( Qt::gray );
+    }
+    else
+    {
+      p->setPen( m_externalColor );
+    }
+
+    p->drawLine( 50, (int)qRound( 1+(m_scaleMax-m_externalThreshold)/yfactor ),
+                 w, (int)qRound( 1+(m_scaleMax-m_externalThreshold)/yfactor) );
   }
   
+  if (m_mode == Raising || m_mode == Falling)
+  {
+    if (printer && !color)
+    {
+      p->setPen( Qt::gray );
+    }
+    else
+    {
+      p->setPen( m_startColor );
+    }
+
+    double val = m_mode == Raising ? m_raisingThreshold : m_fallingThreshold;
+    
+    p->drawLine( 50, (int)qRound( 1+(m_scaleMax-val)/yfactor ),
+                 w, (int)qRound( 1+(m_scaleMax-val)/yfactor) );
+  }
 }
 
 void
@@ -851,6 +861,19 @@ DMMGraph::drawCursor( const QPoint & pos )
   p.setRasterOp( Qt::XorROP );
   p.setPen( Qt::white );
   p.drawLine( pos.x(), 1, pos.x(), height()-20-17 );
+  
+  if (m_crosshair)
+  {
+    int x = (int)qRound( (pos.x()-51)*m_xfactor + scrollbar->value() );
+    if (x < 0) x = 0;
+  
+    if (x < m_pointer)
+    {
+      double y = (*m_array)[x];
+      p.drawLine( 50, (int)qRound( 1+(m_scaleMax-y)/m_yfactor ),
+                  width(), (int)qRound( 1+(m_scaleMax-y)/m_yfactor) );  
+    }
+  }
 }
 
 void
@@ -1083,13 +1106,16 @@ DMMGraph::setScale( bool autoScale, double min, double max )
 
 void
 DMMGraph::setColors( const QColor & bg, const QColor & grid,
-                     const QColor & data, const QColor & cursor )
+                     const QColor & data, const QColor & cursor,
+                     const QColor & start, const QColor & external )
 {
-  m_bgColor     = bg;
-  m_gridColor   = grid;
-  m_dataColor   = data;
-  m_cursorColor = cursor;
-  
+  m_bgColor       = bg;
+  m_gridColor     = grid;
+  m_dataColor     = data;
+  m_cursorColor   = cursor;
+  m_startColor    = start;
+  m_externalColor = external;
+   
   update();
 }
 

@@ -20,6 +20,8 @@
 
 #include <readerthread.h>
 #include <unistd.h>
+#include <iostream.h>
+#include <stdio.h>
 
 ReaderThread::ReaderThread( QObject *receiver ) :
   QThread(),
@@ -103,7 +105,7 @@ ReaderThread::readDMM()
       }
 
       retval = ::read( m_handle, &byte, 1);
-
+      
       if (-1 == retval)
       {
         m_status = ReaderThread::Error;
@@ -147,6 +149,43 @@ ReaderThread::readDMM()
       }                                                               
       while ('\r' != byte);                                           
     }        
+  }
+  else if (m_format == ReadEvent::M9803R)
+  {
+    do 
+    {    
+      if (-1 == m_handle) 
+      {
+        m_status = ReaderThread::NotConnected;
+        return;
+      }
+
+      retval = ::read( m_handle, &byte, 1);
+      
+      if (-1 == retval)
+      {
+        m_status = ReaderThread::Error;
+
+        return;
+      }
+      else if (0 == retval)
+      {
+        m_status = ReaderThread::Timeout;
+
+        return;
+      }
+      else
+      { 
+        m_buffer[(++i)%100] = byte;
+      }
+    } 
+    while (0x0d != byte);
+
+    for (int j=0; j<i; j++)
+    {
+      fprintf( stderr, "%02x ", m_buffer[j] );
+    }
+    fprintf( stderr, "\n");
   }
   else if (m_format == ReadEvent::PeakTech10)
   {

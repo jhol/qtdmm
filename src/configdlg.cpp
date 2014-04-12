@@ -35,10 +35,11 @@
 #include <qprinter.h>
 #include <qfiledialog.h>
 #include <qtabwidget.h>
+#include <qvalidator.h>
 
 #include <iostream.h>
 
-#include <icon.xpm>
+#include <xpm/icon.xpm>
 
 #define MINUTE_SECS   60
 #define HOUR_SECS     60*60
@@ -48,21 +49,31 @@
 // be replaced by a file
 struct DMMInfo dmm_info[] = { 
                               {"Metex M-3660D", 1, 0, 7, 2, 0},
-                              {"Metex M-3850D/3830D", 1, 0, 7, 2, 3},
+                              {"Metex M-3830D", 1, 0, 7, 2, 3},
+                              {"Metex M-3850D", 1, 0, 7, 2, 3},
+                              {"Metex ME-11", 0, 0, 7, 2, 0},
+                              {"Metex ME-32", 0, 0, 7, 2, 0},
                               {"Metex universal system 9160", 1, 0, 7, 2, 3},
-                              {"Metex/Voltcraft ME-11", 0, 0, 7, 2, 0},
-                              {"Metex/Voltcraft ME-32", 0, 0, 7, 2, 0},
                               {"PeakTech-4010", 5, 0, 7, 2, 0},
                               {"PeakTech-451", 0, 1, 7, 2, 0},
                               {"Radioshack 22-805 DMM", 0, 0, 7, 2, 0},
                               {"Voltcraft M-4660", 1, 0, 7, 2, 3},
+                              {"Voltcraft ME-11", 0, 0, 7, 2, 0},
                               {"Voltcraft ME-22T", 3, 0, 7, 2, 0},
+                              {"Voltcraft ME-32", 0, 0, 7, 2, 0},
                               {"",0,0,0,0,0} 
                             };
                       
 ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
   UIConfigDlg( parent, name, false )
 {
+  QDoubleValidator *validator = new QDoubleValidator( this );
+  
+  raisingThresholdEdit->setValidator( validator );
+  fallingThresholdEdit->setValidator( validator );
+  ui_execRaisingThreshold->setValidator( validator );
+  ui_execFallingThreshold->setValidator( validator );
+  
   QString path = QDir::homeDirPath();
   path += "/.qtdmmrc";
   
@@ -185,6 +196,7 @@ ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
   
   ui_description->setBackgroundColor( colorGroup().light() );
   ui_pixmap->setBackgroundColor( colorGroup().light() );
+  ui_spacer->setBackgroundColor( colorGroup().light() );
 }
 
 ConfigDlg::~ConfigDlg()
@@ -260,7 +272,10 @@ ConfigDlg::applySLOT()
   m_cfg->setRGB( "Graph", "grid", ui_gridColor->color().rgb() );
   m_cfg->setRGB( "Graph", "data", ui_dataColor->color().rgb() );
   m_cfg->setRGB( "Graph", "cursor", ui_cursorColor->color().rgb() );
+  m_cfg->setRGB( "Graph", "start-trigger", ui_startColor->color().rgb() );
+  m_cfg->setRGB( "Graph", "external-trigger", ui_extColor->color().rgb() );
   m_cfg->setInt( "Graph", "line-width", ui_lineWidth->value() );
+  m_cfg->setBool( "Graph", "crosshair-cursor", ui_crosshair->isChecked() );
 
   m_cfg->setRGB( "Graph", "display-background", ui_bgColorDisplay->color().rgb() );
   m_cfg->setRGB( "Graph", "display-text", ui_textColor->color().rgb() );
@@ -475,6 +490,8 @@ ConfigDlg::preferencesDefaultSLOT()
   ui_gridColor->setColor( QColor( m_cfg->getRGB( "Graph", "grid", Qt::gray.rgb() )));
   ui_dataColor->setColor( QColor( m_cfg->getRGB( "Graph", "data", Qt::blue.rgb() )));
   ui_cursorColor->setColor( QColor( m_cfg->getRGB( "Graph", "cursor", Qt::black.rgb() )));
+  ui_startColor->setColor( QColor( m_cfg->getRGB( "Graph", "start-trigger", Qt::magenta.rgb() )));
+  ui_extColor->setColor( QColor( m_cfg->getRGB( "Graph", "external-trigger", Qt::cyan.rgb() )));
   
   ui_bgColorDisplay->setColor( QColor( m_cfg->getRGB( "Graph", "display-background", QColor( 212,220,207 ).rgb() )));
   ui_textColor->setColor( QColor( m_cfg->getRGB( "Graph", "display-text", Qt::black.rgb() )));
@@ -483,6 +500,7 @@ ConfigDlg::preferencesDefaultSLOT()
 
   ui_alertUnsavedData->setChecked( m_cfg->getBool( "Alert", "unsaved-file", true ));
   ui_textLabel->setChecked( m_cfg->getBool( "Icons", "text-label", true ));
+  ui_crosshair->setChecked( m_cfg->getBool( "Graph", "crosshair-cursor", true ));
 }
 
 void
@@ -725,12 +743,7 @@ ConfigDlg::automaticScale() const
 ReadEvent::DataFormat
 ConfigDlg::format() const
 {
-  if (1 == protocolCombo->currentItem())
-  {
-    return ReadEvent::PeakTech10;
-  }
-  
-  return ReadEvent::Metex14;
+  return (ReadEvent::DataFormat)protocolCombo->currentItem();
 }
 
 int
@@ -806,6 +819,18 @@ ConfigDlg::dataColor() const
 }
 
 QColor
+ConfigDlg::startColor() const
+{
+  return ui_startColor->color();
+}
+
+QColor
+ConfigDlg::externalColor() const
+{
+  return ui_extColor->color();
+}
+
+QColor
 ConfigDlg::cursorColor() const
 {
   return ui_cursorColor->color();
@@ -839,6 +864,12 @@ bool
 ConfigDlg::startExternal() const
 {
   return ui_executeCommand->isChecked();
+}
+
+bool
+ConfigDlg::crosshair() const
+{
+  return ui_crosshair->isChecked();
 }
 
 bool
@@ -929,6 +960,12 @@ ConfigDlg::descriptionSLOT( QWidget * )
   case 4:
     ui_description->setText( tr("Here you can configure if an external"
                                 " command is to be started and when." ));
+    break;
+    
+  case 5:
+    ui_description->setText( tr("I would like to thank these people for "
+                                "providing bug reports, patches and suggestions"
+                                " that helped improve QtDMM." ));
     break;
   } 
 }

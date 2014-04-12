@@ -69,6 +69,8 @@ public:
   QColor cursorColor() const;
   QColor displayBgColor() const;
   QColor displayTextColor() const;
+  QColor startColor() const;
+  QColor externalColor() const;
   int lineWidth() const;
   void writePrinter( QPrinter * );
   void readPrinter( QPrinter * );
@@ -82,6 +84,7 @@ public:
   double externalThreshold() const;
   QString externalCommand() const;
   bool disconnectExternal() const;
+  bool crosshair() const;
   
 public slots:
   void connectSLOT( bool );

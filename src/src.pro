@@ -16,10 +16,10 @@ HEADERS   = configdlg.h \
             readerthread.h \
             readevent.h \
             colorbutton.h \
+            displaywid.h \
             qprocess.h \
             qprocess_unix.h \
             qcleanuphandler.h
-
 INTERFACES = uiconfigdlg.ui \
              uimainwid.ui \
              uiprintdlg.ui
@@ -35,11 +35,12 @@ SOURCES   = main.cpp \
             printdlg.cpp \
             readerthread.cpp \
             colorbutton.cpp \
+            displaywid.cpp \
             qprocess.cpp \
             qprocess_unix.cpp
 
 LIBS      = 
 TARGET    = qtdmm
-VERSION   = 0.5
+VERSION   = 0.6.1
 DESTDIR   = ../bin
 

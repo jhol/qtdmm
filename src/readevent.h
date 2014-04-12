@@ -26,8 +26,9 @@ class ReadEvent : public QCustomEvent
 public:
   enum DataFormat
   {
-    Metex14,
-    PeakTech10
+    Metex14 = 0,
+    PeakTech10,
+    M9803R
   };
     
   ReadEvent( QString str, DataFormat df ) : 

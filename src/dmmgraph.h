@@ -54,11 +54,13 @@ public:
   void setThresholds( double falling, double raising );
   void setScale( bool autoScale, double min, double max );
   void setColors( const QColor & bg, const QColor & grid,
-                  const QColor & data, const QColor & cursor );
+                  const QColor & data, const QColor & cursor,
+                  const QColor & start, const QColor & external );
   void setLine( int w );
   void setExternal( bool on, bool falling=false, double threshold=0 );
   bool dirty() const { return m_dirty; }
   void setAlertUnsaved( bool on ) { m_alertUnsaved = on; }
+  void setCrosshair( bool on ) { m_crosshair = on; }
   
 signals:
   void info( const QString & );
@@ -113,6 +115,8 @@ protected:
   QColor          m_gridColor;
   QColor          m_dataColor;
   QColor          m_cursorColor;
+  QColor          m_startColor;
+  QColor          m_externalColor;
   int             m_lineWidth;
   bool            m_dirty;
   bool            m_alertUnsaved;
@@ -120,6 +124,7 @@ protected:
   bool            m_externalFalling;
   double          m_externalThreshold;
   bool            m_externalStarted;
+  bool            m_crosshair;
   
   void paintEvent( QPaintEvent * );
   void resizeEvent( QResizeEvent * );

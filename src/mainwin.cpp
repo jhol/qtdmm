@@ -30,20 +30,20 @@
 #include <qlabel.h>
 #include <qstatusbar.h>
 
-#include <connect_on.xpm>
-#include <reset.xpm>
-#include <start.xpm>
-#include <stop.xpm>
-#include <clear.xpm>
-#include <print.xpm>
-#include <export.xpm>
-#include <import.xpm>
-#include <config.xpm>
-#include <quit.xpm>
-#include <help.xpm>
-#include <icon.xpm>
+#include <xpm/connect_on.xpm>
+#include <xpm/reset.xpm>
+#include <xpm/start.xpm>
+#include <xpm/stop.xpm>
+#include <xpm/clear.xpm>
+#include <xpm/print.xpm>
+#include <xpm/export.xpm>
+#include <xpm/import.xpm>
+#include <xpm/config.xpm>
+#include <xpm/quit.xpm>
+#include <xpm/help.xpm>
+#include <xpm/icon.xpm>
 
-#define VERSION_STRING "0.5.1"
+#define VERSION_STRING "0.6.1"
 
 MainWin::MainWin( QWidget *parent, const char *name ) :
   QMainWindow( parent, name ),
@@ -114,60 +114,90 @@ MainWin::createActions()
                                   tr("Connect"), 
                                   CTRL+Key_C, 
                                   this, 0, true );
+  m_connectAction->setWhatsThis( tr("<b>Connect to the Multimeter</b><p>This will establish"
+      " the serial connection to the dmm. If not connected the serial port is free"
+      " and can be used by other software." ));
   m_resetAction   = new QAction ( tr("Reset"), 
                                   QIconSet(QPixmap((const char **)reset_xpm)), 
                                   tr("Reset"), 
                                   CTRL+Key_R, 
                                   this );
+  m_resetAction->setWhatsThis( tr("<b>Reset min/max values</b><p>The min/max values in the"
+      " display will be reset. You can activate this option at any time." ));
   m_startAction   = new QAction ( tr("Start"), 
                                   QIconSet(QPixmap((const char **)start_xpm)), 
                                   tr("Start"), 
                                   CTRL+Key_S, 
                                   this );
+  m_startAction->setWhatsThis( tr("<b>Start the recorder</b><p>If you are in manual mode"
+      " this will start the recorder. Press F2 to set the recorder options" ));
   m_stopAction    = new QAction ( tr("Stop"), 
                                   QIconSet(QPixmap((const char **)stop_xpm)), 
                                   tr("Stop"), 
                                   CTRL+Key_X, 
                                   this );
+  m_stopAction->setWhatsThis( tr("<b>Stop the recorder</b><p>The recorder will be stopped."
+      " This is independent from the start mode of the recorder" ));
   m_clearAction   = new QAction ( tr("Clear"), 
                                   QIconSet(QPixmap((const char **)clear_xpm)), 
                                   tr("Clear"), 
                                   Key_Delete, 
                                   this );
+  m_clearAction->setWhatsThis( tr("<b>Clear the recorder graph</b><p>If the recorder is already"
+      " started it will clear the graph and continue recording." ));
   m_printAction   = new QAction ( tr("Print"), 
                                   QIconSet(QPixmap((const char **)print_xpm)), 
                                   tr("Print ..."), 
                                   CTRL+Key_P, 
                                   this );
+  m_printAction->setWhatsThis( tr("<b>Print recorder graph</b><p>A dialog will open where you can"
+      " define a title and a comment for your printout. The printer itself can also be configured here."
+      " To be able to print you need at least one working postscript printer configured in your"
+      " system. Printing into a file is also supported." ));
   m_exportAction   = new QAction ( tr("Export"), 
                                   QIconSet(QPixmap((const char **)export_xpm)), 
                                   tr("Export ..."), 
                                   CTRL+Key_E, 
                                   this );
+  m_exportAction->setWhatsThis( tr("<b>Export recorder graph</b><p>Here you can export the recorded"
+      " data as tab separated list. Each line contains the following values (separated by a tab "
+      "character): date (dd.mm.yyyy) time (hh:mm:ss) value (float) unit." ));
   m_importAction   = new QAction ( tr("Import"), 
                                   QIconSet(QPixmap((const char **)import_xpm)), 
                                   tr("Import ..."), 
                                   CTRL+Key_I, 
                                   this );
+  m_importAction->setWhatsThis( tr("<b>Import data into recorder</b><p>Here you can import previously"
+      " exported data files. QtDMM tries to do an educated guess if the file format is correct and"
+      " rejects import of files which to not match." ));
   m_configAction   = new QAction ( tr("Configure"), 
                                   QIconSet(QPixmap((const char **)config_xpm)), 
                                   tr("Configure ..."), 
                                   Key_F2, 
                                   this );
+  m_configAction->setWhatsThis( tr("<b>Configure QtDMM</b><p>This will open QtDMM's configuration"
+      " dialog. Here you can configure it's visual appearance and all options regarding the "
+      "multimeter hardware and the recorder." ));
   m_quitAction     = new QAction ( tr("Quit"), 
                                   QIconSet(QPixmap((const char **)quit_xpm)), 
                                   tr("Quit"), 
                                   CTRL+Key_Q, 
                                   this );
+  m_quitAction->setWhatsThis( tr("<b>Quit QtDMM</b><p>If the recorder contains unsaved data QtDMM"
+      " will give you the option to savve your data first." ));
   m_helpAction     = new QAction ( tr("Help"), 
                                   QIconSet(QPixmap((const char **)help_xpm)), 
                                   tr("Direct Help"), 
                                   SHIFT+Key_F1, 
                                   this );
+  m_helpAction->setWhatsThis( tr("<b>Direct Help</b><p>Enter the direct help mode. You have done this"
+      " already when reading this text :)" ));
   m_versionAction  = new QAction ( this );
   m_versionAction->setText( tr("On version") );
   m_versionAction->setMenuText( tr("On version...") );
-    
+  m_versionAction->setWhatsThis( tr("<b>Copyright information</b><p>Show copyright information and some"
+      " blurb about QtDMM." ));
+  
   connect( m_connectAction, SIGNAL( toggled(bool) ),
            m_wid, SLOT( connectSLOT(bool) ));
   connect( m_connectAction, SIGNAL( toggled(bool) ),
@@ -233,13 +263,16 @@ MainWin::versionSLOT()
   msg += ver;
   msg += "</h1><hr>"
          "<div align=right><i>A simple recorder for DMM's</i></div><p><br>"
-         "A simple display software for <b>Metex</b> and compatible hand held"
+         "<div align=justify>A simple display software for <b>Metex</b> and compatible hand held"
          " digital multimeter including min/max memory and a configurable "
          "recorder with import/export and printing function. Sampling may"
-         " be started manually, at a given time or triggered by a measured threshold<p>"
-         "<b>QtDMM</b> uses the platform independent toolkit "
-         "<b>Qt</b> from Trolltech AS Norway <font color=blue><u>www.trolltech.com</u></font>"
-         " and is licensed under <b>GPL</b>.<p><br>"
+         " be started manually, at a given time or triggered by a measured threshold. "
+         "Additionally an external program may be started when given thresholds are reached.</div><p><br>"
+         "<div align=justify><b>QtDMM</b> uses the platform independent toolkit "
+         "<b>Qt</b> version ";
+  msg += qVersion();
+  msg += " from Trolltech AS Norway <font color=blue><u>www.trolltech.com</u></font>"
+         " and is licensed under <b>GPL</b>.</div><br>"
          "&copy; 2001 Matthias Toussaint<br><font color=blue><u>qtdmm@mtoussaint.de</u></font>"
          "<p><br>The icons (except the DMM icon) are taken from the KDE project.<p>";
           

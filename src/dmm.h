@@ -58,7 +58,6 @@ protected:
   int                       m_speed;
   QString                   m_device;
   QString                   m_error;
-  char                      m_buffer[15];
   ReaderThread             *m_readerThread;
   tcflag_t                  m_c_cflag;
   ReaderThread::ReadStatus  m_oldStatus;

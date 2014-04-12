@@ -12,8 +12,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>437</width>
-            <height>493</height>
+            <width>460</width>
+            <height>482</height>
         </rect>
     </property>
     <property stdset="1">
@@ -34,7 +34,7 @@
     <property>
         <name>layoutSpacing</name>
     </property>
-    <grid>
+    <vbox>
         <property stdset="1">
             <name>margin</name>
             <number>0</number>
@@ -43,25 +43,112 @@
             <name>spacing</name>
             <number>0</number>
         </property>
-        <widget row="0"  column="0" >
-            <class>Line</class>
+        <widget>
+            <class>QLayoutWidget</class>
             <property stdset="1">
                 <name>name</name>
-                <cstring>Line1</cstring>
+                <cstring>Layout33</cstring>
             </property>
-            <property stdset="1">
-                <name>minimumSize</name>
-                <size>
-                    <width>0</width>
-                    <height>4</height>
-                </size>
+            <property>
+                <name>layoutSpacing</name>
             </property>
-            <property stdset="1">
-                <name>orientation</name>
-                <enum>Horizontal</enum>
-            </property>
+            <hbox>
+                <property stdset="1">
+                    <name>margin</name>
+                    <number>0</number>
+                </property>
+                <property stdset="1">
+                    <name>spacing</name>
+                    <number>0</number>
+                </property>
+                <widget>
+                    <class>QLabel</class>
+                    <property stdset="1">
+                        <name>name</name>
+                        <cstring>ui_pixmap</cstring>
+                    </property>
+                    <property stdset="1">
+                        <name>minimumSize</name>
+                        <size>
+                            <width>50</width>
+                            <height>50</height>
+                        </size>
+                    </property>
+                    <property stdset="1">
+                        <name>maximumSize</name>
+                        <size>
+                            <width>50</width>
+                            <height>32767</height>
+                        </size>
+                    </property>
+                    <property stdset="1">
+                        <name>text</name>
+                        <string></string>
+                    </property>
+                    <property stdset="1">
+                        <name>pixmap</name>
+                        <pixmap>image1</pixmap>
+                    </property>
+                    <property stdset="1">
+                        <name>alignment</name>
+                        <set>AlignCenter</set>
+                    </property>
+                    <property>
+                        <name>hAlign</name>
+                    </property>
+                </widget>
+                <widget>
+                    <class>QLabel</class>
+                    <property stdset="1">
+                        <name>name</name>
+                        <cstring>ui_description</cstring>
+                    </property>
+                    <property stdset="1">
+                        <name>sizePolicy</name>
+                        <sizepolicy>
+                            <hsizetype>7</hsizetype>
+                            <vsizetype>5</vsizetype>
+                        </sizepolicy>
+                    </property>
+                    <property stdset="1">
+                        <name>minimumSize</name>
+                        <size>
+                            <width>0</width>
+                            <height>50</height>
+                        </size>
+                    </property>
+                    <property stdset="1">
+                        <name>alignment</name>
+                        <set>WordBreak|AlignVCenter|AlignLeft</set>
+                    </property>
+                    <property>
+                        <name>wordwrap</name>
+                    </property>
+                </widget>
+                <widget>
+                    <class>QLabel</class>
+                    <property stdset="1">
+                        <name>name</name>
+                        <cstring>ui_spacer</cstring>
+                    </property>
+                    <property stdset="1">
+                        <name>minimumSize</name>
+                        <size>
+                            <width>10</width>
+                            <height>0</height>
+                        </size>
+                    </property>
+                    <property stdset="1">
+                        <name>maximumSize</name>
+                        <size>
+                            <width>10</width>
+                            <height>32767</height>
+                        </size>
+                    </property>
+                </widget>
+            </hbox>
         </widget>
-        <widget row="1"  column="0"  rowspan="1"  colspan="2" >
+        <widget>
             <class>QFrame</class>
             <property stdset="1">
                 <name>name</name>
@@ -129,7 +216,7 @@
                                 </property>
                                 <property stdset="1">
                                     <name>title</name>
-                                    <string>Sample</string>
+                                    <string>Sampling</string>
                                 </property>
                                 <property stdset="1">
                                     <name>exclusive</name>
@@ -194,6 +281,10 @@
                                         <property stdset="1">
                                             <name>name</name>
                                             <cstring>sampleUnit</cstring>
+                                        </property>
+                                        <property>
+                                            <name>whatsThis</name>
+                                            <string>Unit for sampling period.</string>
                                         </property>
                                     </widget>
                                     <spacer row="0"  column="3" >
@@ -262,6 +353,10 @@
                                             <name>name</name>
                                             <cstring>timeUnit</cstring>
                                         </property>
+                                        <property>
+                                            <name>whatsThis</name>
+                                            <string>Unit for maximum sampling time.</string>
+                                        </property>
                                     </widget>
                                     <widget row="0"  column="1" >
                                         <class>QSpinBox</class>
@@ -281,6 +376,10 @@
                                             <name>value</name>
                                             <number>1</number>
                                         </property>
+                                        <property>
+                                            <name>whatsThis</name>
+                                            <string>Specify the sampling period. See unit to the right.</string>
+                                        </property>
                                     </widget>
                                     <widget row="1"  column="1" >
                                         <class>QSpinBox</class>
@@ -299,6 +398,10 @@
                                         <property stdset="1">
                                             <name>value</name>
                                             <number>500</number>
+                                        </property>
+                                        <property>
+                                            <name>whatsThis</name>
+                                            <string>Maximum sampling time. When this time expires, the recorder is stopped automatically.</string>
                                         </property>
                                     </widget>
                                 </grid>
@@ -1539,6 +1642,10 @@ You have two choices:
                                             <name>name</name>
                                             <cstring>sizeUnit</cstring>
                                         </property>
+                                        <property>
+                                            <name>whatsThis</name>
+                                            <string>Unit for visible window width.</string>
+                                        </property>
                                     </widget>
                                     <widget row="1"  column="2" >
                                         <class>QComboBox</class>
@@ -1589,6 +1696,10 @@ You have two choices:
                                             <name>value</name>
                                             <number>600</number>
                                         </property>
+                                        <property>
+                                            <name>whatsThis</name>
+                                            <string>Size (in time) of the visible part of the recorder graph. See unit to the right.</string>
+                                        </property>
                                     </widget>
                                     <widget row="1"  column="1" >
                                         <class>QSpinBox</class>
@@ -1607,6 +1718,10 @@ You have two choices:
                                         <property stdset="1">
                                             <name>value</name>
                                             <number>3600</number>
+                                        </property>
+                                        <property>
+                                            <name>whatsThis</name>
+                                            <string>Maximum length (in time) of the recorder graph. If this time is reached the first recorded values will be discarded. It will not stop recording.</string>
                                         </property>
                                     </widget>
                                 </grid>
@@ -1772,7 +1887,7 @@ You have two choices:
                                 </property>
                                 <property stdset="1">
                                     <name>sizeLimit</name>
-                                    <number>25</number>
+                                    <number>15</number>
                                 </property>
                                 <property stdset="1">
                                     <name>autoCompletion</name>
@@ -2193,10 +2308,13 @@ You have two choices:
                                 </property>
                                 <property stdset="1">
                                     <name>alignment</name>
-                                    <set>AlignBottom|AlignLeft</set>
+                                    <set>WordBreak|AlignBottom|AlignLeft</set>
                                 </property>
                                 <property>
                                     <name>vAlign</name>
+                                </property>
+                                <property>
+                                    <name>wordwrap</name>
                                 </property>
                             </widget>
                             <widget>
@@ -2319,7 +2437,7 @@ You have two choices:
                                 <property>
                                     <name>layoutSpacing</name>
                                 </property>
-                                <vbox>
+                                <grid>
                                     <property stdset="1">
                                         <name>margin</name>
                                         <number>10</number>
@@ -2328,385 +2446,7 @@ You have two choices:
                                         <name>spacing</name>
                                         <number>5</number>
                                     </property>
-                                    <widget>
-                                        <class>QLayoutWidget</class>
-                                        <property stdset="1">
-                                            <name>name</name>
-                                            <cstring>Layout24</cstring>
-                                        </property>
-                                        <property>
-                                            <name>layoutSpacing</name>
-                                        </property>
-                                        <hbox>
-                                            <property stdset="1">
-                                                <name>margin</name>
-                                                <number>0</number>
-                                            </property>
-                                            <property stdset="1">
-                                                <name>spacing</name>
-                                                <number>5</number>
-                                            </property>
-                                            <widget>
-                                                <class>QLayoutWidget</class>
-                                                <property stdset="1">
-                                                    <name>name</name>
-                                                    <cstring>Layout19</cstring>
-                                                </property>
-                                                <property>
-                                                    <name>layoutSpacing</name>
-                                                </property>
-                                                <hbox>
-                                                    <property stdset="1">
-                                                        <name>margin</name>
-                                                        <number>0</number>
-                                                    </property>
-                                                    <property stdset="1">
-                                                        <name>spacing</name>
-                                                        <number>5</number>
-                                                    </property>
-                                                    <widget>
-                                                        <class>ColorButton</class>
-                                                        <property stdset="1">
-                                                            <name>name</name>
-                                                            <cstring>ui_bgColor</cstring>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>minimumSize</name>
-                                                            <size>
-                                                                <width>50</width>
-                                                                <height>0</height>
-                                                            </size>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>maximumSize</name>
-                                                            <size>
-                                                                <width>50</width>
-                                                                <height>32767</height>
-                                                            </size>
-                                                        </property>
-                                                        <property>
-                                                            <name>whatsThis</name>
-                                                            <string>Click this button to change the background color of the recorder graph.</string>
-                                                        </property>
-                                                    </widget>
-                                                    <widget>
-                                                        <class>QLabel</class>
-                                                        <property stdset="1">
-                                                            <name>name</name>
-                                                            <cstring>TextLabel2_2</cstring>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>sizePolicy</name>
-                                                            <sizepolicy>
-                                                                <hsizetype>0</hsizetype>
-                                                                <vsizetype>1</vsizetype>
-                                                            </sizepolicy>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>minimumSize</name>
-                                                            <size>
-                                                                <width>100</width>
-                                                                <height>0</height>
-                                                            </size>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>text</name>
-                                                            <string>&amp;Background</string>
-                                                        </property>
-                                                        <property>
-                                                            <name>buddy</name>
-                                                            <cstring>ui_bgColor</cstring>
-                                                        </property>
-                                                    </widget>
-                                                </hbox>
-                                            </widget>
-                                            <spacer>
-                                                <property>
-                                                    <name>name</name>
-                                                    <cstring>Spacer1_6</cstring>
-                                                </property>
-                                                <property stdset="1">
-                                                    <name>orientation</name>
-                                                    <enum>Horizontal</enum>
-                                                </property>
-                                                <property stdset="1">
-                                                    <name>sizeType</name>
-                                                    <enum>Expanding</enum>
-                                                </property>
-                                                <property>
-                                                    <name>sizeHint</name>
-                                                    <size>
-                                                        <width>20</width>
-                                                        <height>20</height>
-                                                    </size>
-                                                </property>
-                                            </spacer>
-                                            <widget>
-                                                <class>QLayoutWidget</class>
-                                                <property stdset="1">
-                                                    <name>name</name>
-                                                    <cstring>Layout20</cstring>
-                                                </property>
-                                                <property>
-                                                    <name>layoutSpacing</name>
-                                                </property>
-                                                <hbox>
-                                                    <property stdset="1">
-                                                        <name>margin</name>
-                                                        <number>0</number>
-                                                    </property>
-                                                    <property stdset="1">
-                                                        <name>spacing</name>
-                                                        <number>5</number>
-                                                    </property>
-                                                    <widget>
-                                                        <class>ColorButton</class>
-                                                        <property stdset="1">
-                                                            <name>name</name>
-                                                            <cstring>ui_gridColor</cstring>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>minimumSize</name>
-                                                            <size>
-                                                                <width>50</width>
-                                                                <height>0</height>
-                                                            </size>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>maximumSize</name>
-                                                            <size>
-                                                                <width>50</width>
-                                                                <height>32767</height>
-                                                            </size>
-                                                        </property>
-                                                        <property>
-                                                            <name>whatsThis</name>
-                                                            <string>Click this button to change the color of the grid and grid text in the recorder.</string>
-                                                        </property>
-                                                    </widget>
-                                                    <widget>
-                                                        <class>QLabel</class>
-                                                        <property stdset="1">
-                                                            <name>name</name>
-                                                            <cstring>TextLabel3_2</cstring>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>sizePolicy</name>
-                                                            <sizepolicy>
-                                                                <hsizetype>0</hsizetype>
-                                                                <vsizetype>1</vsizetype>
-                                                            </sizepolicy>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>minimumSize</name>
-                                                            <size>
-                                                                <width>100</width>
-                                                                <height>0</height>
-                                                            </size>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>text</name>
-                                                            <string>&amp;Grid</string>
-                                                        </property>
-                                                        <property>
-                                                            <name>buddy</name>
-                                                            <cstring>ui_gridColor</cstring>
-                                                        </property>
-                                                    </widget>
-                                                </hbox>
-                                            </widget>
-                                        </hbox>
-                                    </widget>
-                                    <widget>
-                                        <class>QLayoutWidget</class>
-                                        <property stdset="1">
-                                            <name>name</name>
-                                            <cstring>Layout23</cstring>
-                                        </property>
-                                        <property>
-                                            <name>layoutSpacing</name>
-                                        </property>
-                                        <hbox>
-                                            <property stdset="1">
-                                                <name>margin</name>
-                                                <number>0</number>
-                                            </property>
-                                            <property stdset="1">
-                                                <name>spacing</name>
-                                                <number>5</number>
-                                            </property>
-                                            <widget>
-                                                <class>QLayoutWidget</class>
-                                                <property stdset="1">
-                                                    <name>name</name>
-                                                    <cstring>Layout17</cstring>
-                                                </property>
-                                                <property>
-                                                    <name>layoutSpacing</name>
-                                                </property>
-                                                <hbox>
-                                                    <property stdset="1">
-                                                        <name>margin</name>
-                                                        <number>0</number>
-                                                    </property>
-                                                    <property stdset="1">
-                                                        <name>spacing</name>
-                                                        <number>5</number>
-                                                    </property>
-                                                    <widget>
-                                                        <class>ColorButton</class>
-                                                        <property stdset="1">
-                                                            <name>name</name>
-                                                            <cstring>ui_dataColor</cstring>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>minimumSize</name>
-                                                            <size>
-                                                                <width>50</width>
-                                                                <height>0</height>
-                                                            </size>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>maximumSize</name>
-                                                            <size>
-                                                                <width>50</width>
-                                                                <height>32767</height>
-                                                            </size>
-                                                        </property>
-                                                        <property>
-                                                            <name>whatsThis</name>
-                                                            <string>Click this button so change the color of the data graph in the recorder.</string>
-                                                        </property>
-                                                    </widget>
-                                                    <widget>
-                                                        <class>QLabel</class>
-                                                        <property stdset="1">
-                                                            <name>name</name>
-                                                            <cstring>label</cstring>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>sizePolicy</name>
-                                                            <sizepolicy>
-                                                                <hsizetype>0</hsizetype>
-                                                                <vsizetype>1</vsizetype>
-                                                            </sizepolicy>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>minimumSize</name>
-                                                            <size>
-                                                                <width>100</width>
-                                                                <height>0</height>
-                                                            </size>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>text</name>
-                                                            <string>&amp;Data</string>
-                                                        </property>
-                                                        <property>
-                                                            <name>buddy</name>
-                                                            <cstring>ui_dataColor</cstring>
-                                                        </property>
-                                                    </widget>
-                                                </hbox>
-                                            </widget>
-                                            <spacer>
-                                                <property>
-                                                    <name>name</name>
-                                                    <cstring>Spacer2</cstring>
-                                                </property>
-                                                <property stdset="1">
-                                                    <name>orientation</name>
-                                                    <enum>Horizontal</enum>
-                                                </property>
-                                                <property stdset="1">
-                                                    <name>sizeType</name>
-                                                    <enum>Expanding</enum>
-                                                </property>
-                                                <property>
-                                                    <name>sizeHint</name>
-                                                    <size>
-                                                        <width>20</width>
-                                                        <height>20</height>
-                                                    </size>
-                                                </property>
-                                            </spacer>
-                                            <widget>
-                                                <class>QLayoutWidget</class>
-                                                <property stdset="1">
-                                                    <name>name</name>
-                                                    <cstring>Layout18</cstring>
-                                                </property>
-                                                <property>
-                                                    <name>layoutSpacing</name>
-                                                </property>
-                                                <hbox>
-                                                    <property stdset="1">
-                                                        <name>margin</name>
-                                                        <number>0</number>
-                                                    </property>
-                                                    <property stdset="1">
-                                                        <name>spacing</name>
-                                                        <number>5</number>
-                                                    </property>
-                                                    <widget>
-                                                        <class>ColorButton</class>
-                                                        <property stdset="1">
-                                                            <name>name</name>
-                                                            <cstring>ui_cursorColor</cstring>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>minimumSize</name>
-                                                            <size>
-                                                                <width>50</width>
-                                                                <height>0</height>
-                                                            </size>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>maximumSize</name>
-                                                            <size>
-                                                                <width>50</width>
-                                                                <height>32767</height>
-                                                            </size>
-                                                        </property>
-                                                        <property>
-                                                            <name>whatsThis</name>
-                                                            <string>Click this button to change the color of the cursor at the current sampling position in the recorder.</string>
-                                                        </property>
-                                                    </widget>
-                                                    <widget>
-                                                        <class>QLabel</class>
-                                                        <property stdset="1">
-                                                            <name>name</name>
-                                                            <cstring>label2</cstring>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>sizePolicy</name>
-                                                            <sizepolicy>
-                                                                <hsizetype>0</hsizetype>
-                                                                <vsizetype>1</vsizetype>
-                                                            </sizepolicy>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>minimumSize</name>
-                                                            <size>
-                                                                <width>100</width>
-                                                                <height>0</height>
-                                                            </size>
-                                                        </property>
-                                                        <property stdset="1">
-                                                            <name>text</name>
-                                                            <string>&amp;Cursor</string>
-                                                        </property>
-                                                        <property>
-                                                            <name>buddy</name>
-                                                            <cstring>ui_cursorColor</cstring>
-                                                        </property>
-                                                    </widget>
-                                                </hbox>
-                                            </widget>
-                                        </hbox>
-                                    </widget>
-                                    <widget>
+                                    <widget row="2"  column="0"  rowspan="1"  colspan="3" >
                                         <class>QLabel</class>
                                         <property stdset="1">
                                             <name>name</name>
@@ -2727,7 +2467,7 @@ You have two choices:
                                             </size>
                                         </property>
                                     </widget>
-                                    <widget>
+                                    <widget row="3"  column="0"  rowspan="1"  colspan="3" >
                                         <class>QLayoutWidget</class>
                                         <property stdset="1">
                                             <name>name</name>
@@ -2820,7 +2560,409 @@ You have two choices:
                                             </spacer>
                                         </hbox>
                                     </widget>
-                                </vbox>
+                                    <widget row="0"  column="0" >
+                                        <class>QLayoutWidget</class>
+                                        <property stdset="1">
+                                            <name>name</name>
+                                            <cstring>Layout19</cstring>
+                                        </property>
+                                        <property>
+                                            <name>layoutSpacing</name>
+                                        </property>
+                                        <hbox>
+                                            <property stdset="1">
+                                                <name>margin</name>
+                                                <number>0</number>
+                                            </property>
+                                            <property stdset="1">
+                                                <name>spacing</name>
+                                                <number>5</number>
+                                            </property>
+                                            <widget>
+                                                <class>ColorButton</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>ui_bgColor</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>minimumSize</name>
+                                                    <size>
+                                                        <width>50</width>
+                                                        <height>0</height>
+                                                    </size>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>maximumSize</name>
+                                                    <size>
+                                                        <width>50</width>
+                                                        <height>32767</height>
+                                                    </size>
+                                                </property>
+                                                <property>
+                                                    <name>whatsThis</name>
+                                                    <string>Click this button to change the background color of the recorder graph.</string>
+                                                </property>
+                                            </widget>
+                                            <widget>
+                                                <class>QLabel</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>TextLabel2_2</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>sizePolicy</name>
+                                                    <sizepolicy>
+                                                        <hsizetype>3</hsizetype>
+                                                        <vsizetype>1</vsizetype>
+                                                    </sizepolicy>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>text</name>
+                                                    <string>&amp;Background</string>
+                                                </property>
+                                                <property>
+                                                    <name>buddy</name>
+                                                    <cstring>ui_bgColor</cstring>
+                                                </property>
+                                            </widget>
+                                        </hbox>
+                                    </widget>
+                                    <widget row="1"  column="0" >
+                                        <class>QLayoutWidget</class>
+                                        <property stdset="1">
+                                            <name>name</name>
+                                            <cstring>Layout17</cstring>
+                                        </property>
+                                        <property>
+                                            <name>layoutSpacing</name>
+                                        </property>
+                                        <hbox>
+                                            <property stdset="1">
+                                                <name>margin</name>
+                                                <number>0</number>
+                                            </property>
+                                            <property stdset="1">
+                                                <name>spacing</name>
+                                                <number>5</number>
+                                            </property>
+                                            <widget>
+                                                <class>ColorButton</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>ui_dataColor</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>minimumSize</name>
+                                                    <size>
+                                                        <width>50</width>
+                                                        <height>0</height>
+                                                    </size>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>maximumSize</name>
+                                                    <size>
+                                                        <width>50</width>
+                                                        <height>32767</height>
+                                                    </size>
+                                                </property>
+                                                <property>
+                                                    <name>whatsThis</name>
+                                                    <string>Click this button so change the color of the data graph in the recorder.</string>
+                                                </property>
+                                            </widget>
+                                            <widget>
+                                                <class>QLabel</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>label</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>sizePolicy</name>
+                                                    <sizepolicy>
+                                                        <hsizetype>3</hsizetype>
+                                                        <vsizetype>1</vsizetype>
+                                                    </sizepolicy>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>text</name>
+                                                    <string>&amp;Data</string>
+                                                </property>
+                                                <property>
+                                                    <name>buddy</name>
+                                                    <cstring>ui_dataColor</cstring>
+                                                </property>
+                                            </widget>
+                                        </hbox>
+                                    </widget>
+                                    <widget row="1"  column="1" >
+                                        <class>QLayoutWidget</class>
+                                        <property stdset="1">
+                                            <name>name</name>
+                                            <cstring>Layout18</cstring>
+                                        </property>
+                                        <property>
+                                            <name>layoutSpacing</name>
+                                        </property>
+                                        <hbox>
+                                            <property stdset="1">
+                                                <name>margin</name>
+                                                <number>0</number>
+                                            </property>
+                                            <property stdset="1">
+                                                <name>spacing</name>
+                                                <number>5</number>
+                                            </property>
+                                            <widget>
+                                                <class>ColorButton</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>ui_cursorColor</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>minimumSize</name>
+                                                    <size>
+                                                        <width>50</width>
+                                                        <height>0</height>
+                                                    </size>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>maximumSize</name>
+                                                    <size>
+                                                        <width>50</width>
+                                                        <height>32767</height>
+                                                    </size>
+                                                </property>
+                                                <property>
+                                                    <name>whatsThis</name>
+                                                    <string>Click this button to change the color of the cursor at the current sampling position in the recorder.</string>
+                                                </property>
+                                            </widget>
+                                            <widget>
+                                                <class>QLabel</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>label2</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>sizePolicy</name>
+                                                    <sizepolicy>
+                                                        <hsizetype>3</hsizetype>
+                                                        <vsizetype>1</vsizetype>
+                                                    </sizepolicy>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>text</name>
+                                                    <string>&amp;Cursor</string>
+                                                </property>
+                                                <property>
+                                                    <name>buddy</name>
+                                                    <cstring>ui_cursorColor</cstring>
+                                                </property>
+                                            </widget>
+                                        </hbox>
+                                    </widget>
+                                    <widget row="0"  column="1" >
+                                        <class>QLayoutWidget</class>
+                                        <property stdset="1">
+                                            <name>name</name>
+                                            <cstring>Layout20</cstring>
+                                        </property>
+                                        <property>
+                                            <name>layoutSpacing</name>
+                                        </property>
+                                        <hbox>
+                                            <property stdset="1">
+                                                <name>margin</name>
+                                                <number>0</number>
+                                            </property>
+                                            <property stdset="1">
+                                                <name>spacing</name>
+                                                <number>5</number>
+                                            </property>
+                                            <widget>
+                                                <class>ColorButton</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>ui_gridColor</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>minimumSize</name>
+                                                    <size>
+                                                        <width>50</width>
+                                                        <height>0</height>
+                                                    </size>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>maximumSize</name>
+                                                    <size>
+                                                        <width>50</width>
+                                                        <height>32767</height>
+                                                    </size>
+                                                </property>
+                                                <property>
+                                                    <name>whatsThis</name>
+                                                    <string>Click this button to change the color of the grid and grid text in the recorder.</string>
+                                                </property>
+                                            </widget>
+                                            <widget>
+                                                <class>QLabel</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>TextLabel3_2</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>sizePolicy</name>
+                                                    <sizepolicy>
+                                                        <hsizetype>3</hsizetype>
+                                                        <vsizetype>1</vsizetype>
+                                                    </sizepolicy>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>text</name>
+                                                    <string>&amp;Grid</string>
+                                                </property>
+                                                <property>
+                                                    <name>buddy</name>
+                                                    <cstring>ui_gridColor</cstring>
+                                                </property>
+                                            </widget>
+                                        </hbox>
+                                    </widget>
+                                    <widget row="0"  column="2" >
+                                        <class>QLayoutWidget</class>
+                                        <property stdset="1">
+                                            <name>name</name>
+                                            <cstring>Layout18_2</cstring>
+                                        </property>
+                                        <property>
+                                            <name>layoutSpacing</name>
+                                        </property>
+                                        <hbox>
+                                            <property stdset="1">
+                                                <name>margin</name>
+                                                <number>0</number>
+                                            </property>
+                                            <property stdset="1">
+                                                <name>spacing</name>
+                                                <number>5</number>
+                                            </property>
+                                            <widget>
+                                                <class>ColorButton</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>ui_startColor</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>minimumSize</name>
+                                                    <size>
+                                                        <width>50</width>
+                                                        <height>0</height>
+                                                    </size>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>maximumSize</name>
+                                                    <size>
+                                                        <width>50</width>
+                                                        <height>32767</height>
+                                                    </size>
+                                                </property>
+                                                <property>
+                                                    <name>whatsThis</name>
+                                                    <string>Click this button to change the color of the cursor at the current sampling position in the recorder.</string>
+                                                </property>
+                                            </widget>
+                                            <widget>
+                                                <class>QLabel</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>label2_2</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>sizePolicy</name>
+                                                    <sizepolicy>
+                                                        <hsizetype>3</hsizetype>
+                                                        <vsizetype>1</vsizetype>
+                                                    </sizepolicy>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>text</name>
+                                                    <string>Start trigger</string>
+                                                </property>
+                                                <property>
+                                                    <name>buddy</name>
+                                                    <cstring>ui_startColor</cstring>
+                                                </property>
+                                            </widget>
+                                        </hbox>
+                                    </widget>
+                                    <widget row="1"  column="2" >
+                                        <class>QLayoutWidget</class>
+                                        <property stdset="1">
+                                            <name>name</name>
+                                            <cstring>Layout18_3</cstring>
+                                        </property>
+                                        <property>
+                                            <name>layoutSpacing</name>
+                                        </property>
+                                        <hbox>
+                                            <property stdset="1">
+                                                <name>margin</name>
+                                                <number>0</number>
+                                            </property>
+                                            <property stdset="1">
+                                                <name>spacing</name>
+                                                <number>5</number>
+                                            </property>
+                                            <widget>
+                                                <class>ColorButton</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>ui_extColor</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>minimumSize</name>
+                                                    <size>
+                                                        <width>50</width>
+                                                        <height>0</height>
+                                                    </size>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>maximumSize</name>
+                                                    <size>
+                                                        <width>50</width>
+                                                        <height>32767</height>
+                                                    </size>
+                                                </property>
+                                                <property>
+                                                    <name>whatsThis</name>
+                                                    <string>Click this button to change the color of the cursor at the current sampling position in the recorder.</string>
+                                                </property>
+                                            </widget>
+                                            <widget>
+                                                <class>QLabel</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>label2_3</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>sizePolicy</name>
+                                                    <sizepolicy>
+                                                        <hsizetype>3</hsizetype>
+                                                        <vsizetype>1</vsizetype>
+                                                    </sizepolicy>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>text</name>
+                                                    <string>Ext. trigger</string>
+                                                </property>
+                                                <property>
+                                                    <name>buddy</name>
+                                                    <cstring>ui_extColor</cstring>
+                                                </property>
+                                            </widget>
+                                        </hbox>
+                                    </widget>
+                                </grid>
                             </widget>
                             <widget>
                                 <class>QGroupBox</class>
@@ -2899,16 +3041,9 @@ You have two choices:
                                                 <property stdset="1">
                                                     <name>sizePolicy</name>
                                                     <sizepolicy>
-                                                        <hsizetype>0</hsizetype>
+                                                        <hsizetype>7</hsizetype>
                                                         <vsizetype>1</vsizetype>
                                                     </sizepolicy>
-                                                </property>
-                                                <property stdset="1">
-                                                    <name>minimumSize</name>
-                                                    <size>
-                                                        <width>100</width>
-                                                        <height>0</height>
-                                                    </size>
                                                 </property>
                                                 <property stdset="1">
                                                     <name>text</name>
@@ -2921,27 +3056,6 @@ You have two choices:
                                             </widget>
                                         </hbox>
                                     </widget>
-                                    <spacer>
-                                        <property>
-                                            <name>name</name>
-                                            <cstring>Spacer1_7</cstring>
-                                        </property>
-                                        <property stdset="1">
-                                            <name>orientation</name>
-                                            <enum>Horizontal</enum>
-                                        </property>
-                                        <property stdset="1">
-                                            <name>sizeType</name>
-                                            <enum>Expanding</enum>
-                                        </property>
-                                        <property>
-                                            <name>sizeHint</name>
-                                            <size>
-                                                <width>20</width>
-                                                <height>20</height>
-                                            </size>
-                                        </property>
-                                    </spacer>
                                     <widget>
                                         <class>QLayoutWidget</class>
                                         <property stdset="1">
@@ -2994,16 +3108,9 @@ You have two choices:
                                                 <property stdset="1">
                                                     <name>sizePolicy</name>
                                                     <sizepolicy>
-                                                        <hsizetype>0</hsizetype>
+                                                        <hsizetype>3</hsizetype>
                                                         <vsizetype>1</vsizetype>
                                                     </sizepolicy>
-                                                </property>
-                                                <property stdset="1">
-                                                    <name>minimumSize</name>
-                                                    <size>
-                                                        <width>100</width>
-                                                        <height>0</height>
-                                                    </size>
                                                 </property>
                                                 <property stdset="1">
                                                     <name>text</name>
@@ -3016,6 +3123,27 @@ You have two choices:
                                             </widget>
                                         </hbox>
                                     </widget>
+                                    <spacer>
+                                        <property>
+                                            <name>name</name>
+                                            <cstring>Spacer1_7</cstring>
+                                        </property>
+                                        <property stdset="1">
+                                            <name>orientation</name>
+                                            <enum>Horizontal</enum>
+                                        </property>
+                                        <property stdset="1">
+                                            <name>sizeType</name>
+                                            <enum>Expanding</enum>
+                                        </property>
+                                        <property>
+                                            <name>sizeHint</name>
+                                            <size>
+                                                <width>20</width>
+                                                <height>20</height>
+                                            </size>
+                                        </property>
+                                    </spacer>
                                 </hbox>
                             </widget>
                             <widget>
@@ -3034,16 +3162,16 @@ You have two choices:
                                 <property>
                                     <name>layoutSpacing</name>
                                 </property>
-                                <vbox>
+                                <grid>
                                     <property stdset="1">
                                         <name>margin</name>
-                                        <number>10</number>
+                                        <number>11</number>
                                     </property>
                                     <property stdset="1">
                                         <name>spacing</name>
-                                        <number>5</number>
+                                        <number>6</number>
                                     </property>
-                                    <widget>
+                                    <widget row="0"  column="0" >
                                         <class>QLayoutWidget</class>
                                         <property stdset="1">
                                             <name>name</name>
@@ -3103,7 +3231,7 @@ You have two choices:
                                             </spacer>
                                         </hbox>
                                     </widget>
-                                    <widget>
+                                    <widget row="0"  column="1" >
                                         <class>QLayoutWidget</class>
                                         <property stdset="1">
                                             <name>name</name>
@@ -3163,7 +3291,7 @@ You have two choices:
                                             </spacer>
                                         </hbox>
                                     </widget>
-                                    <widget>
+                                    <widget row="1"  column="0" >
                                         <class>QLayoutWidget</class>
                                         <property stdset="1">
                                             <name>name</name>
@@ -3223,7 +3351,63 @@ You have two choices:
                                             </spacer>
                                         </hbox>
                                     </widget>
-                                </vbox>
+                                    <widget row="1"  column="1" >
+                                        <class>QLayoutWidget</class>
+                                        <property stdset="1">
+                                            <name>name</name>
+                                            <cstring>Layout31</cstring>
+                                        </property>
+                                        <property>
+                                            <name>layoutSpacing</name>
+                                        </property>
+                                        <hbox>
+                                            <property stdset="1">
+                                                <name>margin</name>
+                                                <number>0</number>
+                                            </property>
+                                            <property stdset="1">
+                                                <name>spacing</name>
+                                                <number>5</number>
+                                            </property>
+                                            <widget>
+                                                <class>QCheckBox</class>
+                                                <property stdset="1">
+                                                    <name>name</name>
+                                                    <cstring>ui_crosshair</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>text</name>
+                                                    <string>Crosshair cursor</string>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>checked</name>
+                                                    <bool>true</bool>
+                                                </property>
+                                            </widget>
+                                            <spacer>
+                                                <property>
+                                                    <name>name</name>
+                                                    <cstring>Spacer1_11</cstring>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>orientation</name>
+                                                    <enum>Horizontal</enum>
+                                                </property>
+                                                <property stdset="1">
+                                                    <name>sizeType</name>
+                                                    <enum>Expanding</enum>
+                                                </property>
+                                                <property>
+                                                    <name>sizeHint</name>
+                                                    <size>
+                                                        <width>20</width>
+                                                        <height>20</height>
+                                                    </size>
+                                                </property>
+                                            </spacer>
+                                        </hbox>
+                                    </widget>
+                                </grid>
                             </widget>
                             <spacer>
                                 <property>
@@ -3818,7 +4002,7 @@ You have two choices:
                             </property>
                             <property stdset="1">
                                 <name>pixmap</name>
-                                <pixmap>image1</pixmap>
+                                <pixmap>image2</pixmap>
                             </property>
                             <property stdset="1">
                                 <name>accel</name>
@@ -3923,64 +4107,7 @@ You have two choices:
                 </widget>
             </vbox>
         </widget>
-        <widget row="0"  column="1" >
-            <class>QLabel</class>
-            <property stdset="1">
-                <name>name</name>
-                <cstring>ui_description</cstring>
-            </property>
-            <property stdset="1">
-                <name>minimumSize</name>
-                <size>
-                    <width>0</width>
-                    <height>50</height>
-                </size>
-            </property>
-            <property stdset="1">
-                <name>alignment</name>
-                <set>WordBreak|AlignVCenter|AlignLeft</set>
-            </property>
-            <property>
-                <name>wordwrap</name>
-            </property>
-        </widget>
-        <widget row="0"  column="0" >
-            <class>QLabel</class>
-            <property stdset="1">
-                <name>name</name>
-                <cstring>ui_pixmap</cstring>
-            </property>
-            <property stdset="1">
-                <name>minimumSize</name>
-                <size>
-                    <width>50</width>
-                    <height>50</height>
-                </size>
-            </property>
-            <property stdset="1">
-                <name>maximumSize</name>
-                <size>
-                    <width>50</width>
-                    <height>32767</height>
-                </size>
-            </property>
-            <property stdset="1">
-                <name>text</name>
-                <string></string>
-            </property>
-            <property stdset="1">
-                <name>pixmap</name>
-                <pixmap>image2</pixmap>
-            </property>
-            <property stdset="1">
-                <name>alignment</name>
-                <set>AlignCenter</set>
-            </property>
-            <property>
-                <name>hAlign</name>
-            </property>
-        </widget>
-    </grid>
+    </vbox>
 </widget>
 <customwidgets>
     <customwidget>
@@ -4005,11 +4132,11 @@ You have two choices:
     </image>
     <image>
         <name>image1</name>
-        <data format="XPM.GZ" length="676">789ca5d1c10ac2300c00d07bbf222cb7229dce1e06e227281e05f1d04c410f53d07910f1df6dbab6a3dbf46228acd9a369dae612b69b15c85cdc1bd39c2ba84ee606f2f0a8ebe76ebf7c89ac28c00e0db36c22320515acaf9723cfd1ce71ea825313d272ce2971aa8d2eb5710b47e30fc1901b8e443002798a820148b5d4093ab1e03e89a0ff35224ce46bf6c41285cd7a82b18b8160844488c3f82e3a217f2445940ab1f8c6d21ba5700ffd6aaadd8b86d5027d791fbf68ece542a1a124f143de0bf1014a2f8801</data>
+        <data format="XPM.GZ" length="1422">789ca591d14e83301486ef798a66bd5b8c5b816e12e32368bc34315e94530aa5a089ce0b637c777b5a061b1447e2bf91f44b3ffe4361b3264f8ff764bd893e0ee2a0814025dec95a7eb6edd7f3cbdd77b44a6262ff8c13b6ba8a56d704c8c3db6b816b6ad774eb82d822b22d4b9943404cb2e426c9106b441e732900b1f1b8631e738782675c200ac47dbe97fb1cb140ccd28c652962d521f7a8100570ce6344ed51308f061138ec80234a87120a908825a27271a7bb90c1a1a19c3b5484424f1d2af250809e3b815153478e1372ec9db823fd8a061ddcf74e67cef7d0cb3d274d333dddee1f3d0bce55b8dfbf9d05b3167c8b25df54a98074eea8b297866130764ad509559fd0ac5ed0f6aaeb91e32b8ef76badad52d7a39e638531f6aa5ccdc4f1c2f028663a4be87e8a317dd7c4c10dd339c684cea59d62ba17634c8355d359834269d334330e2d29609c147a1ea5eccb2fdb5329ecb4ed519a383017747e6ea35ff66c6dab</data>
     </image>
     <image>
         <name>image2</name>
-        <data format="XPM.GZ" length="1422">789ca591d14e83301486ef798a66bd5b8c5b816e12e32368bc34315e94530aa5a089ce0b637c777b5a061b1447e2bf91f44b3ffe4361b3264f8ff764bd893e0ee2a0814025dec95a7eb6edd7f3cbdd77b44a6262ff8c13b6ba8a56d704c8c3db6b816b6ad774eb82d822b22d4b9943404cb2e426c9106b441e732900b1f1b8631e738782675c200ac47dbe97fb1cb140ccd28c652962d521f7a8100570ce6344ed51308f061138ec80234a87120a908825a27271a7bb90c1a1a19c3b5484424f1d2af250809e3b815153478e1372ec9db823fd8a061ddcf74e67cef7d0cb3d274d333dddee1f3d0bce55b8dfbf9d05b3167c8b25df54a98074eea8b297866130764ad509559fd0ac5ed0f6aaeb91e32b8ef76badad52d7a39e638531f6aa5ccdc4f1c2f028663a4be87e8a317dd7c4c10dd339c684cea59d62ba17634c8355d359834269d334330e2d29609c147a1ea5eccb2fdb5329ecb4ed519a383017747e6ea35ff66c6dab</data>
+        <data format="XPM.GZ" length="676">789ca5d1c10ac2300c00d07bbf222cb7229dce1e06e227281e05f1d04c410f53d07910f1df6dbab6a3dbf46228acd9a369dae612b69b15c85cdc1bd39c2ba84ee606f2f0a8ebe76ebf7c89ac28c00e0db36c22320515acaf9723cfd1ce71ea825313d272ce2971aa8d2eb5710b47e30fc1901b8e443002798a820148b5d4093ab1e03e89a0ff35224ce46bf6c41285cd7a82b18b8160844488c3f82e3a217f2445940ab1f8c6d21ba5700ffd6aaadd8b86d5027d791fbf68ece542a1a124f143de0bf1014a2f8801</data>
     </image>
     <image>
         <name>image3</name>

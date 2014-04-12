@@ -22,6 +22,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <qapplication.h>
+#include <iostream.h>
 
 DMM::DMM( QObject *parent, const char *name ) :
   QObject( parent, name ),
@@ -30,8 +31,6 @@ DMM::DMM( QObject *parent, const char *name ) :
   m_device( "/dev/ttyS1" ),
   m_oldStatus( ReaderThread::NotConnected )
 {
-  m_buffer[14] = '\0';
-  
   m_readerThread = new ReaderThread( this );
   m_readerThread->start();
   
@@ -274,13 +273,13 @@ DMM::event( QEvent *ev )
 
       if (re->format() == ReadEvent::Metex14)
       {
-        val     = tmp.mid( 3, 6 ).stripWhiteSpace();
+        val     = tmp.mid( 3, 6 ); //.stripWhiteSpace();
         unit    = tmp.mid( 9, 4 ).stripWhiteSpace();
         special = tmp.left( 3 ).stripWhiteSpace();
       }
       else if (re->format() == ReadEvent::PeakTech10)
       {
-        val     = tmp.mid( 1, 6 ).stripWhiteSpace();
+        val     = tmp.mid( 1, 6 ); //.stripWhiteSpace();
         unit    = tmp.mid( 7, 4 ).stripWhiteSpace();
       }
       

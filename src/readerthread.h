@@ -52,7 +52,7 @@ protected:
   int                   m_handle;
   ReadStatus            m_status;
   bool                  m_readValue;
-  char                  m_buffer[15];
+  char                  m_buffer[100];
   ReadEvent::DataFormat m_format;
   int                   m_ignoreLines;
   

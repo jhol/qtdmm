@@ -13,15 +13,12 @@ Make shure QTDIR is set correctly and tmake, moc and eventually uic are installe
 
 - untar the tarball you've downloaded
 - enter the qtdmm directory
-- type ./configure [--help|--no-uic] 
+- type ./configure [--help] 
 - type make 
 
 That's it. You should have the executable qtdmm now.
 
 If you encounter any problems don't hesitate to contact me <qtdmm@mtoussaint.de>
-
-The build process has been tested until now only with Linux and Qt 2.2.0. It would be
-nice to hear if QtDMM compiles and works with different system configurations.
 
 -- Matthias Toussaint
  
