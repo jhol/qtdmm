@@ -25,7 +25,7 @@
 #include <qpixmap.h>
 
 ColorButton::ColorButton( QWidget *parent, const char *name ) :
-  QPushButton( parent, name )
+  QPushButton( name, parent )
 {
   m_color = QColor( 255, 255, 255 );
   setAutoDefault( false );
