@@ -48,7 +48,7 @@ ColorButton::setColor( const QColor & c )
 {
   m_color = c;
   
-  QImage img( 16, 12, 32 );
+  QImage img( 16, 12, QImage::Format_RGB32 );
   img.fill(m_color.rgb());
   for (int i=0; i<16; ++i)
   {
