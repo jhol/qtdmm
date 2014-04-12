@@ -24,6 +24,7 @@
 #include <ui_uimainwid.h>
 
 #include <qprinter.h>
+#include <Q3Process>
 
 class DMM;
 class PrintDlg;
@@ -87,7 +88,7 @@ protected:
   ConfigDlg  *m_configDlg;
   PrintDlg   *m_printDlg;
   QPrinter    m_printer;
-  QProcess   *m_external;
+  Q3Process   *m_external;
   DisplayWid *m_display;
   double      m_dval;
   TipDlg      *m_tipDlg;

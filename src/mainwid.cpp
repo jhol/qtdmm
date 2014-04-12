@@ -47,7 +47,7 @@ MainWid::MainWid( QWidget *parent, const char *name ) :
   setIcon( QPixmap((const char **)icon_xpm ) );
   
   m_dmm = new DMM( this );
-  m_external = new QProcess( this );
+  m_external = new Q3Process( this );
   
   m_configDlg = new ConfigDlg( this );
   m_configDlg->hide();
@@ -541,7 +541,7 @@ MainWid::startExternalSLOT()
   args.append( m_configDlg->externalCommand() );
   m_external->setArguments( args );
   
-  if (!m_external->launch(""))
+  if (!m_external->launch(QString("")))
   {
     QString msg;
     msg.sprintf( tr("<font size=+2><b>Launch error</b></font><p>"
