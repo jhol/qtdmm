@@ -81,7 +81,7 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   scrollbar = new QScrollBar( QScrollBar::Horizontal, this );
   scrollbar->setGeometry( 0, height()-16, width(), 16 );
   scrollbar->setTracking( true );
-  scrollbar->setCursor( arrowCursor );
+  scrollbar->setCursor( Qt::ArrowCursor );
   
   connect( scrollbar, SIGNAL( valueChanged(int) ),
            this, SLOT( update() ));
@@ -1071,22 +1071,22 @@ DMMGraph::mouseMoveEvent( QMouseEvent *ev )
     {
       if (abs(ev->y()-m_triggerThresholdY) < 3)
       {
-        setCursor( splitVCursor );
+        setCursor( Qt::SplitVCursor );
         m_cursorMode = Trigger;
       }
       else if (abs(ev->y()-m_externalThresholdY) < 3)
       {
-        setCursor( splitVCursor );
+        setCursor( Qt::SplitVCursor );
         m_cursorMode = External;
       }
       else if (abs(ev->y()-m_integrationThresholdY) < 3)
       {
-        setCursor( splitVCursor );
+        setCursor( Qt::SplitVCursor );
         m_cursorMode = Integration;
       }
       else
       {
-        setCursor( arrowCursor );
+        setCursor( Qt::ArrowCursor );
         m_cursorMode = NoCursor;
       }
     }
