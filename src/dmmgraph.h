@@ -72,6 +72,18 @@ public:
     Integration
   };
   
+  enum PopupID
+  {
+    IDConnect=1,
+    IDDisconnect,
+    IDStopRecorder,
+    IDStartRecorder,
+    IDClearGraph,
+    IDConfigure,
+    IDExportData,
+    IDImportData
+  };
+
   DMMGraph( QWidget *parent=0, const char *name=0 );
   virtual ~DMMGraph();
   
@@ -107,14 +119,22 @@ signals:
   void zoomIn( double );
   void zoomOut( double );
   void thresholdChanged( DMMGraph::CursorMode, double );
+  void connectDMM( bool );
+  void configure();
+  void exportData();
+  void importData();
   
 public slots:
   void clearSLOT();
   void startSLOT();
   void stopSLOT();
-  void exportDataSLOT();
+  bool exportDataSLOT();
   void importDataSLOT();
+  void connectSLOT( bool on ) { m_connected = on; }
   
+protected slots:
+  void popupSLOT( int );
+
 protected:
   QScrollBar               *scrollbar;    
   int                       m_size;       
@@ -136,6 +156,7 @@ protected:
   int                       m_sampleTime;
   int                       m_sampleLength;
   bool                      m_running;
+  bool                      m_connected;
   int                       m_sampleCounter;
   int                       m_remainingLength;
   SampleMode                m_mode;

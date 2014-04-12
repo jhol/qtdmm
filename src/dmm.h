@@ -77,7 +77,7 @@ protected:
   void readASCII( ReadEvent * );
   void readVC820Continuous( ReadEvent * );
   void readM9803RContinuous( ReadEvent * );
-  char *DMM::vc820Digit( int );
+  char *vc820Digit( int );
   
 };
 

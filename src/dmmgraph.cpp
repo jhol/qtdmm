@@ -56,6 +56,7 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   m_sampleTime( 1 ),
   m_sampleLength( 0 ),
   m_running( false ),
+  m_connected( false ),
   m_mode( DMMGraph::Manual ),
   m_mouseDown( false ),
   m_lastValValid( false ),
@@ -103,6 +104,8 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   setMouseTracking( true );
   
   m_popup = new QPopupMenu( this );
+  connect( m_popup, SIGNAL( activated(int) ),
+           this, SLOT( popupSLOT(int) ));
 }
 
 DMMGraph::~DMMGraph()
@@ -1003,22 +1006,35 @@ DMMGraph::mousePressEvent( QMouseEvent *ev )
   {
     m_popup->clear();
     
-    if (m_running)
+    if (m_connected)
     {
-      m_popup->insertItem( tr("Stop recorder") );
+      m_popup->insertItem( tr("Diconnect"), IDDisconnect );
     }
     else
     {
-      m_popup->insertItem( tr("Start recorder") );
+      m_popup->insertItem( tr("Connect"), IDConnect );
+    }
+    m_popup->insertSeparator();
+    
+    if (m_running)
+    {
+      m_popup->insertItem( tr("Stop recorder"), IDStopRecorder );
+    }
+    else
+    {
+      m_popup->insertItem( tr("Start recorder"), IDStartRecorder );
     }    
-    m_popup->insertItem( tr("Clear graph") );
+    m_popup->insertItem( tr("Clear graph"), IDClearGraph );
     m_popup->insertSeparator();
-    m_popup->insertItem( tr("Automatic scale") );
-    m_popup->insertItem( tr("Include zero line") );
-    m_popup->insertSeparator();
-    m_popup->insertItem( tr("Configure recorder") );
-    m_popup->insertItem( tr("Configure scale") );
-    m_popup->insertItem( tr("Configure graph") );
+    
+    m_popup->insertItem( tr("Configure..."), IDConfigure );
+    
+    if (!m_running)
+    {
+      m_popup->insertSeparator();
+      m_popup->insertItem( tr("Export data..."), IDExportData );
+      m_popup->insertItem( tr("Import data..."), IDImportData );
+    }
 
     m_popup->popup( ev->globalPos() );
   }
@@ -1238,7 +1254,7 @@ DMMGraph::fillInfoBox( const QPoint & pos )
   m_infoBox->adjustSize();
 }
 
-void
+bool
 DMMGraph::exportDataSLOT()
 {
   QString fn = QFileDialog::getSaveFileName( QString::null, 
@@ -1268,7 +1284,11 @@ DMMGraph::exportDataSLOT()
     m_dirty = false;
     
     file.close();
+    
+    return true;
   }
+  
+  return false;
 }
 
 void
@@ -1383,24 +1403,21 @@ DMMGraph::importDataSLOT()
       file.close();
     }
     
-    m_sampleTime = m_graphStartDateTime.secsTo( graphEnd );
+    std::cerr << "sample=" << sample << std::endl;
+    
+    m_sampleTime = sample / (cnt>1 ? cnt-1 : 1); //m_graphStartDateTime.secsTo( graphEnd );
     
     int size = m_size*m_sampleTime;
-    int length = (m_length-1)*m_sampleTime;
+    //int length = (m_length-1)*m_sampleTime;
     
-    std::cerr << "we have " << cnt << " lines" << std::endl;
-    std::cerr << "m_sampleTime " << m_sampleTime << std::endl;
-    std::cerr << "size " << size << std::endl;
-    std::cerr << "length " << length << std::endl;
-        
     if (cnt > 1)
     {
-      if (sample/(cnt-1) != m_sampleTime)
+      //if (sample/(cnt-1) != m_sampleTime)
       {
         emit sampleTime( m_sampleTime );
       }
       m_sampleTime = sample/(cnt-1);
-    }
+    }        
     
   /*  if (cnt*m_sampleTime > length)
     {
@@ -1444,6 +1461,11 @@ DMMGraph::importDataSLOT()
       computeUnitFactor();
     }
     
+std::cerr << "min=" << m_scaleMin << " max=" << m_scaleMax << std::endl;
+std::cerr << "factor=" << m_factor << " prefix=" << 
+  m_prefix.latin1() << " unit=" << m_unit.latin1() << std::endl;  
+
+std::cerr << "size=" << size << "cnt*m_sampleTime=" << cnt*m_sampleTime << std::endl;
     // TEST    
     emit graphSize( size, cnt*m_sampleTime );
   }
@@ -1490,7 +1512,7 @@ DMMGraph::setScale( bool autoScale, bool includeZero, double min, double max )
 
     computeUnitFactor();
   }
-  
+
   resizeEvent( 0 );
 }
 
@@ -1687,5 +1709,36 @@ DMMGraph::computeUnitFactor()
   {
     m_factor *= 1000.;
     m_prefix = "p";
+  }
+}
+
+void DMMGraph::popupSLOT( int id )
+{
+  switch (id)
+  {
+  case IDConnect:
+    emit connectDMM( true );
+    break;
+  case IDDisconnect:
+    emit connectDMM( false );
+    break;
+  case IDStopRecorder:
+    stopSLOT();
+    break;
+  case IDStartRecorder:
+    startSLOT();
+    break;
+  case IDClearGraph:
+    clearSLOT();
+    break;
+  case IDConfigure:
+    emit configure();
+    break;
+  case IDExportData:
+    emit exportData();
+    break;
+  case IDImportData:
+    emit importData();
+    break;
   }
 }

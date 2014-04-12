@@ -44,7 +44,7 @@
 #include <help.xpm>
 #include <icon.xpm>
 
-#define VERSION_STRING "0.8.7"
+#define VERSION_STRING "0.8.8"
 
 #include <iostream>
 
@@ -96,6 +96,9 @@ MainWin::MainWin( QWidget *parent, const char *name ) :
   connect( m_wid, SIGNAL( toolbarVisibility( bool, bool, bool, bool, bool )),
            this, SLOT( toolbarVisibilitySLOT( bool, bool, bool, bool, bool ) ));
   
+  connect( m_wid, SIGNAL( connectDMM( bool ) ),
+           m_connectAction, SLOT( setOn( bool ) ));
+  
   QRect winRect = m_wid->winRect();
   m_wid->applySLOT();  
     
@@ -126,13 +129,12 @@ MainWin::MainWin( QWidget *parent, const char *name ) :
 MainWin::~MainWin()
 {
 }
-
+ 
 void
 MainWin::setConsoleLogging( bool on )
 {
   m_wid->setConsoleLogging( on );
 }
-
       
 void
 MainWin::createActions()
@@ -318,16 +320,13 @@ MainWin::versionSLOT()
   msg += ver;
   msg += "</h1><hr>"
          "<div align=right><i>A simple recorder for DMM's</i></div><p>"
-         "<div align=justify>A simple display software for a variety of digital multimeter such as:<p>"
-      "<table><tr><td><b>Digitech</b></td><td>QM&nbsp;1350</td></tr>"
-      "<tr><td><b>ELV</b></td><td>M9803R</td></tr>"
-      "<tr><td><b>Metex</b></td><td>M-3660D, M-3830D, M-3850D, M-3850M, ME-11, ME-22, ME-32, ME-42 and Universal system 9160</td></tr>"
-         "<tr><td><b>PeakTech</b></td><td>4010, 4390 and 451</td></tr>"
-         "<tr><td><b>RadioShack</b></td><td>22-805</td></tr>"
-      "<tr><td><b>Voltcraft</b></td><td>M-3650D, M-4660, ME-11, ME-22T, ME-32, VC&nbsp;670 and VC&nbsp;820</td></tr>"
-         "<tr><td colspan=2>Implemented, but not yet confirmed by a user are:</td></tr>"
-         "<tr><td><b>Voltcraft</b></td><td>ME-42, M-3860, M-4660A, M-4660M, MXD-4660A, VC&nbsp;630, VC&nbsp;650"
-  ", VC&nbsp;635, VC&nbsp;655 and VC&nbsp;840</td></tr></table>"
+         "<div align=justify>A simple display software for a variety of digital multimeter. Currently confirmed are:";
+
+  msg += "<table>";
+  msg += m_wid->deviceListText();
+  msg += "</table>";
+
+  msg +=
          "Other compatible models may work also.<p>"
          "QtDMM features min/max memory and a configurable "
          "recorder with import/export and printing function. Sampling may"
@@ -338,7 +337,7 @@ MainWin::versionSLOT()
   msg += qVersion();
   msg += " from Trolltech AS Norway <font color=blue><u>www.trolltech.com</u></font>"
          " and is licensed under <b>GPL</b>.</div><br>"
-         "&copy; 2001-2005 Matthias Toussaint &nbsp;-&nbsp;&nbsp;<font color=blue><u>qtdmm@mtoussaint.de</u></font>"
+         "&copy; 2001-2006 Matthias Toussaint &nbsp;-&nbsp;&nbsp;<font color=blue><u>qtdmm@mtoussaint.de</u></font>"
          "<p><br>The icons (except the DMM icon) have been taken from the KDE project.<p>";
           
   QMessageBox version( tr("QtDMM: Welcome!" ),
@@ -352,7 +351,7 @@ MainWin::versionSLOT()
   version.setIconPixmap( QPixmap((const char **)icon_xpm ) );
   version.exec();
 }
-    
+
 void
 MainWin::createToolBars()
 {

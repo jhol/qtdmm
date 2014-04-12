@@ -46,6 +46,8 @@ public:
   void setConsoleLogging( bool );
   void setToolbarVisibility( bool, bool, bool, bool, bool );
   
+  QString deviceListText() const;
+
 signals:
   void running( bool );
   void info( const QString & );
@@ -54,6 +56,7 @@ signals:
   void winGeometry( const QRect & );
   void setConnect( bool );
   void toolbarVisibility( bool, bool, bool, bool, bool );
+  void connectDMM( bool );
   
 public slots:
   void valueSLOT( double, const QString &, const QString &, 

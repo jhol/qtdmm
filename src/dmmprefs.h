@@ -53,6 +53,8 @@ public:
   QString dmmName() const;
   QString device() const;
   
+  QString deviceListText() const;
+
 public slots:
   virtual void defaultsSLOT();
   virtual void factoryDefaultsSLOT();

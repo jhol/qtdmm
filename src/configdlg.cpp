@@ -203,6 +203,11 @@ ConfigDlg::~ConfigDlg()
 {
 }
 
+QString ConfigDlg::deviceListText() const
+{
+  return m_dmm->deviceListText();
+}
+
 void
 ConfigDlg::showPage( ConfigDlg::PageType page )
 {

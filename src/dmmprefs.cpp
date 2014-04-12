@@ -43,12 +43,15 @@
 //    stopBits
 //    number of values (For DMM's that send several lines at once)
 //    parity (0,1,2 - None,Even,Odd) 
-//    display digits (0,1,2,3 - 3 1/2, 3 3/4, 4 1/1, 4 3/4)
+//    display digits (0,1,2,3 - 3 1/2, 3 3/4, 4 1/2, 4 3/4)
 //
 struct DMMInfo dmm_info[] = { 
                               {"Digitech QM1350", 0, 0, 7, 2, 1, 0, 1},
+                              {"Digitech QM1538", 3, 5, 8, 1, 1, 0, 1},
                               {"ELV M9803R", 5, 4, 7, 1, 1, 1, 1},
+                              {"MASTECH MAS-345", 0, 0, 7, 2, 1, 0, 1},
                               {"MASTECH M9803R", 5, 4, 7, 1, 1, 1, 1},
+                              {"McVoice M-345pro", 0, 0, 7, 2, 1, 0, 1},
                               {"McVoice M-980T", 5, 4, 7, 1, 1, 1, 1},
                               {"Metex M-3660D", 1, 0, 7, 2, 1, 0, 1},
                               {"Metex M-3830D", 1, 0, 7, 2, 4, 0, 1},
@@ -59,12 +62,13 @@ struct DMMInfo dmm_info[] = {
                               {"Metex ME-32", 0, 0, 7, 2, 1, 0, 1},
                               {"Metex ME-42", 0, 0, 7, 2, 1, 0, 1},
                               {"Metex universal system 9160", 1, 0, 7, 2, 4, 0, 1},
-                              {"PeakTech-4010", 5, 0, 7, 2, 1, 0, 1},
-                              {"PeakTech-4390", 5, 0, 7, 2, 4, 0, 1},
-                              {"PeakTech-451", 0, 1, 7, 2, 1, 0, 1},
+                              {"PeakTech 4010", 5, 0, 7, 2, 1, 0, 1},
+                              {"PeakTech 4390", 5, 0, 7, 2, 4, 0, 1},
+                              {"PeakTech 451", 0, 1, 7, 2, 1, 0, 1},
                               {"Radioshack 22-805 DMM", 0, 0, 7, 2, 1, 0, 1},
                               {"Radioshack RS22-168A", 1, 0, 7, 2, 1, 0, 1},
                               {"Voltcraft M-3650D", 1, 0, 7, 2, 1, 0, 1},
+                              {"Voltcraft M-4650CR", 1, 2, 7, 2, 1, 0, 2 },
                               {"Voltcraft M-4660", 1, 0, 7, 2, 4, 0, 3},
                               {"Voltcraft ME-11", 0, 0, 7, 2, 1, 0, 1},
                               {"Voltcraft ME-22T", 3, 0, 7, 2, 1, 0, 1},
@@ -117,6 +121,48 @@ DmmPrefs::DmmPrefs( QWidget *parent, const char *name ) :
 
 DmmPrefs::~DmmPrefs()
 {
+}
+
+QString DmmPrefs::deviceListText() const
+{
+  QString text;
+
+  QString name;
+
+  int id = 0;
+  while (*dmm_info[id].name)
+  {
+    QStringList token = QStringList::split( " ", QString( dmm_info[id].name ) );
+
+    if (token[0][0] != '*')
+    {
+      if (name != token[0])
+      {
+        if (!text.isEmpty())
+        {
+          text += "</td></tr>";
+        }
+        text += "<tr><td><b>";
+        text += token[0];
+        text += "</b></td><td>";
+        name = token[0];
+      }
+      else
+      {
+        text += ", ";
+      }
+  
+      for (unsigned i=1; i<token.count(); ++i)
+      {
+        if (i!=1) text += " ";
+        text += token[i];
+      }    
+    }
+    
+    ++id;
+  }
+
+  return text;
 }
 
 void

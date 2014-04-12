@@ -81,6 +81,15 @@ MainWid::MainWid( QWidget *parent, const char *name ) :
            this, SLOT( startExternalSLOT() ));
   connect( m_external, SIGNAL( processExited() ),
            this, SLOT( exitedSLOT() ));  
+  connect( ui_graph, SIGNAL( configure() ),
+           this, SLOT( configSLOT() ));
+  connect( ui_graph, SIGNAL( exportData() ),
+           this, SLOT( exportSLOT() ));
+  connect( ui_graph, SIGNAL( importData() ),
+           this, SLOT( importSLOT() ));
+  
+  connect( ui_graph, SIGNAL( connectDMM( bool ) ),
+           this, SIGNAL( connectDMM( bool ) ));
   
   connect( ui_graph, SIGNAL( zoomOut( double ) ),
            m_configDlg, SLOT( zoomOutSLOT( double ) ));
@@ -101,6 +110,11 @@ MainWid::MainWid( QWidget *parent, const char *name ) :
 
 MainWid::~MainWid()
 {
+}
+
+QString MainWid::deviceListText() const
+{
+  return m_configDlg->deviceListText();
 }
 
 void
@@ -143,8 +157,7 @@ MainWid::closeWin()
     switch (question.exec())
     {
     case QMessageBox::Yes:
-      ui_graph->exportDataSLOT();
-      break;
+      return ui_graph->exportDataSLOT();
       
     case QMessageBox::No:
       break;
@@ -270,6 +283,8 @@ MainWid::connectSLOT( bool on )
   }
   
   m_configDlg->connectSLOT( on );
+  
+  ui_graph->connectSLOT( on );
 }
 
 void

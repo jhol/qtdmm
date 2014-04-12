@@ -42,6 +42,7 @@ public slots:
   virtual void factoryDefaultsSLOT();
   virtual void applySLOT();
   
+  void setAutoScaleSLOT( bool autoScale );
   void zoomInSLOT( double fac );
   void zoomOutSLOT( double fac );
   void setGraphSizeSLOT( int size, int length );

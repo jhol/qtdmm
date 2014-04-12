@@ -139,6 +139,11 @@ ScalePrefs::scaleMax() const
   return EngNumberValidator::value( ui_scaleMax->text() );
 }
 
+void ScalePrefs::setAutoScaleSLOT( bool autoScale )
+{
+  autoScaleBut->setChecked( autoScale );
+}
+
 void
 ScalePrefs::zoomInSLOT( double fac )
 {

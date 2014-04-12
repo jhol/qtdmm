@@ -55,7 +55,14 @@ const char *TipDlg::s_tipText[] = {
     "Perhaps you already noticed that but the size and position of the"
     " file selection dialog is persistent. Once adjusted to your preferences"
     " it reopens with this size and position.", */
-		
+		    		
+    "<font size=+2>Measuring averaged values</font><p>"
+        "If you want averaged values just increase the"
+        "\"Sample every\" value in the Recorder settings."
+        " If you set it to 10sec and your DMM gives a value"
+        " approx. every second, you'll get the average of"
+        " the ten last measurements in the graph",
+
     "<font size=+2>Configuration file</font><p>"
     "QtDMM writes a small configuration file (~/.qtdmmrc). It contains"
     " informations about window settings and other preferences."
@@ -157,5 +164,5 @@ TipDlg::closeEvent( QCloseEvent *ev )
 void
 TipDlg::showTipsSLOT( bool on )
 {
-	emit showTips( !on );
+  emit showTips( !on );
 }
