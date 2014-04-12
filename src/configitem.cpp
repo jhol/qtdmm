@@ -21,8 +21,8 @@
 #include <configitem.h>
 
 ConfigItem::ConfigItem( int id, const QPixmap & pixmap,
-                        const QString & label, QListView *parent ) :
-  QListViewItem( parent, label ),
+                        const QString & label, Q3ListView *parent ) :
+  Q3ListViewItem( parent, label ),
   m_id( id )
 {
   setPixmap( 0, pixmap );

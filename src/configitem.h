@@ -21,12 +21,12 @@
 #ifndef CONFIGITEM_HH
 #define CONFIGITEM_HH
 
-#include <qlistview.h>
+#include <Q3ListViewItem>
 
-class ConfigItem : public QListViewItem
+class ConfigItem : public Q3ListViewItem
 {
 public:
-  ConfigItem( int id, const QPixmap &, const QString & label, QListView *parent );
+  ConfigItem( int id, const QPixmap &, const QString & label, Q3ListView *parent );
   virtual ~ConfigItem();
   
   int id() const { return m_id; }
