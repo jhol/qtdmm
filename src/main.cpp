@@ -21,15 +21,27 @@
 #include <qapplication.h>
 #include <mainwin.h>
 
+#include <iostream>
+
 int
 main( int argc, char **argv )
 {
   QApplication app( argc, argv );
   
-  MainWin *mainWin = new MainWin( 0 );
+  MainWin mainWin( 0 );
   
-  app.setMainWidget( mainWin );
-  mainWin->show();
+  // very simple parsing (tm)
+  for (int i=0; i<argc; ++i)
+  {
+    if (QString(argv[i]) == "--console")
+    {
+      mainWin.setConsoleLogging( true );
+      break;
+    }
+  }
+  
+  app.setMainWidget( &mainWin );
+  mainWin.show();
   
   return app.exec();
 }

@@ -38,6 +38,7 @@ public:
   QColor displayBgColor() const;
   QColor displayTextColor() const;
   bool saveWindowPosition() const;
+  bool saveWindowSize() const;
   void setShowTipsSLOT( bool on );
 
 signals:

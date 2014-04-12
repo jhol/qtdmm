@@ -45,7 +45,8 @@ GuiPrefs::~GuiPrefs()
 void
 GuiPrefs::defaultsSLOT()
 {
-  ui_saveWindowCheck->setChecked( m_cfg->getBool( "Save", "window", true ));
+  ui_saveWindowPos->setChecked( m_cfg->getBool( "Save", "window-pos", true ));
+  ui_saveWindowSize->setChecked( m_cfg->getBool( "Save", "window-size", true ));
   
   ui_bgColorDisplay->setColor( QColor( m_cfg->getRGB( "Display", "display-background", QColor( 212,220,207 ).rgb() )));
   ui_textColor->setColor( QColor( m_cfg->getRGB( "Display", "display-text", Qt::black.rgb() )));
@@ -62,7 +63,8 @@ GuiPrefs::defaultsSLOT()
 void
 GuiPrefs::factoryDefaultsSLOT()
 {
-  ui_saveWindowCheck->setChecked( true );
+  ui_saveWindowPos->setChecked( true );
+  ui_saveWindowSize->setChecked( true );
   
   ui_bgColorDisplay->setColor( QColor( 212,220,207 ) );
   ui_textColor->setColor( Qt::black );
@@ -82,6 +84,8 @@ GuiPrefs::applySLOT()
   m_cfg->setInt( "QtDMM", "version", 0 );
   m_cfg->setInt( "QtDMM", "revision", 84 );
   m_cfg->setBool( "QtDMM", "show-tip", showTip() );
+  m_cfg->setBool( "Save", "window-pos", saveWindowPosition() );
+  m_cfg->setBool( "Save", "window-size", saveWindowSize() );
   m_cfg->setRGB( "Display", "display-background", ui_bgColorDisplay->color().rgb() );
   m_cfg->setRGB( "Display", "display-text", ui_textColor->color().rgb() );
   m_cfg->setBool( "Display", "display-bar", showBar() );
@@ -135,7 +139,13 @@ GuiPrefs::displayTextColor() const
 bool
 GuiPrefs::saveWindowPosition() const
 {
-  return ui_saveWindowCheck->isChecked();
+  return ui_saveWindowPos->isChecked();
+}
+
+bool
+GuiPrefs::saveWindowSize() const
+{
+  return ui_saveWindowSize->isChecked();
 }
 
 void

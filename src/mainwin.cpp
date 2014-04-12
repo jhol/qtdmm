@@ -44,7 +44,9 @@
 #include <help.xpm>
 #include <icon.xpm>
 
-#define VERSION_STRING "0.8.4"
+#define VERSION_STRING "0.8.5"
+
+#include <iostream>
 
 MainWin::MainWin( QWidget *parent, const char *name ) :
   QMainWindow( parent, name ),
@@ -67,8 +69,6 @@ MainWin::MainWin( QWidget *parent, const char *name ) :
   ver += VERSION_STRING;
   
   setCaption( ver );
-  
-  adjustSize();
   
   connect( m_wid, SIGNAL( running(bool) ),
            this, SLOT( runningSLOT(bool) ));
@@ -94,21 +94,44 @@ MainWin::MainWin( QWidget *parent, const char *name ) :
   connect( m_wid, SIGNAL( setConnect( bool ) ),
            this, SLOT( setConnectSLOT( bool ) ));
 
-  m_wid->applySLOT();  
-  
   QRect winRect = m_wid->winRect();
+  m_wid->applySLOT();  
+    
+  //std::cerr << "WR: " << winRect.x() << " " << winRect.y() 
+  //    << " " << winRect.width() << " " << winRect.height() << std::endl;
+  //adjustSize();
   
   if (!winRect.isEmpty())
   {
-    setGeometry( winRect );
+    //std::cerr << "ISNT EMPTY" << std::endl;
+    if (m_wid->saveWindowPosition()) 
+    {
+      move( winRect.x(), winRect.y() );
+      //std::cerr << "MOVE: " << winRect.x() << " " <<  winRect.y() << std::endl;
+    }
+    if (m_wid->saveWindowSize()) 
+    {
+      //std::cerr << "RESIZE: " << winRect.width() << " " <<  winRect.height() << std::endl;
+      resize( winRect.width(), winRect.height() ); 
+    }
+    else
+    {
+      resize( 640, 480 );
+    }
   }
-  
 }
 
 MainWin::~MainWin()
 {
 }
 
+void
+MainWin::setConsoleLogging( bool on )
+{
+  m_wid->setConsoleLogging( on );
+}
+
+      
 void
 MainWin::createActions()
 {

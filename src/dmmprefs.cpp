@@ -48,6 +48,7 @@ struct DMMInfo dmm_info[] = {
                               {"Metex ME-11", 0, 0, 7, 2, 1, 0, 1},
                               {"Metex ME-22", 3, 0, 7, 2, 1, 0, 1},
                               {"Metex ME-32", 0, 0, 7, 2, 1, 0, 1},
+                              {"Metex ME-42", 0, 0, 7, 2, 1, 0, 1},
                               {"Metex universal system 9160", 1, 0, 7, 2, 4, 0, 1},
                               {"PeakTech-4010", 5, 0, 7, 2, 1, 0, 1},
                               {"PeakTech-451", 0, 1, 7, 2, 1, 0, 1},

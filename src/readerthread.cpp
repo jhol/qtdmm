@@ -58,6 +58,7 @@ ReaderThread::setHandle( int handle )
   m_notifier = 0;
   
   m_handle = handle; 
+  m_readValue = false;
   
   if (-1 == m_handle) 
   {
@@ -80,7 +81,7 @@ ReaderThread::run()
   {
     if (m_readValue) 
     {
-      //std::cerr << "going to read" << std::endl;
+     // std::cerr << "going to read" << std::endl;
       readDMM();
       m_readValue = false;
     }
@@ -239,7 +240,8 @@ ReaderThread::readMetex14()
 {
   if (m_sendRequest)
   {
-    ::write( m_handle, "D\n", 2 );
+    size_t ret = ::write( m_handle, "D\n", 2 );
+    //std::cerr << "WROTE: " << ret << std::endl;
     m_sendRequest = false;
   }
 }  

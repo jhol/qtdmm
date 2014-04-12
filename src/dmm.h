@@ -46,6 +46,7 @@ public:
   void setName( const QString & );
   void setPortSettings( int bits, int stopBits, int parity );
   void setNumValues( int );
+  void setConsoleLogging( bool on ) { m_consoleLogging = on; }
   
 signals:
   void value( double dval,
@@ -66,6 +67,8 @@ protected:
   tcflag_t                  m_c_cflag;
   ReaderThread::ReadStatus  m_oldStatus;
   QString                   m_name;
+  struct termios            m_oldSettings;
+  bool                      m_consoleLogging;
   
   void timerEvent( QTimerEvent * );
   void customEvent( QCustomEvent * );

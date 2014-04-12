@@ -97,6 +97,7 @@ public:
   void setWinRect( const QRect & );
   QRect winRect() const;
   bool saveWindowPosition() const;
+  bool saveWindowSize() const;
   bool alertUnsavedData() const;
   bool useTextLabel() const;
   bool startExternal() const;

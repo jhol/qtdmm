@@ -729,11 +729,15 @@ DMMGraph::addValue( double val )
 
     //update();
   }
-
-  emitInfo();
     
   m_sampleCounter++;
-  if (m_sampleCounter == m_sampleTime) m_sampleCounter = 0;
+  m_remainingLength = QMAX( 0, m_remainingLength-1 );
+  
+  if (m_sampleCounter == m_sampleTime) 
+  {
+    m_sampleCounter = 0;
+    emitInfo();
+  }
   
   if (0 == m_remainingLength && m_sampleLength != 0)
   {
@@ -741,8 +745,6 @@ DMMGraph::addValue( double val )
     stopSLOT();
     return;
   }
-  
-  m_remainingLength = QMAX( 0, m_remainingLength-1 );
 }
 
 double
@@ -919,11 +921,13 @@ DMMGraph::clearSLOT()
 void
 DMMGraph::emitInfo()
 {
-  int w = m_remainingLength / 60 / 60 / 24 / 7;
-  int d = ( m_remainingLength / 60 / 60 / 24 ) % 7;
-  int h = ( m_remainingLength / 60 / 60 ) % (24);
-  int m = (m_remainingLength / 60 ) % 60;
-  int s = m_remainingLength % 60;
+  int seconds = m_remainingLength / 10;
+  
+  int w = seconds / 60 / 60 / 24 / 7;
+  int d = ( seconds / 60 / 60 / 24 ) % 7;
+  int h = ( seconds / 60 / 60 ) % (24);
+  int m = (seconds / 60 ) % 60;
+  int s = seconds % 60;
   
   QString txt;
   
@@ -1180,7 +1184,7 @@ DMMGraph::fillInfoBox( const QPoint & pos )
     if (fabs(val) < 1 && val != 0)
     {
       val *= 1000;
-      prefix = "µ";
+      prefix = "";
     }
     if (fabs(val) < 1 && val != 0)
     {
@@ -1244,7 +1248,7 @@ DMMGraph::exportDataSLOT()
           dt.date().day(), dt.date().month(), dt.date().year(),
           dt.time().hour(), dt.time().minute(), dt.time().second(),
           (*m_array)[i],
-          m_unit.mid( 1, m_unit.length()-2 ).latin1() );
+          m_unit/*.mid( 1, m_unit.length()-2 )*/.latin1() );
       
       ts << line;
     }
@@ -1305,13 +1309,13 @@ DMMGraph::importDataSLOT()
 
       if (!line.isNull())
       {
-        /*QRegExp re( "[0-9]+\\.[0-9]+\\.[0-9]+\t[0-9]+:[0-9]+:[0-9]+\t[0-9]*\\.[0-9]+\t.*" );
+        QRegExp re( "[0-9]+\\.[0-9]+\\.[0-9]+\t[0-9]+:[0-9]+:[0-9]+\t[0-9]*\\.[0-9]+\t.*" );
         if (re.match(line) == -1)
         {
           emit error( tr("Oops! Seems not to be a valid file") );
           
           return;
-        }*/
+        }
         
         QTime startTime = QTime( line.mid( 11, 2 ).toInt(), 
                                  line.mid( 14, 2 ).toInt(),
@@ -1327,8 +1331,10 @@ DMMGraph::importDataSLOT()
         
         cnt++;
 
-        while (!(line = ts.readLine()).isNull())
+        while (!ts.atEnd())
         {
+          line = ts.readLine();
+          
           QTime nowTime = QTime( line.mid( 11, 2 ).toInt(), 
                                  line.mid( 14, 2 ).toInt(),
                                  line.mid( 17, 2 ).toInt() );   
@@ -1629,7 +1635,7 @@ DMMGraph::computeUnitFactor()
   if (QMAX( fabs(m_scaleMax*m_factor), fabs(m_scaleMin*m_factor)) < 1)
   {
     m_factor *= 1000.;
-    m_prefix = "µ";
+    m_prefix = "Âµ";
   }
   if (QMAX( fabs(m_scaleMax*m_factor), fabs(m_scaleMin*m_factor)) < 1)
   {

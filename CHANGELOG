@@ -1,3 +1,10 @@
+12/05/2005 0.8.5
+           - Fixed window save behaviour (nobody noticed yet?)
+           - Fixed sampling counter
+           - Added ME-42
+           - --console option. This might or might not help to
+             identify problems
+
 29/04/2005 0.8.4
            - Added header file for debian
            - Added QtDMM.desktop (Radek Liboska)
@@ -5,8 +12,10 @@
            - Separated device name and number (this way you can
              configure ttyS0-ttyS99 without the need for a one 
              kilometer long popupmenu)
+
 24/04/2005 0.8.3
            - Finally ported to Qt-3.x
+
 20/10/2002 0.8.2 
            - Added preset for Voltcraft M-3650D
            - Removed performance bug in graph (manual scaling)
@@ -14,10 +23,12 @@
            - Mouse panning in graph
            - Thresholds can be moved with mouse now
            - Reworked configuration dialog (fully non-modal now)
+
 15/10/2002 0.8.1
            - Added include to fix compilation problems on RedHat based
              systems
            - Zoom IN/OUT of graph with wheelmouse
+
 13/10/2002 0.8
            - Added Protocol for ELV M9803R (Thanks to Ralph Fischer for providing
              me such a multimeter for testing)

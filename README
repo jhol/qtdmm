@@ -15,6 +15,7 @@ is known to work with the following DMM's:
     Metex        ME-11
     Metex        ME-22
     Metex        ME-32
+    Metex        ME-42
     Metex        Universal system 9160
     PeakTech     4010
     PeakTech     451
@@ -25,7 +26,6 @@ is known to work with the following DMM's:
 
 The following models should work but need to be confirmed by a user:
 
-    Voltcraft    ME-42
     Voltcraft    M-3860
     Voltcraft    M-4660A
     Voltcraft    M-4660M

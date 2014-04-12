@@ -104,6 +104,12 @@ MainWid::~MainWid()
 }
 
 void
+MainWid::setConsoleLogging( bool on )
+{
+  m_dmm->setConsoleLogging( on );
+}
+
+void
 MainWid::setDisplay( DisplayWid *display )
 {
   m_display = display;
@@ -154,12 +160,19 @@ MainWid::closeWin()
 QRect
 MainWid::winRect() const
 { 
-  if (m_configDlg->saveWindowPosition())
-  {
-    return m_configDlg->winRect();
-  }
-  
-  return QRect();
+  return m_configDlg->winRect();
+}
+
+bool
+MainWid::saveWindowPosition() const
+{
+  return m_configDlg->saveWindowPosition();
+}
+
+bool
+MainWid::saveWindowSize() const
+{
+  return m_configDlg->saveWindowSize();
 }
 
 QRect

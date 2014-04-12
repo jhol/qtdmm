@@ -26,14 +26,18 @@
 #include <stdio.h>
 
 #include <iostream>
+#include <qdatetime.h>
+
+#define LOG_OUTPUT
 
 DMM::DMM( QObject *parent, const char *name ) :
   QObject( parent, name ),
   m_handle( -1 ),
   m_speed( 600 ),
   m_parity( 0 ),
-  m_device( "/dev/ttyS1" ),
-  m_oldStatus( ReaderThread::NotConnected )
+  m_device( "/dev/ttyS0" ),
+  m_oldStatus( ReaderThread::NotConnected ),
+  m_consoleLogging( false )
 {
   m_readerThread = new ReaderThread( this );
   m_readerThread->start();
@@ -110,7 +114,9 @@ DMM::open()
   struct termios attr;
   int    mdlns;
   
-  m_handle = ::open( m_device.latin1(), O_RDWR | O_NOCTTY );
+  memset( &attr, 0, sizeof( struct termios ) );
+  
+  m_handle = ::open( m_device.latin1(), O_RDWR | O_NOCTTY | O_NDELAY);
   
   if (-1 == m_handle)
   {
@@ -144,6 +150,9 @@ DMM::open()
     return false;
   }
   
+  fcntl( m_handle, F_SETFL, 0 );
+  tcgetattr( m_handle, &m_oldSettings );
+  
   attr.c_oflag = 0;
   attr.c_lflag = 0;
   //attr.c_iflag = IGNBRK;
@@ -156,8 +165,9 @@ DMM::open()
   {
     attr.c_iflag = IGNBRK | IGNPAR;
   }
+  
   //attr.c_cflag = CS7 | CSTOPB | CREAD | CLOCAL;
-  attr.c_cc[VTIME]= 20;
+  attr.c_cc[VTIME]= 0;
   attr.c_cc[VMIN]= 0;
   
   if (600 == m_speed)
@@ -195,7 +205,7 @@ DMM::open()
   m_error += " ";
   m_error += m_device;
   m_error += ". ";
-    
+  
   if (-1 == tcsetattr( m_handle, TCSANOW, &attr )) 
   {  
     ::close(m_handle);
@@ -205,7 +215,7 @@ DMM::open()
     
     return false;
   }
-
+  
   mdlns = 0;
   if (-1 == ioctl( m_handle, TIOCMGET, &mdlns )) 
   {
@@ -227,7 +237,7 @@ DMM::open()
     
     return false;
   }
-
+  
   m_error = tr( "Connecting ..." );
   emit error( m_error );
   
@@ -243,6 +253,7 @@ DMM::open()
 void
 DMM::close()
 {
+  QTime t; t.start();
   killTimers();
   
   m_error = tr( "Not connected" );
@@ -252,6 +263,9 @@ DMM::close()
   
   if (-1 != m_handle)
   {
+    // restore
+    ::tcsetattr( m_handle, TCSANOW, &m_oldSettings );
+    
     ::close( m_handle );
     m_handle = -1;
   }
@@ -262,7 +276,6 @@ DMM::close()
 void
 DMM::timerEvent( QTimerEvent * )
 {
-  //std::cerr << "timer event" << std::endl;
   if (-1 == m_handle)
   {
     emit error( m_error );
@@ -290,6 +303,15 @@ DMM::customEvent( QCustomEvent *ev )
       {
         QString tmp = re->string();
 
+        if (m_consoleLogging)
+        {
+          for (int i=0; i<tmp.length(); ++i)
+          {
+            fprintf( stdout, "%02X ", re->string()[i] );
+          }
+          fprintf( stdout, "\n" );
+        }
+        
         if (re->format() == ReadEvent::Metex14 ||
             re->format() == ReadEvent::Voltcraft14Continuous ||
             re->format() == ReadEvent::Voltcraft15Continuous)

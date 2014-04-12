@@ -281,6 +281,8 @@ ConfigDlg::winRect() const
               m_cfg->getInt( "Position", "width", 500 ),
               m_cfg->getInt( "Position", "height", 350 ) );
              
+  //std::cerr << "WRFC: " << rect.x() << " " << rect.y() << " " << rect.width()
+  //    << " " << rect.height() << std::endl;
   return rect;
 }
 
@@ -329,10 +331,6 @@ ConfigDlg::currentTipId() const
 void
 ConfigDlg::applySLOT()
 {
-  m_cfg->setInt( "QtDMM", "version", 0 );
-  m_cfg->setInt( "QtDMM", "revision", 84 );
-  m_cfg->setBool( "QtDMM", "show-tip", showTip() );
-  
   m_cfg->setInt( "Custom colors", "count", QColorDialog::customCount() );
     
   for (int i=0; i<QColorDialog::customCount(); i++)
@@ -342,17 +340,10 @@ ConfigDlg::applySLOT()
     m_cfg->setRGB( "Custom colors", color, QColorDialog::customColor( i ) );
   }
   
-  if (saveWindowPosition())
-  {    
-    m_cfg->setInt( "Position", "x", m_winRect.x() );
-    m_cfg->setInt( "Position", "y", m_winRect.y() );
-    m_cfg->setInt( "Position", "width", m_winRect.width() );
-    m_cfg->setInt( "Position", "height", m_winRect.height() );
-  }
-  else
-  {
-    m_cfg->remove( "Position" );
-  }
+  m_cfg->setInt( "Position", "x", m_winRect.x() );
+  m_cfg->setInt( "Position", "y", m_winRect.y() );
+  m_cfg->setInt( "Position", "width", m_winRect.width() );
+  m_cfg->setInt( "Position", "height", m_winRect.height() );
   
   m_cfg->setInt( "Printer", "page-size", (int)m_printer->pageSize() );
   m_cfg->setInt( "Printer", "page-orientation", (int)m_printer->orientation() );
@@ -547,6 +538,12 @@ bool
 ConfigDlg::saveWindowPosition() const
 {
   return m_gui->saveWindowPosition();
+}
+
+bool
+ConfigDlg::saveWindowSize() const
+{
+  return m_gui->saveWindowSize();
 }
 
 void

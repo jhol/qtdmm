@@ -36,6 +36,8 @@ public:
   MainWin( QWidget *parent=0, const char *name=0 );
   virtual ~MainWin();
 
+  void setConsoleLogging( bool );
+  
 protected slots:
   void runningSLOT( bool );
   void connectSLOT( bool );

@@ -40,7 +40,10 @@ public:
 
   bool closeWin();
   QRect winRect() const;
+  bool saveWindowPosition() const;
+  bool saveWindowSize() const;
   void setDisplay( DisplayWid * );
+  void setConsoleLogging( bool );
   
 signals:
   void running( bool );
