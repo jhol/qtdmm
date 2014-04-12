@@ -25,7 +25,6 @@
 #include <qfiledialog.h>
 #include <qlabel.h>
 #include <qmessagebox.h>
-#include <qpaintdevicemetrics.h>
 #include <qpainter.h>
 #include <qpixmap.h>
 #include <qpopupmenu.h>
@@ -158,10 +157,8 @@ DMMGraph::print( QPrinter *prt, const QString & title, const QString & comment )
   QPainter p;
   p.begin( prt );
   
-  QPaintDeviceMetrics pdm( prt );
- 
-  int w = pdm.width();
-  int h = pdm.height();
+  int w = width();
+  int h = height();
  
   p.setFont( QFont( "Helvetica", 16 ) );
   
