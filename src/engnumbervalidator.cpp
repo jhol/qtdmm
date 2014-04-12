@@ -18,6 +18,7 @@
 // (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
+#include <math.h>
 #include <engnumbervalidator.h>
 
 EngNumberValidator::EngNumberValidator( QObject *parent, 

@@ -94,11 +94,11 @@ ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
     int version  = m_cfg->getInt( "QtDMM", "version", 0 );
     int revision = m_cfg->getInt( "QtDMM", "revision", 0 );
     
-    if ((version <= 0 && revision < 62) || version >= 7)
+    if ((version <= 0 && revision < 84) || version >= 7)
     {
       QMessageBox welcome( tr("QtDMM: Welcome!" ),
                            tr("<font size=+2><b>Welcome!</b></font><p>"
-                              "You seem to have upgraded <b>QtDMM</b> from a version prior to 0.8"
+                              "You seem to have upgraded <b>QtDMM</b> from a version prior to 0.8.4"
                               " Please check your configuration. There are some new parameter to be"
                               " configured."
                               "<p>Thank you for choosing <b>QtDMM</b>.<p><i>Matthias Toussaint</i>"),
@@ -330,7 +330,7 @@ void
 ConfigDlg::applySLOT()
 {
   m_cfg->setInt( "QtDMM", "version", 0 );
-  m_cfg->setInt( "QtDMM", "revision", 62 );
+  m_cfg->setInt( "QtDMM", "revision", 84 );
   m_cfg->setBool( "QtDMM", "show-tip", showTip() );
   
   m_cfg->setInt( "Custom colors", "count", QColorDialog::customCount() );

@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>456</width>
-            <height>589</height>
+            <width>492</width>
+            <height>607</height>
         </rect>
     </property>
     <property name="caption">
@@ -114,103 +114,7 @@
                     <property name="hAlign" stdset="0">
                     </property>
                 </widget>
-                <widget class="QComboBox" row="0" column="1">
-                    <item>
-                        <property name="text">
-                            <string>/dev/ttyS0</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/ttyS1</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/ttyS2</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/ttyS3</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/ttyS4</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/ttyS5</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/ttyS6</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/ttyS7</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/modem</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/usb/ttyUSB0</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/usb/ttyUSB1</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/usb/ttyUSB2</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/usb/ttyUSB3</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/ttyUSB0</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/ttyUSB1</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/ttyUSB2</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>/dev/ttyUSB3</string>
-                        </property>
-                    </item>
-                    <property name="name">
-                        <cstring>port</cstring>
-                    </property>
-                    <property name="currentItem">
-                        <number>0</number>
-                    </property>
-                    <property name="whatsThis" stdset="0">
-                        <string>Choose the serial device here. &lt;i&gt;(Hint for DOS people: /dev/ttyS0 corresponds to COM1. /dev/ttyS1 to COM2 ...)&lt;/i&gt;</string>
-                    </property>
-                </widget>
-                <widget class="QComboBox" row="1" column="1">
+                <widget class="QComboBox" row="1" column="1" rowspan="1" colspan="2">
                     <item>
                         <property name="text">
                             <string>5 bits</string>
@@ -238,7 +142,7 @@
                         <string>Number of bits for serial communication.</string>
                     </property>
                 </widget>
-                <widget class="QLabel" row="0" column="2">
+                <widget class="QLabel" row="0" column="3">
                     <property name="name">
                         <cstring>ui_baudLabel</cstring>
                     </property>
@@ -254,7 +158,7 @@
                     <property name="hAlign" stdset="0">
                     </property>
                 </widget>
-                <widget class="QComboBox" row="0" column="3">
+                <widget class="QComboBox" row="0" column="4">
                     <item>
                         <property name="text">
                             <string>600 baud</string>
@@ -295,7 +199,7 @@
                         <string>Select the baud rate for the DMM here. If you encounter problems connecting to your DMM try lowering the baud rate. I had some problems with my &lt;b&gt;Metex ME-32&lt;/b&gt;. The Documentation said 1200 baud but it only worked at 600.</string>
                     </property>
                 </widget>
-                <widget class="QLabel" row="1" column="2">
+                <widget class="QLabel" row="1" column="3">
                     <property name="name">
                         <cstring>ui_stopLabel</cstring>
                     </property>
@@ -311,7 +215,7 @@
                     <property name="hAlign" stdset="0">
                     </property>
                 </widget>
-                <widget class="QComboBox" row="1" column="3">
+                <widget class="QComboBox" row="1" column="4">
                     <item>
                         <property name="text">
                             <string>1 Stop bit</string>
@@ -329,7 +233,7 @@
                         <string>Number of stop bits for serial communication.</string>
                     </property>
                 </widget>
-                <widget class="QComboBox" row="2" column="1">
+                <widget class="QComboBox" row="2" column="1" rowspan="1" colspan="2">
                     <item>
                         <property name="text">
                             <string>None</string>
@@ -368,7 +272,7 @@
                     <property name="hAlign" stdset="0">
                     </property>
                 </widget>
-                <widget class="QLabel" row="2" column="2">
+                <widget class="QLabel" row="2" column="3">
                     <property name="name">
                         <cstring>ui_displayLabel</cstring>
                     </property>
@@ -384,7 +288,7 @@
                     <property name="hAlign" stdset="0">
                     </property>
                 </widget>
-                <widget class="QComboBox" row="2" column="3">
+                <widget class="QComboBox" row="2" column="4">
                     <item>
                         <property name="text">
                             <string>3 1/2</string>
@@ -410,6 +314,37 @@
                     </property>
                     <property name="whatsThis" stdset="0">
                         <string>Number of stop bits for serial communication.</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox" row="0" column="1">
+                    <item>
+                        <property name="text">
+                            <string>/dev/ttyS</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>/dev/usb/ttyUSB</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>/dev/ttyUSB</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>port</cstring>
+                    </property>
+                    <property name="currentItem">
+                        <number>0</number>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>Choose the serial device here. &lt;i&gt;(Hint for DOS people: /dev/ttyS0 corresponds to COM1. /dev/ttyS1 to COM2 ...)&lt;/i&gt;</string>
+                    </property>
+                </widget>
+                <widget class="QSpinBox" row="0" column="2">
+                    <property name="name">
+                        <cstring>portNumber</cstring>
                     </property>
                 </widget>
             </grid>

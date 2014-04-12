@@ -1,3 +1,10 @@
+29/04/2005 0.8.4
+           - Added header file for debian
+           - Added QtDMM.desktop (Radek Liboska)
+           - Added PNG Icon (Radek Liboska)
+           - Separated device name and number (this way you can
+             configure ttyS0-ttyS99 without the need for a one 
+             kilometer long popupmenu)
 24/04/2005 0.8.3
            - Finally ported to Qt-3.x
 20/10/2002 0.8.2 

@@ -1,0 +1,64 @@
+
+RCS file: /home/cvs/QtDMM/src/configdlg.h,v
+Working file: configdlg.h
+head: 1.12
+branch:
+locks: strict
+access list:
+symbolic names:
+	v0_6_0: 1.4
+	V60: 1.4
+	v0_5_1: 1.3
+	v_0_5: 1.2
+keyword substitution: kv
+total revisions: 12;	selected revisions: 12
+description:
+----------------------------
+revision 1.12
+date: 2002/10/20 17:06:55;  author: mt;  state: Exp;  lines: +1 -0
+panning works now
+----------------------------
+revision 1.11
+date: 2002/10/20 16:03:17;  author: mt;  state: Exp;  lines: +3 -1
+moving thresholds with mouse and improved scale
+----------------------------
+revision 1.10
+date: 2002/10/20 10:12:01;  author: mt;  state: Exp;  lines: +37 -5
+better config dialog and numerous fixes in graph
+----------------------------
+revision 1.9
+date: 2002/10/19 14:15:29;  author: mt;  state: Exp;  lines: +5 -38
+first version of new configuration dialog
+----------------------------
+revision 1.8
+date: 2002/10/15 15:26:39;  author: mt;  state: Exp;  lines: +2 -0
+added zoom with wheel and fix for comp. problem on redhat
+----------------------------
+revision 1.7
+date: 2002/10/13 15:48:41;  author: mt;  state: Exp;  lines: +9 -3
+version 0.8 seems to be working
+----------------------------
+revision 1.6
+date: 2002/03/20 20:34:13;  author: mt;  state: Exp;  lines: +6 -0
+mt: pre 0.7.1 (enhanced display plus more models)
+----------------------------
+revision 1.5
+date: 2001/12/15 18:19:21;  author: mt;  state: Exp;  lines: +13 -0
+Version 0.6.2 (integration + graph options)
+----------------------------
+revision 1.4
+date: 2001/11/17 20:00:12;  author: mt;  state: Exp;  lines: +3 -0
+added validator and some preferences
+----------------------------
+revision 1.3
+date: 2001/10/27 16:25:25;  author: mt;  state: Exp;  lines: +1 -0
+added Metex M-3660D and some onlie help chrome
+----------------------------
+revision 1.2
+date: 2001/09/04 22:01:27;  author: mt;  state: Exp;  lines: +8 -0
+Added external command (still small bug with start failure)
+----------------------------
+revision 1.1
+date: 2001/09/04 14:38:13;  author: mt;  state: Exp;
+FIRST
+=============================================================================

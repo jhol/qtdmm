@@ -80,7 +80,7 @@ void
 GuiPrefs::applySLOT()
 {
   m_cfg->setInt( "QtDMM", "version", 0 );
-  m_cfg->setInt( "QtDMM", "revision", 62 );
+  m_cfg->setInt( "QtDMM", "revision", 84 );
   m_cfg->setBool( "QtDMM", "show-tip", showTip() );
   m_cfg->setRGB( "Display", "display-background", ui_bgColorDisplay->color().rgb() );
   m_cfg->setRGB( "Display", "display-text", ui_textColor->color().rgb() );

@@ -104,6 +104,7 @@ void
 DmmPrefs::defaultsSLOT()
 {
   port->setCurrentItem( m_cfg->getInt( "Port settings", "device", 0 ) );
+  portNumber->setValue( QMIN( 2, m_cfg->getInt( "Port settings", "device-number", 0 )) );
   baudRate->setCurrentItem( m_cfg->getInt( "Port settings", "baud", 0 ) );
   bitsCombo->setCurrentItem( m_cfg->getInt( "Port settings", "bits", 7 )-5 );
   stopBitsCombo->setCurrentItem( m_cfg->getInt( "Port settings", "stop-bits", 2 )-1);
@@ -151,6 +152,7 @@ void
 DmmPrefs::applySLOT()
 {
   m_cfg->setInt( "Port settings", "device", port->currentItem() );
+  m_cfg->setInt( "Port settings", "device-number", portNumber->value() );
   m_cfg->setInt( "Port settings", "baud", baudRate->currentItem() );
   m_cfg->setInt( "Port settings", "bits", bitsCombo->currentItem()+5 );
   m_cfg->setInt( "Port settings", "stop-bits", stopBitsCombo->currentItem()+1 );
@@ -269,5 +271,7 @@ DmmPrefs::dmmName() const
 QString
 DmmPrefs::device() const
 {
-  return port->currentText();
+  QString txt;
+  txt.sprintf( "%s%d", port->currentText().latin1(), portNumber->value() ); 
+  return txt;
 }
