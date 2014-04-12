@@ -1,374 +1,271 @@
-<!DOCTYPE UI><UI>
-<class>UIDisplayPrefs</class>
-<widget>
-    <class>PrefWidget</class>
-    <property stdset="1">
-        <name>name</name>
-        <cstring>UIDisplayPrefs</cstring>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0" stdsetdef="1">
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>UIDisplayPrefs</class>
+  <widget class="PrefWidget" name="UIDisplayPrefs">
+    <property name="geometry">
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>335</width>
+        <height>312</height>
+      </rect>
     </property>
-    <property stdset="1">
-        <name>geometry</name>
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>335</width>
-            <height>312</height>
-        </rect>
+    <property name="caption">
+      <string>QFrameForm</string>
     </property>
-    <property stdset="1">
-        <name>caption</name>
-        <string>QFrameForm</string>
-    </property>
-    <vbox>
-        <property stdset="1">
-            <name>margin</name>
-            <number>10</number>
-        </property>
-        <property stdset="1">
-            <name>spacing</name>
-            <number>5</number>
-        </property>
-        <widget>
-            <class>QGroupBox</class>
-            <property stdset="1">
-                <name>name</name>
-                <cstring>GroupBox4</cstring>
+    <layout class="QVBoxLayout">
+      <property name="margin">
+        <number>10</number>
+      </property>
+      <property name="spacing">
+        <number>5</number>
+      </property>
+      <item>
+        <widget class="Q3GroupBox" name="GroupBox4">
+          <property name="title">
+            <string>Display</string>
+          </property>
+          <layout class="QGridLayout">
+            <property name="margin">
+              <number>10</number>
             </property>
-            <property stdset="1">
-                <name>title</name>
-                <string>Display</string>
+            <property name="spacing">
+              <number>5</number>
             </property>
-            <property>
-                <name>layoutMargin</name>
-            </property>
-            <property>
-                <name>layoutSpacing</name>
-            </property>
-            <grid>
-                <property stdset="1">
-                    <name>margin</name>
-                    <number>10</number>
+            <item row="1" column="0">
+              <layout class="QHBoxLayout">
+                <property name="margin">
+                  <number>0</number>
                 </property>
-                <property stdset="1">
-                    <name>spacing</name>
-                    <number>5</number>
+                <property name="spacing">
+                  <number>0</number>
                 </property>
-                <widget row="1"  column="0" >
-                    <class>QLayoutWidget</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>Layout37</cstring>
+                <item>
+                  <widget class="QCheckBox" name="ui_showBar">
+                    <property name="text">
+                      <string>Show bargraph</string>
                     </property>
-                    <property>
-                        <name>layoutSpacing</name>
+                    <property name="checked">
+                      <bool>true</bool>
                     </property>
-                    <hbox>
-                        <property stdset="1">
-                            <name>margin</name>
-                            <number>0</number>
-                        </property>
-                        <property stdset="1">
-                            <name>spacing</name>
-                            <number>0</number>
-                        </property>
-                        <widget>
-                            <class>QCheckBox</class>
-                            <property stdset="1">
-                                <name>name</name>
-                                <cstring>ui_showBar</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>text</name>
-                                <string>Show bargraph</string>
-                            </property>
-                            <property stdset="1">
-                                <name>checked</name>
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <spacer>
-                            <property>
-                                <name>name</name>
-                                <cstring>Spacer34</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>orientation</name>
-                                <enum>Horizontal</enum>
-                            </property>
-                            <property stdset="1">
-                                <name>sizeType</name>
-                                <enum>MinimumExpanding</enum>
-                            </property>
-                            <property>
-                                <name>sizeHint</name>
-                                <size>
-                                    <width>20</width>
-                                    <height>20</height>
-                                </size>
-                            </property>
-                        </spacer>
-                    </hbox>
-                </widget>
-                <widget row="0"  column="0" >
-                    <class>QLayoutWidget</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>Layout19_2</cstring>
+                  </widget>
+                </item>
+                <item>
+                  <spacer name="Spacer34">
+                    <property name="sizeHint">
+                      <size>
+                        <width>20</width>
+                        <height>20</height>
+                      </size>
                     </property>
-                    <property>
-                        <name>layoutSpacing</name>
+                    <property name="sizeType">
+                      <enum>QSizePolicy::MinimumExpanding</enum>
                     </property>
-                    <hbox>
-                        <property stdset="1">
-                            <name>margin</name>
-                            <number>0</number>
-                        </property>
-                        <property stdset="1">
-                            <name>spacing</name>
-                            <number>5</number>
-                        </property>
-                        <widget>
-                            <class>ColorButton</class>
-                            <property stdset="1">
-                                <name>name</name>
-                                <cstring>ui_bgColorDisplay</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>minimumSize</name>
-                                <size>
-                                    <width>50</width>
-                                    <height>0</height>
-                                </size>
-                            </property>
-                            <property stdset="1">
-                                <name>maximumSize</name>
-                                <size>
-                                    <width>50</width>
-                                    <height>32767</height>
-                                </size>
-                            </property>
-                            <property>
-                                <name>whatsThis</name>
-                                <string>Click this button to change the color of the numerical display for the dmm.</string>
-                            </property>
-                        </widget>
-                        <widget>
-                            <class>QLabel</class>
-                            <property stdset="1">
-                                <name>name</name>
-                                <cstring>TextLabel2_2_2</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>sizePolicy</name>
-                                <sizepolicy>
-                                    <hsizetype>7</hsizetype>
-                                    <vsizetype>1</vsizetype>
-                                </sizepolicy>
-                            </property>
-                            <property stdset="1">
-                                <name>text</name>
-                                <string>Back&amp;ground</string>
-                            </property>
-                            <property stdset="1">
-                                <name>alignment</name>
-                                <set>AlignVCenter|AlignLeft</set>
-                            </property>
-                            <property>
-                                <name>buddy</name>
-                                <cstring>ui_bgColorDisplay</cstring>
-                            </property>
-                            <property>
-                                <name>hAlign</name>
-                            </property>
-                        </widget>
-                    </hbox>
-                </widget>
-                <widget row="0"  column="1" >
-                    <class>QLayoutWidget</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>Layout19_3</cstring>
+                    <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
                     </property>
-                    <property>
-                        <name>layoutSpacing</name>
+                  </spacer>
+                </item>
+              </layout>
+            </item>
+            <item row="0" column="0">
+              <layout class="QHBoxLayout">
+                <property name="margin">
+                  <number>0</number>
+                </property>
+                <property name="spacing">
+                  <number>5</number>
+                </property>
+                <item>
+                  <widget class="ColorButton" name="ui_bgColorDisplay">
+                    <property name="minimumSize">
+                      <size>
+                        <width>50</width>
+                        <height>0</height>
+                      </size>
                     </property>
-                    <hbox>
-                        <property stdset="1">
-                            <name>margin</name>
-                            <number>0</number>
-                        </property>
-                        <property stdset="1">
-                            <name>spacing</name>
-                            <number>5</number>
-                        </property>
-                        <widget>
-                            <class>ColorButton</class>
-                            <property stdset="1">
-                                <name>name</name>
-                                <cstring>ui_textColor</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>minimumSize</name>
-                                <size>
-                                    <width>50</width>
-                                    <height>0</height>
-                                </size>
-                            </property>
-                            <property stdset="1">
-                                <name>maximumSize</name>
-                                <size>
-                                    <width>50</width>
-                                    <height>32767</height>
-                                </size>
-                            </property>
-                            <property>
-                                <name>whatsThis</name>
-                                <string>Click this button to change the color of the text in the numerical display.</string>
-                            </property>
-                        </widget>
-                        <widget>
-                            <class>QLabel</class>
-                            <property stdset="1">
-                                <name>name</name>
-                                <cstring>TextLabel2_2_3</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>sizePolicy</name>
-                                <sizepolicy>
-                                    <hsizetype>3</hsizetype>
-                                    <vsizetype>1</vsizetype>
-                                </sizepolicy>
-                            </property>
-                            <property stdset="1">
-                                <name>text</name>
-                                <string>&amp;Text</string>
-                            </property>
-                            <property>
-                                <name>buddy</name>
-                                <cstring>ui_textColor</cstring>
-                            </property>
-                        </widget>
-                    </hbox>
-                </widget>
-                <widget row="1"  column="1" >
-                    <class>QLayoutWidget</class>
-                    <property stdset="1">
-                        <name>name</name>
-                        <cstring>Layout37_2</cstring>
+                    <property name="maximumSize">
+                      <size>
+                        <width>50</width>
+                        <height>32767</height>
+                      </size>
                     </property>
-                    <property>
-                        <name>layoutSpacing</name>
+                    <property name="whatsThis">
+                      <string>Click this button to change the color of the numerical display for the dmm.</string>
                     </property>
-                    <hbox>
-                        <property stdset="1">
-                            <name>margin</name>
-                            <number>0</number>
-                        </property>
-                        <property stdset="1">
-                            <name>spacing</name>
-                            <number>0</number>
-                        </property>
-                        <widget>
-                            <class>QCheckBox</class>
-                            <property stdset="1">
-                                <name>name</name>
-                                <cstring>ui_showMinMax</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>text</name>
-                                <string>Show Min/Max</string>
-                            </property>
-                            <property stdset="1">
-                                <name>checked</name>
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <spacer>
-                            <property>
-                                <name>name</name>
-                                <cstring>Spacer34_2</cstring>
-                            </property>
-                            <property stdset="1">
-                                <name>orientation</name>
-                                <enum>Horizontal</enum>
-                            </property>
-                            <property stdset="1">
-                                <name>sizeType</name>
-                                <enum>MinimumExpanding</enum>
-                            </property>
-                            <property>
-                                <name>sizeHint</name>
-                                <size>
-                                    <width>20</width>
-                                    <height>20</height>
-                                </size>
-                            </property>
-                        </spacer>
-                    </hbox>
-                </widget>
-            </grid>
+                  </widget>
+                </item>
+                <item>
+                  <widget class="QLabel" name="TextLabel2_2_2">
+                    <property name="sizePolicy">
+                      <sizepolicy>
+                        <hsizetype>7</hsizetype>
+                        <vsizetype>1</vsizetype>
+                      </sizepolicy>
+                    </property>
+                    <property name="text">
+                      <string>Back&amp;ground</string>
+                    </property>
+                    <property name="alignment">
+                      <set>Qt::AlignVCenter|Qt::AlignLeft</set>
+                    </property>
+                    <property name="buddy">
+                      <cstring>ui_bgColorDisplay</cstring>
+                    </property>
+                    <property name="wordWrap">
+                      <bool>false</bool>
+                    </property>
+                  </widget>
+                </item>
+              </layout>
+            </item>
+            <item row="0" column="1">
+              <layout class="QHBoxLayout">
+                <property name="margin">
+                  <number>0</number>
+                </property>
+                <property name="spacing">
+                  <number>5</number>
+                </property>
+                <item>
+                  <widget class="ColorButton" name="ui_textColor">
+                    <property name="minimumSize">
+                      <size>
+                        <width>50</width>
+                        <height>0</height>
+                      </size>
+                    </property>
+                    <property name="maximumSize">
+                      <size>
+                        <width>50</width>
+                        <height>32767</height>
+                      </size>
+                    </property>
+                    <property name="whatsThis">
+                      <string>Click this button to change the color of the text in the numerical display.</string>
+                    </property>
+                  </widget>
+                </item>
+                <item>
+                  <widget class="QLabel" name="TextLabel2_2_3">
+                    <property name="sizePolicy">
+                      <sizepolicy>
+                        <hsizetype>3</hsizetype>
+                        <vsizetype>1</vsizetype>
+                      </sizepolicy>
+                    </property>
+                    <property name="text">
+                      <string>&amp;Text</string>
+                    </property>
+                    <property name="buddy">
+                      <cstring>ui_textColor</cstring>
+                    </property>
+                    <property name="wordWrap">
+                      <bool>false</bool>
+                    </property>
+                  </widget>
+                </item>
+              </layout>
+            </item>
+            <item row="1" column="1">
+              <layout class="QHBoxLayout">
+                <property name="margin">
+                  <number>0</number>
+                </property>
+                <property name="spacing">
+                  <number>0</number>
+                </property>
+                <item>
+                  <widget class="QCheckBox" name="ui_showMinMax">
+                    <property name="text">
+                      <string>Show Min/Max</string>
+                    </property>
+                    <property name="checked">
+                      <bool>true</bool>
+                    </property>
+                  </widget>
+                </item>
+                <item>
+                  <spacer name="Spacer34_2">
+                    <property name="sizeHint">
+                      <size>
+                        <width>20</width>
+                        <height>20</height>
+                      </size>
+                    </property>
+                    <property name="sizeType">
+                      <enum>QSizePolicy::MinimumExpanding</enum>
+                    </property>
+                    <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                    </property>
+                  </spacer>
+                </item>
+              </layout>
+            </item>
+          </layout>
         </widget>
-        <spacer>
-            <property>
-                <name>name</name>
-                <cstring>Spacer1_5</cstring>
-            </property>
-            <property stdset="1">
-                <name>orientation</name>
-                <enum>Vertical</enum>
-            </property>
-            <property stdset="1">
-                <name>sizeType</name>
-                <enum>Expanding</enum>
-            </property>
-            <property>
-                <name>sizeHint</name>
-                <size>
-                    <width>20</width>
-                    <height>20</height>
-                </size>
-            </property>
+      </item>
+      <item>
+        <spacer name="Spacer1_5">
+          <property name="sizeHint">
+            <size>
+              <width>20</width>
+              <height>20</height>
+            </size>
+          </property>
+          <property name="sizeType">
+            <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="orientation">
+            <enum>Qt::Vertical</enum>
+          </property>
         </spacer>
-    </vbox>
-</widget>
-<customwidgets>
+      </item>
+    </layout>
+  </widget>
+  <customwidgets>
     <customwidget>
-        <class>ColorButton</class>
-        <header location="local">colorbutton.h</header>
-        <sizehint>
-            <width>-1</width>
-            <height>-1</height>
-        </sizehint>
-        <container>0</container>
-        <sizepolicy>
-            <hordata>5</hordata>
-            <verdata>5</verdata>
-        </sizepolicy>
-        <pixmap>image0</pixmap>
+      <class>ColorButton</class>
+      <extends>QWidget</extends>
+      <header location="local">colorbutton.h</header>
+      <sizehint>
+        <width>-1</width>
+        <height>-1</height>
+      </sizehint>
+      <container>0</container>
+      <sizepolicy>
+        <hordata>5</hordata>
+        <verdata>5</verdata>
+      </sizepolicy>
+      <pixmap>image0</pixmap>
     </customwidget>
     <customwidget>
-        <class>PrefWidget</class>
-        <header location="global">prefwidget.h</header>
-        <sizehint>
-            <width>-1</width>
-            <height>-1</height>
-        </sizehint>
-        <container>1</container>
-        <sizepolicy>
-            <hordata>5</hordata>
-            <verdata>5</verdata>
-        </sizepolicy>
-        <pixmap>image0</pixmap>
+      <class>PrefWidget</class>
+      <extends>QWidget</extends>
+      <header location="global">prefwidget.h</header>
+      <sizehint>
+        <width>-1</width>
+        <height>-1</height>
+      </sizehint>
+      <container>1</container>
+      <sizepolicy>
+        <hordata>5</hordata>
+        <verdata>5</verdata>
+      </sizepolicy>
+      <pixmap>image0</pixmap>
     </customwidget>
-</customwidgets>
-<images>
-    <image>
-        <name>image0</name>
-        <data format="XPM.GZ" length="646">789c6dd2c10ac2300c00d07bbf2234b7229d1be245fc04c5a3201e4615f430059d0711ff5ddb2e6bb236ec90eed134cb5a19d8ef36602af5ecdbfeeac05dda0798d3abebde87e3faa374d3807fa0d633a52d38d8de6f679fe33fc776e196f53cd010188256a3600a292882096246517815ca99884606e18044a3a40d91824820924265a7923a2e8bcd05f33db1173e002913175f2a6be6d3294871a2d95fa00e8a94ee017b69d339d90df1e77c57ea072ede6758</data>
-    </image>
-</images>
-<tabstops>
+  </customwidgets>
+  <tabstops>
     <tabstop>ui_showBar</tabstop>
     <tabstop>ui_showMinMax</tabstop>
-</tabstops>
-</UI>
+  </tabstops>
+  <images>
+    <image name="image0">
+      <data format="XPM.GZ" length="646">789c6dd2c10ac2300c00d07bbf2234b7229d1be245fc04c5a3201e4615f430059d0711ff5ddb2e6bb236ec90eed134cb5a19d8ef36602af5ecdbfeeac05dda0798d3abebde87e3faa374d3807fa0d633a52d38d8de6f679fe33fc776e196f53cd010188256a3600a292882096246517815ca99884606e18044a3a40d91824820924265a7923a2e8bcd05f33db1173e002913175f2a6be6d3294871a2d95fa00e8a94ee017b69d339d90df1e77c57ea072ede6758</data>
+    </image>
+  </images>
+</ui>

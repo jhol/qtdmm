@@ -1,31 +1,24 @@
-<!DOCTYPE UI><UI>
-<class>QFrameForm</class>
-<widget>
-    <class>QFrame</class>
-    <property stdset="1">
-        <name>name</name>
-        <cstring>QFrameForm</cstring>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0" stdsetdef="1">
+  <author></author>
+  <comment></comment>
+  <exportmacro></exportmacro>
+  <class>QFrameForm</class>
+  <widget class="Q3Frame" name="QFrameForm">
+    <property name="geometry">
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>296</width>
+        <height>400</height>
+      </rect>
     </property>
-    <property stdset="1">
-        <name>geometry</name>
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>296</width>
-            <height>400</height>
-        </rect>
+    <property name="windowTitle">
+      <string>QFrameForm</string>
     </property>
-    <property stdset="1">
-        <name>caption</name>
-        <string>QFrameForm</string>
+    <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
     </property>
-    <property stdset="1">
-        <name>frameShape</name>
-        <enum>NoFrame</enum>
-    </property>
-    <property stdset="1">
-        <name>frameShadow</name>
-        <enum></enum>
-    </property>
-</widget>
-</UI>
+  </widget>
+  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+</ui>
