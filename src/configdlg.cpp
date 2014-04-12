@@ -27,6 +27,10 @@
 #include <qvalidator.h>
 #include <qradiobutton.h>
 
+struct DMMInfo dmm_info[] = { {"Metex/Voltcraft ME-32", 0, 0, 7, 2},
+                              {"PeakTech-451", 1, 1, 7, 2},
+                              { "",0,0,0,0} };
+                      
 ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
   UIConfigDlg( parent, name, true )
 {
@@ -49,6 +53,18 @@ ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
   connect( helpBut, SIGNAL( clicked() ), this, SLOT( helpSLOT() ));
   connect( okBut, SIGNAL( clicked() ), this, SLOT( applySLOT() ));
   connect( cancelBut, SIGNAL( clicked() ), this, SLOT( cancelSLOT() ));
+  
+  modelCombo->clear();
+  modelCombo->insertItem( "Manual settings" );
+  
+  int id = 0;
+  while (*dmm_info[id].name)
+  {
+    modelCombo->insertItem( dmm_info[id++].name );
+  }
+  
+  connect( modelCombo, SIGNAL( activated( int ) ),
+           this, SLOT( modelSLOT( int )));
 }
 
 ConfigDlg::~ConfigDlg()
@@ -83,6 +99,11 @@ ConfigDlg::applySLOT()
   
   m_cfg->setInt( "Port settings", "device", port->currentItem() );
   m_cfg->setInt( "Port settings", "baud", baudRate->currentItem() );
+  m_cfg->setInt( "Port settings", "bits", bitsCombo->currentItem()+5 );
+  m_cfg->setInt( "Port settings", "stop-bits", stopBitsCombo->currentItem()+1 );
+  
+  m_cfg->setInt( "DMM", "data-format", protocolCombo->currentItem() );
+  
   m_cfg->save();
 }
 
@@ -143,6 +164,11 @@ ConfigDlg::cancelSLOT()
 
   port->setCurrentItem( m_cfg->getInt( "Port settings", "device", 0 ) );
   baudRate->setCurrentItem( m_cfg->getInt( "Port settings", "baud", 0 ) );
+  bitsCombo->setCurrentItem( m_cfg->getInt( "Port settings", "bits", 7 )-5 );
+  stopBitsCombo->setCurrentItem( m_cfg->getInt( "Port settings", "stop-bits", 2 )-1);
+  
+  protocolCombo->setCurrentItem( m_cfg->getInt( "DMM", "data-format", 0 ));
+
 }
 
 void
@@ -314,3 +340,43 @@ ConfigDlg::automaticScale() const
 {
   return autoScaleBut->isChecked();
 }
+
+ReadEvent::DataFormat
+ConfigDlg::format() const
+{
+  if (1 == protocolCombo->currentItem())
+  {
+    return ReadEvent::PeakTech10;
+  }
+  
+  return ReadEvent::Metex14;
+}
+
+void
+ConfigDlg::modelSLOT( int id )
+{
+  baudRate->setDisabled( id != 0 );
+  protocolCombo->setDisabled( id != 0 );
+  bitsCombo->setDisabled( id != 0 );
+  stopBitsCombo->setDisabled( id != 0 );
+  if (id != 0) message->hide();
+  else         message->show();
+  
+  baudRate->setCurrentItem( dmm_info[id-1].baud );
+  protocolCombo->setCurrentItem( dmm_info[id-1].protocol );
+  bitsCombo->setCurrentItem( dmm_info[id-1].bits-5 );
+  stopBitsCombo->setCurrentItem( dmm_info[id-1].stopBits-1 );
+}
+
+int
+ConfigDlg::bits() const
+{
+  return 5+bitsCombo->currentItem();
+}
+
+int
+ConfigDlg::stopBits() const
+{
+  return 1+stopBitsCombo->currentItem();
+}
+

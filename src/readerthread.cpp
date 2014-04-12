@@ -19,20 +19,26 @@
 //======================================================================
 
 #include <readerthread.h>
-#include <readevent.h>
 #include <unistd.h>
 #include <iostream.h>
 
 ReaderThread::ReaderThread( QObject *receiver ) :
   QThread(),
   m_receiver( receiver ),
-  m_readValue( false )
+  m_readValue( false ),
+  m_format( ReadEvent::Metex14 )
 {
   m_buffer[14] = '\0';
 }
 
 ReaderThread::~ReaderThread()
 {
+}
+
+void 
+ReaderThread::setFormat( ReadEvent::DataFormat format )
+{
+  m_format = format;
 }
 
 void
@@ -45,7 +51,7 @@ ReaderThread::run()
       readDMM();
       m_readValue = false;
       
-      QThread::postEvent( m_receiver, new ReadEvent( m_buffer ) );
+      QThread::postEvent( m_receiver, new ReadEvent( m_buffer, m_format ) );
     }
     msleep( 10 );
   }
@@ -65,37 +71,79 @@ ReaderThread::readDMM()
   char byte;
   int  i = -1;
   int  retval;
+  bool flag = false;
   
-  ::write( m_handle, "d\n", 2 );
+  if (m_format == ReadEvent::Metex14)
+  {
+    ::write( m_handle, "d\n", 2 );
   
-  do 
-  {    
-    if (-1 == m_handle) 
-    {
-      m_status = ReaderThread::NotConnected;
-      return;
-    }
-    
-    retval = ::read( m_handle, &byte, 1);
-    
-    if (-1 == retval)
-    {
-      m_status = ReaderThread::Error;
-      
-      return;
-    }
-    else if (0 == retval)
-    {
-      m_status = ReaderThread::Timeout;
-      
-      return;
-    }
-    else
-    { 
-      m_buffer[(++i)%14] = byte;
-    }
-  } 
-  while ('\r' != byte);
+    do 
+    {    
+      if (-1 == m_handle) 
+      {
+        m_status = ReaderThread::NotConnected;
+        return;
+      }
+
+      retval = ::read( m_handle, &byte, 1);
+
+      if (-1 == retval)
+      {
+        m_status = ReaderThread::Error;
+
+        return;
+      }
+      else if (0 == retval)
+      {
+        m_status = ReaderThread::Timeout;
+
+        return;
+      }
+      else
+      { 
+        m_buffer[(++i)%14] = byte;
+      }
+    } 
+    while ('\r' != byte);
+  }
+  else if (m_format == ReadEvent::PeakTech10)
+  {
+    while(false == flag)
+    {    
+      if (-1 == m_handle) 
+      {
+        m_status = ReaderThread::NotConnected;
+        return;
+      }
+
+      retval = ::read( m_handle, &byte, 1);
+
+      if (-1 == retval)
+      {
+        m_status = ReaderThread::Error;
+
+        return;
+      }
+      else if (0 == retval)
+      {
+        m_status = ReaderThread::Timeout;
+
+        return;
+      }
+      else
+      {
+        // wait for #
+        if(byte=='#')
+        {
+	        flag=true;
+	        for(i=0; i<11; i++){
+	          retval = ::read( m_handle, &byte, 1);
+	          m_buffer[i] = byte;
+	        }
+        }
+      }
+    } 
+  }
    
   m_status = ReaderThread::Ok;
 }

@@ -25,6 +25,16 @@
 #include <simplecfg.h>
 #include <qcombobox.h>
 #include <dmmgraph.h>
+#include <readevent.h>
+
+struct DMMInfo
+{
+  char *name;
+  int   baud;
+  int   protocol;
+  int   bits;
+  int   stopBits;
+};
 
 class ConfigDlg : public UIConfigDlg
 {
@@ -46,6 +56,9 @@ public:
   double scaleMin() const;
   double scaleMax() const;
   bool automaticScale() const;
+  ReadEvent::DataFormat format() const;
+  int bits() const;
+  int stopBits() const;
   
 protected:
   SimpleCfg *m_cfg;
@@ -54,6 +67,7 @@ protected slots:
   void applySLOT();
   void cancelSLOT();
   void helpSLOT();
+  void modelSLOT( int );
   
 };
 

@@ -12,8 +12,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>339</width>
-            <height>407</height>
+            <width>389</width>
+            <height>391</height>
         </rect>
     </property>
     <property stdset="1">
@@ -64,15 +64,15 @@
                         <cstring>helpBut</cstring>
                     </property>
                     <property stdset="1">
-                        <name>text</name>
-                        <string></string>
-                    </property>
-                    <property stdset="1">
                         <name>minimumSize</name>
                         <size>
                             <width>26</width>
                             <height>26</height>
                         </size>
+                    </property>
+                    <property stdset="1">
+                        <name>text</name>
+                        <string></string>
                     </property>
                     <property stdset="1">
                         <name>pixmap</name>
@@ -417,12 +417,12 @@
                                     <cstring>ButtonGroup32</cstring>
                                 </property>
                                 <property stdset="1">
-                                    <name>title</name>
-                                    <string></string>
-                                </property>
-                                <property stdset="1">
                                     <name>frameShape</name>
                                     <enum>NoFrame</enum>
+                                </property>
+                                <property stdset="1">
+                                    <name>title</name>
+                                    <string></string>
                                 </property>
                                 <property stdset="1">
                                     <name>exclusive</name>
@@ -639,12 +639,12 @@
                                                                     <bool>false</bool>
                                                                 </property>
                                                                 <property stdset="1">
-                                                                    <name>maxValue</name>
-                                                                    <number>23</number>
-                                                                </property>
-                                                                <property stdset="1">
                                                                     <name>wrapping</name>
                                                                     <bool>true</bool>
+                                                                </property>
+                                                                <property stdset="1">
+                                                                    <name>maxValue</name>
+                                                                    <number>23</number>
                                                                 </property>
                                                                 <property>
                                                                     <name>whatsThis</name>
@@ -690,12 +690,12 @@
                                                                     <bool>false</bool>
                                                                 </property>
                                                                 <property stdset="1">
-                                                                    <name>maxValue</name>
-                                                                    <number>59</number>
-                                                                </property>
-                                                                <property stdset="1">
                                                                     <name>wrapping</name>
                                                                     <bool>true</bool>
+                                                                </property>
+                                                                <property stdset="1">
+                                                                    <name>maxValue</name>
+                                                                    <number>59</number>
                                                                 </property>
                                                                 <property>
                                                                     <name>whatsThis</name>
@@ -741,12 +741,12 @@
                                                                     <bool>false</bool>
                                                                 </property>
                                                                 <property stdset="1">
-                                                                    <name>maxValue</name>
-                                                                    <number>59</number>
-                                                                </property>
-                                                                <property stdset="1">
                                                                     <name>wrapping</name>
                                                                     <bool>true</bool>
+                                                                </property>
+                                                                <property stdset="1">
+                                                                    <name>maxValue</name>
+                                                                    <number>59</number>
                                                                 </property>
                                                                 <property>
                                                                     <name>whatsThis</name>
@@ -850,12 +850,12 @@ You have two choices:
                                     <cstring>ButtonGroup13</cstring>
                                 </property>
                                 <property stdset="1">
-                                    <name>title</name>
-                                    <string></string>
-                                </property>
-                                <property stdset="1">
                                     <name>frameShape</name>
                                     <enum>NoFrame</enum>
+                                </property>
+                                <property stdset="1">
+                                    <name>title</name>
+                                    <string></string>
                                 </property>
                                 <property stdset="1">
                                     <name>exclusive</name>
@@ -1064,12 +1064,12 @@ You have two choices:
                                                             <cstring>raisingBut</cstring>
                                                         </property>
                                                         <property stdset="1">
-                                                            <name>text</name>
-                                                            <string>Raising edge</string>
-                                                        </property>
-                                                        <property stdset="1">
                                                             <name>enabled</name>
                                                             <bool>false</bool>
+                                                        </property>
+                                                        <property stdset="1">
+                                                            <name>text</name>
+                                                            <string>Raising edge</string>
                                                         </property>
                                                         <property stdset="1">
                                                             <name>checked</name>
@@ -1128,12 +1128,12 @@ You have two choices:
                                                             <cstring>fallingBut</cstring>
                                                         </property>
                                                         <property stdset="1">
-                                                            <name>text</name>
-                                                            <string>Falling edge</string>
-                                                        </property>
-                                                        <property stdset="1">
                                                             <name>enabled</name>
                                                             <bool>false</bool>
+                                                        </property>
+                                                        <property stdset="1">
+                                                            <name>text</name>
+                                                            <string>Falling edge</string>
                                                         </property>
                                                         <property>
                                                             <name>whatsThis</name>
@@ -1328,12 +1328,12 @@ You have two choices:
                                             </size>
                                         </property>
                                         <property stdset="1">
-                                            <name>maxLength</name>
-                                            <number>9</number>
-                                        </property>
-                                        <property stdset="1">
                                             <name>text</name>
                                             <string>-3.999</string>
+                                        </property>
+                                        <property stdset="1">
+                                            <name>maxLength</name>
+                                            <number>9</number>
                                         </property>
                                         <property>
                                             <name>whatsThis</name>
@@ -1387,12 +1387,12 @@ You have two choices:
                                             </size>
                                         </property>
                                         <property stdset="1">
-                                            <name>maxLength</name>
-                                            <number>9</number>
-                                        </property>
-                                        <property stdset="1">
                                             <name>text</name>
                                             <string>3.999</string>
+                                        </property>
+                                        <property stdset="1">
+                                            <name>maxLength</name>
+                                            <number>9</number>
                                         </property>
                                         <property>
                                             <name>whatsThis</name>
@@ -1665,6 +1665,63 @@ You have two choices:
                         <number>5</number>
                     </property>
                     <widget>
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>TextLabel1_2</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>sizePolicy</name>
+                            <sizepolicy>
+                                <hsizetype>1</hsizetype>
+                                <vsizetype>0</vsizetype>
+                            </sizepolicy>
+                        </property>
+                        <property stdset="1">
+                            <name>font</name>
+                            <font>
+                                <bold>1</bold>
+                            </font>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>Select yor DMM or set parameter manually</string>
+                        </property>
+                    </widget>
+                    <widget>
+                        <class>QComboBox</class>
+                        <item>
+                            <property>
+                                <name>text</name>
+                                <string>Manual settings</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property>
+                                <name>text</name>
+                                <string>Metex/Voltcraft ME-32</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property>
+                                <name>text</name>
+                                <string>PeakTech-451</string>
+                            </property>
+                        </item>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>modelCombo</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>sizeLimit</name>
+                            <number>25</number>
+                        </property>
+                        <property stdset="1">
+                            <name>autoCompletion</name>
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                    <widget>
                         <class>QButtonGroup</class>
                         <property stdset="1">
                             <name>name</name>
@@ -1689,18 +1746,74 @@ You have two choices:
                                 <name>spacing</name>
                                 <number>5</number>
                             </property>
-                            <widget row="0"  column="0" >
+                            <widget row="1"  column="0" >
                                 <class>QLabel</class>
                                 <property stdset="1">
                                     <name>name</name>
-                                    <cstring>TextLabel1</cstring>
+                                    <cstring>TextLabel1_3</cstring>
                                 </property>
                                 <property stdset="1">
                                     <name>text</name>
-                                    <string>Baud rate:</string>
+                                    <string>Bits:</string>
+                                </property>
+                                <property stdset="1">
+                                    <name>alignment</name>
+                                    <set>AlignVCenter|AlignRight</set>
+                                </property>
+                                <property>
+                                    <name>hAlign</name>
                                 </property>
                             </widget>
-                            <widget row="0"  column="1" >
+                            <widget row="1"  column="1" >
+                                <class>QComboBox</class>
+                                <item>
+                                    <property>
+                                        <name>text</name>
+                                        <string>5 bits</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property>
+                                        <name>text</name>
+                                        <string>6 bits</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property>
+                                        <name>text</name>
+                                        <string>7 bits</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property>
+                                        <name>text</name>
+                                        <string>8 bits</string>
+                                    </property>
+                                </item>
+                                <property stdset="1">
+                                    <name>name</name>
+                                    <cstring>bitsCombo</cstring>
+                                </property>
+                            </widget>
+                            <widget row="1"  column="2" >
+                                <class>QLabel</class>
+                                <property stdset="1">
+                                    <name>name</name>
+                                    <cstring>TextLabel2_2</cstring>
+                                </property>
+                                <property stdset="1">
+                                    <name>text</name>
+                                    <string>Stop bits:</string>
+                                </property>
+                                <property stdset="1">
+                                    <name>alignment</name>
+                                    <set>AlignVCenter|AlignRight</set>
+                                </property>
+                                <property>
+                                    <name>hAlign</name>
+                                </property>
+                            </widget>
+                            <widget row="0"  column="3" >
                                 <class>QComboBox</class>
                                 <item>
                                     <property>
@@ -1751,7 +1864,25 @@ You have two choices:
                                     <string>Select the baud rate for the DMM here. If you encounter problems connecting to your DMM try lowering the baud rate. I had some problems with my &lt;b&gt;Metex ME-32&lt;/b&gt;. The Documentation said 1200 baud but it only worked at 600.</string>
                                 </property>
                             </widget>
-                            <widget row="1"  column="1" >
+                            <widget row="0"  column="2" >
+                                <class>QLabel</class>
+                                <property stdset="1">
+                                    <name>name</name>
+                                    <cstring>TextLabel1</cstring>
+                                </property>
+                                <property stdset="1">
+                                    <name>text</name>
+                                    <string>Baud rate:</string>
+                                </property>
+                                <property stdset="1">
+                                    <name>alignment</name>
+                                    <set>AlignVCenter|AlignRight</set>
+                                </property>
+                                <property>
+                                    <name>hAlign</name>
+                                </property>
+                            </widget>
+                            <widget row="0"  column="1" >
                                 <class>QComboBox</class>
                                 <item>
                                     <property>
@@ -1777,6 +1908,12 @@ You have two choices:
                                         <string>/dev/ttyS3</string>
                                     </property>
                                 </item>
+                                <item>
+                                    <property>
+                                        <name>text</name>
+                                        <string>/dev/modem</string>
+                                    </property>
+                                </item>
                                 <property stdset="1">
                                     <name>name</name>
                                     <cstring>port</cstring>
@@ -1790,49 +1927,7 @@ You have two choices:
                                     <string>Choose the serial device here. &lt;i&gt;(Hint for DOS people: /dev/ttyS0 corresponds to COM1. /dev/ttyS1 to COM2 ...)&lt;/i&gt;</string>
                                 </property>
                             </widget>
-                            <spacer row="0"  column="2" >
-                                <property>
-                                    <name>name</name>
-                                    <cstring>Spacer1</cstring>
-                                </property>
-                                <property stdset="1">
-                                    <name>orientation</name>
-                                    <enum>Horizontal</enum>
-                                </property>
-                                <property stdset="1">
-                                    <name>sizeType</name>
-                                    <enum>Expanding</enum>
-                                </property>
-                                <property>
-                                    <name>sizeHint</name>
-                                    <size>
-                                        <width>20</width>
-                                        <height>20</height>
-                                    </size>
-                                </property>
-                            </spacer>
-                            <spacer row="1"  column="2" >
-                                <property>
-                                    <name>name</name>
-                                    <cstring>Spacer2</cstring>
-                                </property>
-                                <property stdset="1">
-                                    <name>orientation</name>
-                                    <enum>Horizontal</enum>
-                                </property>
-                                <property stdset="1">
-                                    <name>sizeType</name>
-                                    <enum>Expanding</enum>
-                                </property>
-                                <property>
-                                    <name>sizeHint</name>
-                                    <size>
-                                        <width>20</width>
-                                        <height>20</height>
-                                    </size>
-                                </property>
-                            </spacer>
-                            <widget row="1"  column="0" >
+                            <widget row="0"  column="0" >
                                 <class>QLabel</class>
                                 <property stdset="1">
                                     <name>name</name>
@@ -1842,13 +1937,89 @@ You have two choices:
                                     <name>text</name>
                                     <string>Port:</string>
                                 </property>
+                                <property stdset="1">
+                                    <name>alignment</name>
+                                    <set>AlignVCenter|AlignRight</set>
+                                </property>
+                                <property>
+                                    <name>hAlign</name>
+                                </property>
+                            </widget>
+                            <widget row="1"  column="3" >
+                                <class>QComboBox</class>
+                                <item>
+                                    <property>
+                                        <name>text</name>
+                                        <string>1 Stop bit</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property>
+                                        <name>text</name>
+                                        <string>2 Stop bits</string>
+                                    </property>
+                                </item>
+                                <property stdset="1">
+                                    <name>name</name>
+                                    <cstring>stopBitsCombo</cstring>
+                                </property>
                             </widget>
                         </grid>
+                    </widget>
+                    <widget>
+                        <class>QButtonGroup</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>ButtonGroup7</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>title</name>
+                            <string>Protocol</string>
+                        </property>
+                        <property>
+                            <name>layoutMargin</name>
+                        </property>
+                        <property>
+                            <name>layoutSpacing</name>
+                        </property>
+                        <hbox>
+                            <property stdset="1">
+                                <name>margin</name>
+                                <number>10</number>
+                            </property>
+                            <property stdset="1">
+                                <name>spacing</name>
+                                <number>5</number>
+                            </property>
+                            <widget>
+                                <class>QComboBox</class>
+                                <item>
+                                    <property>
+                                        <name>text</name>
+                                        <string>14 bytes, polling (Metex/Voltcraft)</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property>
+                                        <name>text</name>
+                                        <string>10 bytes, continuous (PeakTech 451)</string>
+                                    </property>
+                                </item>
+                                <property stdset="1">
+                                    <name>name</name>
+                                    <cstring>protocolCombo</cstring>
+                                </property>
+                                <property>
+                                    <name>whatsThis</name>
+                                    <string>Here you may select the DMM type. Currently you can select between &lt;b&gt;Metex/Voltcraft&lt;/b&gt; and a &lt;b&gt;PeakTech-451&lt;/b&gt;. Selecting &lt;b&gt;Metex/Voltcraft&lt;/b&gt; it should run with all DMM's of this brand wich are compatible with their 14 byte protocol.&lt;p&gt;The PeakTech setting was only tested with this model.</string>
+                                </property>
+                            </widget>
+                        </hbox>
                     </widget>
                     <spacer>
                         <property>
                             <name>name</name>
-                            <cstring>Spacer4</cstring>
+                            <cstring>Spacer1_3</cstring>
                         </property>
                         <property stdset="1">
                             <name>orientation</name>
@@ -1866,6 +2037,31 @@ You have two choices:
                             </size>
                         </property>
                     </spacer>
+                    <widget>
+                        <class>QLabel</class>
+                        <property stdset="1">
+                            <name>name</name>
+                            <cstring>message</cstring>
+                        </property>
+                        <property stdset="1">
+                            <name>sizePolicy</name>
+                            <sizepolicy>
+                                <hsizetype>1</hsizetype>
+                                <vsizetype>3</vsizetype>
+                            </sizepolicy>
+                        </property>
+                        <property stdset="1">
+                            <name>text</name>
+                            <string>If you have a DMM not listed above and find manual settings that work, please report to &lt;u&gt;qtdmm@mtoussaint.de&lt;/u&gt;. This way future users of this DMM can benefit from your help.</string>
+                        </property>
+                        <property stdset="1">
+                            <name>alignment</name>
+                            <set>AlignBottom|AlignLeft</set>
+                        </property>
+                        <property>
+                            <name>vAlign</name>
+                        </property>
+                    </widget>
                 </vbox>
             </widget>
             <widget>
@@ -1896,7 +2092,7 @@ You have two choices:
                         <property stdset="1">
                             <name>text</name>
                             <string>&lt;center&gt;&lt;h1&gt;QtDMM&lt;/h1&gt;
-A simple display software for &lt;b&gt;Metex&lt;/b&gt; and compatible hand held digital multimeter including min/max memory and a configurable transient recorder with export and printing function.&lt;p&gt;
+A simple display software for &lt;b&gt;Metex&lt;/b&gt; and compatible hand held digital multimeter including min/max memory and a configurable recorder with export and printing function.&lt;p&gt;
 &amp;copy; 2001 Matthias Toussaint&lt;br&gt;&lt;font color=blue&gt;&amp;lt;qtdmm@mtoussaint.de&amp;gt;&lt;/font&gt;&lt;p&gt;
 &lt;b&gt;QtDMM&lt;/b&gt; uses the platform independent toolkit &lt;b&gt;Qt&lt;/b&gt; from Trolltech AS Norway &lt;font color=blue&gt;&amp;lt;www.trolltech.com&amp;gt;&lt;/font&gt; and is licensed under &lt;b&gt;GPL&lt;/b&gt;.</string>
                         </property>

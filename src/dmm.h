@@ -23,6 +23,10 @@
 
 #include <qobject.h>
 #include <readerthread.h>
+#include <readevent.h>
+#include <fcntl.h>
+#include <sys/termios.h>
+#include <sys/ioctl.h>
 
 class DMM : public QObject
 {
@@ -38,6 +42,8 @@ public:
   void close();
   QString errorString() const { return m_error; }
   bool isOpen() const { return m_handle >= 0; }
+  void setFormat( ReadEvent::DataFormat );
+  void setPortSettings( int bits, int stopBits );
   
 signals:
   void value( double dval,
@@ -47,13 +53,15 @@ signals:
   void error( const QString & );
   
 protected:
-  int           m_handle;
-  int           m_speed;
-  QString       m_device;
-  QString       m_error;
-  char          m_buffer[15];
-  ReaderThread *m_readerThread;
-    
+  int                    m_handle;
+  int                    m_speed;
+  QString                m_device;
+  QString                m_error;
+  char                   m_buffer[15];
+  ReaderThread          *m_readerThread;
+  ReadEvent::DataFormat  m_format;
+  tcflag_t               m_c_cflag;
+  
   void timerEvent( QTimerEvent * );
   bool event( QEvent * );
   

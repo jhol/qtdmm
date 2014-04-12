@@ -5,9 +5,11 @@ little piece of software.
 The transient recorder features manual start, scheduled start (at a given 
 time) and triggered automatic start when given thresholds are reached.
 It was written for Metex (and compatible like VOLTCRAFT) multimeter. 
-Until now it has  only been tested  with a VOLTCRAFT ME-32 but should run 
-with other DMM's that support the same protocol. Feedback on this is much 
-appreciated.
+Until now it has only been tested with an Metex ME-32 and an PeakTeck-451.
+The Metex/Voltcraft DMM's use a 14 byte format an polling. The PeakTech 
+DMM uses 10 bytes continuous output (thank to Dr. Ralf Wieland for the 
+patch). If you manage to get QtDMM working with a DMM different from the
+mentioned above, please give a note.
 
 QtDMM is kind of "works for me" software. I'm using it, I like it the way 
 it is  and it seems  to be quite stable. It still needs some improvements 

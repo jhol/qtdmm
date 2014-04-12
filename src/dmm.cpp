@@ -20,12 +20,8 @@
 
 #include <dmm.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <sys/termios.h>
-#include <sys/ioctl.h>
 #include <errno.h>
 #include <qapplication.h>
-#include <readevent.h>
 
 #include <iostream.h>
 
@@ -33,16 +29,55 @@ DMM::DMM( QObject *parent, const char *name ) :
   QObject( parent, name ),
   m_handle( -1 ),
   m_speed( 600 ),
-  m_device( "/dev/ttyS1" )
+  m_device( "/dev/ttyS1" ),
+  m_format( ReadEvent::Metex14 )
 {
   m_buffer[14] = '\0';
   
   m_readerThread = new ReaderThread( this );
   m_readerThread->start();
+  
+  m_c_cflag = CS7 | PARODD | CSTOPB | CREAD | CLOCAL;
 }
 
 DMM::~DMM()
 {
+}
+
+void
+DMM::setPortSettings( int bits, int stopBits )
+{
+  m_c_cflag = PARODD | CREAD | CLOCAL;
+  
+  if (stopBits == 2)
+  {
+    m_c_cflag |= CSTOPB;
+  }
+  switch (bits)
+  {
+  case 5:
+    m_c_cflag |= CS5;
+    break;
+  case 6:
+    m_c_cflag |= CS6;
+    break;
+  case 7:
+    m_c_cflag |= CS7;
+    break;
+  case 8:
+    m_c_cflag |= CS8;
+    break;
+  default:
+    m_c_cflag |= CS7;
+    break;
+  }     
+}
+
+void
+DMM::setFormat( ReadEvent::DataFormat format )
+{
+  m_format = format;
+  m_readerThread->setFormat( format );
 }
 
 void
@@ -99,8 +134,10 @@ DMM::open()
   
   attr.c_oflag = 0;
   attr.c_lflag = 0;
-  attr.c_iflag = IGNBRK | IGNPAR;
-  attr.c_cflag = CS7 | CSTOPB | CREAD | CLOCAL;
+  attr.c_iflag = IGNBRK;
+  attr.c_cflag = m_c_cflag;
+  //attr.c_iflag = IGNBRK | IGNPAR;
+  //attr.c_cflag = CS7 | CSTOPB | CREAD | CLOCAL;
   attr.c_cc[VTIME]= 20;
   attr.c_cc[VMIN]= 0;
   
@@ -227,12 +264,21 @@ DMM::event( QEvent *ev )
   
     if (ReaderThread::Ok == m_readerThread->status())
     {
-      QString tmp = ((ReadEvent *)ev)->string();
+      ReadEvent *re = (ReadEvent *)ev;
+      QString tmp = re->string();
 
-      val     = tmp.mid( 3, 6 ).stripWhiteSpace();
-      unit    = tmp.mid( 9, 4 ).stripWhiteSpace();
-      special = tmp.left( 3 ).stripWhiteSpace();
-
+      if (re->format() == ReadEvent::Metex14)
+      {
+        val     = tmp.mid( 3, 6 ).stripWhiteSpace();
+        unit    = tmp.mid( 9, 4 ).stripWhiteSpace();
+        special = tmp.left( 3 ).stripWhiteSpace();
+      }
+      else if (re->format() == ReadEvent::PeakTech10)
+      {
+        val     = tmp.mid( 1, 6 ).stripWhiteSpace();
+        unit    = tmp.mid( 7, 4 ).stripWhiteSpace();
+      }
+      
       double d_val = val.toDouble();
 
       if (unit.left(1) == "n")
@@ -252,6 +298,10 @@ DMM::event( QEvent *ev )
         d_val *= 1.0E3;
       }
       else if (unit.left(1) == "M")
+      {
+        d_val *= 1.0E6;
+      }
+      else if (unit.left(1) == "G")
       {
         d_val *= 1.0E9;
       }

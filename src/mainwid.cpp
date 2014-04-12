@@ -178,7 +178,9 @@ MainWid::readConfig()
 {
   m_dmm->setDevice( m_configDlg->device() );
   m_dmm->setSpeed( m_configDlg->speed() );
-
+  m_dmm->setFormat( m_configDlg->format() );
+  m_dmm->setPortSettings( m_configDlg->bits(), m_configDlg->stopBits() );
+  
   graph->setGraphSize( m_configDlg->windowSeconds(),
                        m_configDlg->totalSeconds() );
   graph->setStartTime( m_configDlg->startTime() );

@@ -23,6 +23,7 @@
 
 #include <qobject.h>
 #include <qthread.h>
+#include <readevent.h>
 
 class ReaderThread : public QThread
 {
@@ -41,15 +42,17 @@ public:
   void run(); 
   void startRead();
   void setHandle( int handle ) { m_handle = handle; }
+  void setFormat( ReadEvent::DataFormat );
   
   ReadStatus status() const { return m_status; }
   
 protected:
-  QObject    *m_receiver;
-  int         m_handle;
-  ReadStatus  m_status;
-  bool        m_readValue;
-  char        m_buffer[15];
+  QObject              *m_receiver;
+  int                   m_handle;
+  ReadStatus            m_status;
+  bool                  m_readValue;
+  char                  m_buffer[15];
+  ReadEvent::DataFormat m_format;
   
   void readDMM();
   

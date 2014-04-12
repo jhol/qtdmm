@@ -24,13 +24,22 @@
 class ReadEvent : public QCustomEvent
 {
 public:
-  ReadEvent( QString str ) : 
+  enum DataFormat
+  {
+    Metex14,
+    PeakTech10
+  };
+    
+  ReadEvent( QString str, DataFormat df ) : 
     QCustomEvent( QEvent::User ),
-    m_str( str ) {}
+    m_str( str ),
+    m_format (df ) {}
   QString string() const { return m_str; }
+  DataFormat format() const { return m_format; }
   
 private:
-  QString m_str;
-
+  QString    m_str;
+  DataFormat m_format;
+  
 };  
 #endif // READEVENT_HH
