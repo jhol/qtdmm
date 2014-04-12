@@ -43,6 +43,8 @@
 #include <help.xpm>
 #include <icon.xpm>
 
+#define VERSION_STRING "0.5.1"
+
 MainWin::MainWin( QWidget *parent, const char *name ) :
   QMainWindow( parent, name ),
   m_running( false )
@@ -58,7 +60,10 @@ MainWin::MainWin( QWidget *parent, const char *name ) :
   
   setMinimumSize( 500, 450 );
   
-  setCaption( tr("QtDMM 0.4.1" ));
+  QString ver = "QtDMM ";
+  ver += VERSION_STRING;
+  
+  setCaption( ver );
   
   adjustSize();
   
@@ -94,6 +99,7 @@ MainWin::MainWin( QWidget *parent, const char *name ) :
   {
     setGeometry( winRect );
   }
+  
 }
 
 MainWin::~MainWin()
@@ -221,18 +227,24 @@ MainWin::connectSLOT( bool on )
 void
 MainWin::versionSLOT()
 {
+  QString ver = "QtDMM ";
+  ver += VERSION_STRING;
+  QString msg = "<h1>";
+  msg += ver;
+  msg += "</h1><hr>"
+         "<div align=right><i>A simple recorder for DMM's</i></div><p><br>"
+         "A simple display software for <b>Metex</b> and compatible hand held"
+         " digital multimeter including min/max memory and a configurable "
+         "recorder with import/export and printing function. Sampling may"
+         " be started manually, at a given time or triggered by a measured threshold<p>"
+         "<b>QtDMM</b> uses the platform independent toolkit "
+         "<b>Qt</b> from Trolltech AS Norway <font color=blue><u>www.trolltech.com</u></font>"
+         " and is licensed under <b>GPL</b>.<p><br>"
+         "&copy; 2001 Matthias Toussaint<br><font color=blue><u>qtdmm@mtoussaint.de</u></font>"
+         "<p><br>The icons (except the DMM icon) are taken from the KDE project.<p>";
+          
   QMessageBox version( tr("QtDMM: Welcome!" ),
-                       tr("<h1>QtDMM 0.4</h1><hr>"
-                          "<div align=right><i>A simple recorder for DMM's</i></div><p><br>"
-                          "A simple display software for <b>Metex</b> and compatible hand held"
-                          " digital multimeter including min/max memory and a configurable "
-                          "recorder with import/export and printing function. Sampling may"
-                          " be started manually, at a given time or triggered by a measured threshold<p>"
-                          "<b>QtDMM</b> uses the platform independent toolkit "
-                          "<b>Qt</b> from Trolltech AS Norway <font color=blue><u>www.trolltech.com</u></font>"
-                          " and is licensed under <b>GPL</b>.<p><br>"
-                          "&copy; 2001 Matthias Toussaint<br><font color=blue><u>qtdmm@mtoussaint.de</u></font>"
-                          "<p><br>The icons (except the DMM icon) are taken from the KDE project.<p>" ),
+                       tr( msg ),
                        QMessageBox::Information,
                        QMessageBox::Yes | QMessageBox::Default,
                        QMessageBox::NoButton,

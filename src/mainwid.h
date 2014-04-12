@@ -22,10 +22,11 @@
 #define MAINWID_HH
 
 #include <uimainwid.h>
-#include <dmm.h>
-#include <printdlg.h>
 #include <qprinter.h>
 
+class DMM;
+class PrintDlg;
+class QProcess;
 class ConfigDlg;
 
 class MainWid : public UIMainWid
@@ -70,9 +71,15 @@ protected:
   ConfigDlg *m_configDlg;
   PrintDlg  *m_printDlg;
   QPrinter   m_printer;
+  QProcess  *m_external;
   
   void readConfig();
   QRect parentRect() const;
+  
+protected slots:
+  void startExternalSLOT();
+  void exitedSLOT();
+  
 };
 
 #endif // MAINWID_HH

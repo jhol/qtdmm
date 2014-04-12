@@ -41,7 +41,7 @@ public:
   
   void run(); 
   void startRead();
-  void setHandle( int handle ) { m_handle = handle; }
+  void setHandle( int handle );
   void setFormat( ReadEvent::DataFormat );
   void setIgnoreLines( int );
   

@@ -18,7 +18,7 @@
     </property>
     <property stdset="1">
         <name>caption</name>
-        <string>QtDMM 0.4.1</string>
+        <string>QtDMM 0.5.1</string>
     </property>
     <property stdset="1">
         <name>icon</name>
@@ -26,7 +26,7 @@
     </property>
     <property stdset="1">
         <name>iconText</name>
-        <string>QtDMM 0.4</string>
+        <string>QtDMM 0.5.1</string>
     </property>
     <property stdset="1">
         <name>frameShape</name>

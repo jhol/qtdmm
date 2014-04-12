@@ -54,13 +54,14 @@ signals:
   void error( const QString & );
   
 protected:
-  int                    m_handle;
-  int                    m_speed;
-  QString                m_device;
-  QString                m_error;
-  char                   m_buffer[15];
-  ReaderThread          *m_readerThread;
-  tcflag_t               m_c_cflag;
+  int                       m_handle;
+  int                       m_speed;
+  QString                   m_device;
+  QString                   m_error;
+  char                      m_buffer[15];
+  ReaderThread             *m_readerThread;
+  tcflag_t                  m_c_cflag;
+  ReaderThread::ReadStatus  m_oldStatus;
   
   void timerEvent( QTimerEvent * );
   bool event( QEvent * );

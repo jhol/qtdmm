@@ -27,10 +27,11 @@
 #include <qpixmap.h>
 #include <qmessagebox.h>
 #include <configdlg.h>
+#include <qprocess.h>
+#include <printdlg.h>
+#include <dmm.h>
 
 #include <icon.xpm>
-
-#include <iostream.h>
 
 MainWid::MainWid( QWidget *parent, const char *name ) :
   UIMainWid( parent, name )
@@ -38,6 +39,7 @@ MainWid::MainWid( QWidget *parent, const char *name ) :
   setIcon( QPixmap((const char **)icon_xpm ) );
   
   m_dmm = new DMM( this );
+  m_external = new QProcess( this );
   
   m_configDlg = new ConfigDlg( 0 );
   m_configDlg->hide();
@@ -65,6 +67,10 @@ MainWid::MainWid( QWidget *parent, const char *name ) :
            m_configDlg, SLOT( setSampleTimeSLOT( int ) ));
   connect( ui_graph, SIGNAL( graphSize( int,int ) ),
            m_configDlg, SLOT( setGraphSizeSLOT( int,int ) ));
+  connect( ui_graph, SIGNAL( externalTriggered() ),
+           this, SLOT( startExternalSLOT() ));
+  connect( m_external, SIGNAL( processExited() ),
+           this, SLOT( exitedSLOT() ));  
   
   resetSLOT();
   
@@ -220,6 +226,7 @@ void
 MainWid::configSLOT()
 {
   m_configDlg->show();
+  m_configDlg->raise();
 }
 
 void
@@ -300,6 +307,10 @@ MainWid::readConfig()
                        m_configDlg->dataColor(),
                        m_configDlg->cursorColor() );
   
+  ui_graph->setExternal( m_configDlg->startExternal(),
+                         m_configDlg->externalFalling(),
+                         m_configDlg->externalThreshold() );
+  
   QColorGroup cg = colorGroup();
   cg.setColor( QColorGroup::Background, m_configDlg->displayBgColor() );
   cg.setColor( QColorGroup::Foreground, m_configDlg->displayTextColor() );
@@ -350,3 +361,82 @@ MainWid::runningSLOT( bool on )
 {
   emit running( on );
 }
+
+void
+MainWid::startExternalSLOT()
+{
+  if (m_external->isRunning())
+  {
+    QString msg;
+    msg.sprintf( tr("<font size=+2><b>Launch error</b></font><p>"
+                    "Application %s is still running!<p>"
+                    "Do you want to kill it now"), 
+                    m_configDlg->externalCommand().latin1() );
+    
+    QMessageBox question( tr("QtDMM: Launch error" ),
+                          msg,
+                             QMessageBox::Information,
+                             QMessageBox::Yes | QMessageBox::Default,
+                             QMessageBox::No,
+                             QMessageBox::NoButton );
+    
+    question.setButtonText( QMessageBox::Yes, tr("Yes, kill it!") );
+    question.setButtonText( QMessageBox::Yes, tr("No, keep running") );
+    question.setIconPixmap( QPixmap((const char **)icon_xpm ) );
+    
+    switch (question.exec())
+    {
+    case QMessageBox::Yes:
+      m_external->hangUp();
+      break;
+    default:
+      return;
+    }
+  }
+  
+  if (m_configDlg->disconnectExternal())
+  {
+    emit setConnect( false );
+  }
+  
+  QStringList args;
+  args.append( m_configDlg->externalCommand() );
+  m_external->setArguments( args );
+  
+  if (!m_external->launch(""))
+  {
+    QString msg;
+    msg.sprintf( tr("<font size=+2><b>Launch error</b></font><p>"
+                    "Couldn't launch %s"), 
+                    m_configDlg->externalCommand().latin1() );
+    
+    QMessageBox question( tr("QtDMM: Launch error" ),
+                          msg,
+                             QMessageBox::Information,
+                             QMessageBox::Yes | QMessageBox::Default,
+                             QMessageBox::NoButton,
+                             QMessageBox::NoButton );
+    
+    question.setButtonText( QMessageBox::Yes, tr("Bummer!") );
+    question.setIconPixmap( QPixmap((const char **)icon_xpm ) );
+    
+    question.exec();
+  }
+  else
+  {
+    QString msg;
+    msg.sprintf( tr("Launched %s"), m_configDlg->externalCommand().latin1() );
+    emit error( msg );
+  }
+}
+
+void
+MainWid::exitedSLOT()
+{
+  QString msg;
+  msg.sprintf( "%s terminated with exit code %d.",
+      m_configDlg->externalCommand().latin1(), m_external->exitStatus() );
+  
+  emit error( msg );
+}
+

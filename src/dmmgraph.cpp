@@ -21,7 +21,6 @@
 #include <dmmgraph.h>
 #include <qpainter.h>
 #include <qpixmap.h>
-#include <iostream.h>
 #include <qapplication.h>
 #include <qpaintdevicemetrics.h>
 #include <qcursor.h>
@@ -53,7 +52,8 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   m_mouseDown( false ),
   m_lastValValid( false ),
   m_dirty( false ),
-  m_alertUnsaved( true )
+  m_alertUnsaved( true ),
+  m_externalStarted( false )
 {
   m_array = new QArray<double> (m_length);
   
@@ -195,6 +195,7 @@ DMMGraph::paint( QPainter *p, int w, int h,
     paintHorizontalGrid( p, w, h, yfactor, ystep, color );
     paintVerticalGrid( p, w, h, xfactor, xstep, maxUnit, hUnitFact, hUnit, color );
     paintData( p, w, h, xfactor, yfactor, color, printer );
+    paintThresholds( p, w, h, xfactor, yfactor, color, printer );
   }
 }
 
@@ -282,7 +283,8 @@ DMMGraph::paintVerticalGrid( QPainter *p, int w, int h, double xfactor, double x
 }
 
 void
-DMMGraph::paintData( QPainter *p, int w, int h, double xfactor, double yfactor, bool color, bool printer )
+DMMGraph::paintData( QPainter *p, int w, int h, double xfactor, 
+                     double yfactor, bool color, bool printer )
 {  
   int x = (int)qRound( (m_pointer-scrollbar->value()-1)/xfactor ) + 51;
   if (!printer && x>50 && x <= w)
@@ -314,6 +316,34 @@ DMMGraph::paintData( QPainter *p, int w, int h, double xfactor, double yfactor, 
       p->lineTo( x, y );
     }
   }   
+}
+
+void
+DMMGraph::paintThresholds( QPainter *p, int w, int h, double xfactor, 
+                           double yfactor, bool color, bool printer )
+{
+  if (!m_externalThreshold) return;
+  
+  if (printer && !color)
+  {
+    p->setPen( Qt::gray );
+  }
+  else
+  {
+    p->setPen( Qt::magenta );
+  }
+  
+  if (m_externalFalling)
+  {
+    p->drawLine( 50, (int)qRound( 1+(m_scaleMax-m_fallingThreshold)/yfactor ),
+                 w, (int)qRound( 1+(m_scaleMax-m_fallingThreshold)/yfactor) );
+  }
+  else
+  {
+    p->drawLine( 50, (int)qRound( 1+(m_scaleMax-m_raisingThreshold)/yfactor ),
+                 w, (int)qRound( 1+(m_scaleMax-m_raisingThreshold)/yfactor) );
+  }
+  
 }
 
 void
@@ -362,6 +392,7 @@ DMMGraph::startSLOT()
   emit running( true );
   
   m_graphStart = QDateTime::currentDateTime();
+  m_externalStarted = false;
 }
 
 void
@@ -409,6 +440,24 @@ DMMGraph::addValue( double val )
         qApp->beep();
         startSLOT();
       }
+    }
+  }
+  
+  if (!m_externalStarted && m_running && m_startExternal)
+  {
+    if (m_externalFalling && 
+        m_lastVal > m_externalThreshold && 
+        val <= m_externalThreshold)
+    {
+      m_externalStarted = true;
+      emit externalTriggered();
+    }
+    else if (!m_externalFalling && 
+             m_lastVal < m_externalThreshold && 
+             val >= m_externalThreshold)
+    {
+      m_externalStarted = true;
+      emit externalTriggered();
     }
   }
   
@@ -924,6 +973,7 @@ DMMGraph::importDataSLOT()
                                  line.mid( 3, 2 ).toInt(),
                                  line.mid( 0, 2 ).toInt() );
 
+        m_graphStart = QDateTime( startDate, startTime );
         
         setUnit( line.mid( 27, 1 ) );
         
@@ -1049,4 +1099,12 @@ DMMGraph::setLine( int w )
   m_lineWidth = w;
   
   update();
+}
+
+void
+DMMGraph::setExternal( bool on, bool falling, double threshold ) 
+{
+  m_startExternal = on;
+  m_externalFalling = falling;
+  m_externalThreshold = threshold;
 }

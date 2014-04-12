@@ -23,13 +23,12 @@
 #include <errno.h>
 #include <qapplication.h>
 
-#include <iostream.h>
-
 DMM::DMM( QObject *parent, const char *name ) :
   QObject( parent, name ),
   m_handle( -1 ),
   m_speed( 600 ),
-  m_device( "/dev/ttyS1" )
+  m_device( "/dev/ttyS1" ),
+  m_oldStatus( ReaderThread::NotConnected )
 {
   m_buffer[14] = '\0';
   
@@ -240,6 +239,8 @@ DMM::close()
   
   m_handle = -1;
   m_readerThread->setHandle( m_handle );
+  
+  m_oldStatus = ReaderThread::NotConnected;
 }
 
 void
@@ -337,7 +338,11 @@ DMM::event( QEvent *ev )
         m_error = tr( "Not connected" );
       }
     }
-    emit error( m_error );
+    if (m_oldStatus != m_readerThread->status())
+    {
+      emit error( m_error );
+    }
+    m_oldStatus = m_readerThread->status();
     
     return false;
   }

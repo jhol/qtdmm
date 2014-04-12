@@ -56,7 +56,7 @@ public:
   void setColors( const QColor & bg, const QColor & grid,
                   const QColor & data, const QColor & cursor );
   void setLine( int w );
-  
+  void setExternal( bool on, bool falling=false, double threshold=0 );
   bool dirty() const { return m_dirty; }
   void setAlertUnsaved( bool on ) { m_alertUnsaved = on; }
   
@@ -66,6 +66,7 @@ signals:
   void running( bool );
   void graphSize( int, int );
   void sampleTime( int );
+  void externalTriggered();
   
 public slots:
   void clearSLOT();
@@ -115,6 +116,10 @@ protected:
   int             m_lineWidth;
   bool            m_dirty;
   bool            m_alertUnsaved;
+  bool            m_startExternal;
+  bool            m_externalFalling;
+  double          m_externalThreshold;
+  bool            m_externalStarted;
   
   void paintEvent( QPaintEvent * );
   void resizeEvent( QResizeEvent * );
@@ -134,6 +139,8 @@ protected:
                           double maxUnit, double hUnitFact, 
                           const QString & hUnit, bool color );
   void paintData( QPainter *p, int w, int h, double xfactor, 
+                  double yfactor, bool color, bool printer );
+  void paintThresholds( QPainter *p, int w, int h, double xfactor, 
                   double yfactor, bool color, bool printer );
   void mousePressEvent( QMouseEvent * );
   void mouseMoveEvent( QMouseEvent * );

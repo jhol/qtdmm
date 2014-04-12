@@ -33,6 +33,10 @@
 #include <qcolordialog.h>
 #include <qmessagebox.h>
 #include <qprinter.h>
+#include <qfiledialog.h>
+#include <qtabwidget.h>
+
+#include <iostream.h>
 
 #include <icon.xpm>
 
@@ -43,10 +47,14 @@
 // when all needed parameter are found this hardcoded version will
 // be replaced by a file
 struct DMMInfo dmm_info[] = { 
-                              {"22-805 Radioshack DMM", 0, 0, 7, 2, 0},
+                              {"Metex M-3660D", 1, 0, 7, 2, 0},
+                              {"Metex M-3850D/3830D", 1, 0, 7, 2, 3},
+                              {"Metex universal system 9160", 1, 0, 7, 2, 3},
                               {"Metex/Voltcraft ME-11", 0, 0, 7, 2, 0},
                               {"Metex/Voltcraft ME-32", 0, 0, 7, 2, 0},
-                              {"PeakTech-451", 0, 0, 7, 2, 0},
+                              {"PeakTech-4010", 5, 0, 7, 2, 0},
+                              {"PeakTech-451", 0, 1, 7, 2, 0},
+                              {"Radioshack 22-805 DMM", 0, 0, 7, 2, 0},
                               {"Voltcraft M-4660", 1, 0, 7, 2, 3},
                               {"Voltcraft ME-22T", 3, 0, 7, 2, 0},
                               {"",0,0,0,0,0} 
@@ -70,6 +78,7 @@ ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
   // Check if configuration file exists. If not welcome user
   //
   QFile cfg( path );
+  
   if (!cfg.exists())
   {
     QMessageBox welcome( tr("QtDMM: Welcome!" ),
@@ -89,7 +98,31 @@ ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
     
     m_cfg->save();
   }
-        
+  else
+  {
+    m_cfg->load();
+    
+    int version  = m_cfg->getInt( "QtDMM", "version", 0 );
+    int revision = m_cfg->getInt( "QtDMM", "revision", 0 );
+    
+    if (version == 0 && revision == 0)
+    {
+      QMessageBox welcome( tr("QtDMM: Welcome!" ),
+                           tr("<font size=+2><b>Welcome!</b></font><p>"
+                              "You seem to have upgraded <b>QtDMM</b> from a version prior to 0.5"
+                              " Please check your configuration (namely the DMM parameter)."
+                              "<p>Thank you for choosing <b>QtDMM</b>.<p><i>Matthias Toussaint</i>"),
+                            QMessageBox::Information,
+                            QMessageBox::Yes | QMessageBox::Default,
+                            QMessageBox::NoButton,
+                            QMessageBox::NoButton );
+                                 
+      welcome.setButtonText( QMessageBox::Yes, tr("Continue") );
+      welcome.setIconPixmap( QPixmap((const char **)icon_xpm ) );
+      welcome.exec();   
+    }   
+  }
+  
   QDoubleValidator *dval = new QDoubleValidator( -99999.9, 99999.9, 5, this );
   scaleMinEd->setValidator( dval );
   scaleMaxEd->setValidator( dval );
@@ -121,11 +154,20 @@ ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
            this, SLOT( preferencesDefaultSLOT() ));
   connect( ui_factoryPreferences, SIGNAL( clicked() ),
            this, SLOT( preferencesFactorySLOT() ));
+  connect( ui_defaultExecute, SIGNAL( clicked() ),
+           this, SLOT( executeDefaultSLOT() ));
+  connect( ui_factoryExecute, SIGNAL( clicked() ),
+           this, SLOT( executeFactorySLOT() ));
+  connect( ui_browseExec, SIGNAL( clicked() ),
+           this, SLOT( browseExecSLOT() ));
+  connect( tabWidget, SIGNAL( currentChanged( QWidget * )),
+           this, SLOT( descriptionSLOT( QWidget * ) ));
   
   ui_defaultRecorder->hide();
   ui_defaultScale->hide();
   ui_defaultDMM->hide();
   ui_defaultPreferences->hide();
+  ui_defaultExecute->hide();
       
   modelCombo->clear();
   modelCombo->insertItem( "Manual settings" );
@@ -141,6 +183,8 @@ ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
   
   cancelSLOT();
   
+  ui_description->setBackgroundColor( colorGroup().light() );
+  ui_pixmap->setBackgroundColor( colorGroup().light() );
 }
 
 ConfigDlg::~ConfigDlg()
@@ -176,6 +220,9 @@ ConfigDlg::applySLOT()
 {
   m_cfg->clear();
   
+  m_cfg->setInt( "QtDMM", "version", 5 );
+  m_cfg->setInt( "QtDMM", "revision", 0 );
+  
   m_cfg->setInt( "Sample", "rate", sampleEvery->value() );
   m_cfg->setInt( "Sample", "rate-unit", sampleUnit->currentItem() );
   m_cfg->setInt( "Sample", "time", sampleTime->value() );
@@ -204,7 +251,8 @@ ConfigDlg::applySLOT()
   
   m_cfg->setInt( "DMM", "data-format", protocolCombo->currentItem() );
   m_cfg->setInt( "DMM", "ignore-lines", ignoreSpin->value() );
-  m_cfg->setInt( "DMM", "model", modelCombo->currentItem() );
+  m_cfg->setString( "DMM", "model", 
+      (modelCombo->currentItem() == 0 ? "Manual" : dmm_info[modelCombo->currentItem()-1].name ));
   
   m_cfg->setBool( "Save", "window", ui_saveWindowCheck->isChecked() );
   
@@ -229,6 +277,13 @@ ConfigDlg::applySLOT()
   m_cfg->setBool( "Alert", "unsaved-file", alertUnsavedData() );
   
   m_cfg->setBool( "Icons", "text-label", useTextLabel() );
+
+  m_cfg->setBool( "External", "exec", startExternal() );  
+  m_cfg->setBool( "External", "raising", !externalFalling() );
+  m_cfg->setString( "External", "raising-threshold", ui_execRaisingThreshold->text() );
+  m_cfg->setString( "External", "falling-threshold", ui_execFallingThreshold->text() );  
+  m_cfg->setBool( "External", "disconnect", disconnectExternal() );
+  m_cfg->setString( "External", "command", externalCommand() );
   
   for (int i=0; i<QColorDialog::customCount(); i++)
   {
@@ -378,8 +433,21 @@ ConfigDlg::dmmDefaultSLOT()
   
   protocolCombo->setCurrentItem( m_cfg->getInt( "DMM", "data-format", 0 ));
   ignoreSpin->setValue( m_cfg->getInt( "DMM", "ignore-lines", 0 ));
-  modelCombo->setCurrentItem( m_cfg->getInt( "DMM", "model", 0 ));
   
+  QString model = m_cfg->getString( "DMM", "model", "" );
+  
+  modelCombo->setCurrentItem( 0 );
+  int id=0;
+  while (*dmm_info[id].name)
+  {
+    if (model == dmm_info[id].name)
+    {
+      modelCombo->setCurrentItem( id+1 );
+      break;
+    }
+    id++;
+  }
+   
   modelSLOT( modelCombo->currentItem() );
 }
 
@@ -437,6 +505,32 @@ ConfigDlg::preferencesFactorySLOT()
 }
 
 void
+ConfigDlg::executeDefaultSLOT()
+{
+  ui_executeCommand->setChecked( m_cfg->getBool( "External", "exec", false ));
+  
+  ui_execRaising->setChecked( m_cfg->getBool( "External", "raising", true ));
+  ui_execRaisingThreshold->setText( m_cfg->getString( "External", "raising-threshold", "" ));
+  ui_execFallingThreshold->setText( m_cfg->getString( "External", "falling-threshold", "" ));
+  
+  ui_disconnectExec->setChecked( m_cfg->getBool( "External", "disconnect", false ));
+  ui_commandExec->setText( m_cfg->getString( "External", "command", "" ));
+}
+
+void
+ConfigDlg::executeFactorySLOT()
+{
+  ui_executeCommand->setChecked( false );
+  
+  ui_execRaising->setChecked( true );
+  ui_execRaisingThreshold->setText( "" );
+  ui_execFallingThreshold->setText( "" );
+  
+  ui_disconnectExec->setChecked( false );
+  ui_commandExec->setText( "" );
+}
+
+void
 ConfigDlg::cancelSLOT()
 {
   m_cfg->clear();
@@ -446,6 +540,7 @@ ConfigDlg::cancelSLOT()
   scaleDefaultSLOT();
   dmmDefaultSLOT();
   preferencesDefaultSLOT();
+  executeDefaultSLOT();
      
   int count = m_cfg->getInt( "Custom colors", "count", 0 );
   
@@ -740,6 +835,41 @@ ConfigDlg::useTextLabel() const
   return ui_textLabel->isChecked();
 }
 
+bool
+ConfigDlg::startExternal() const
+{
+  return ui_executeCommand->isChecked();
+}
+
+bool
+ConfigDlg::disconnectExternal() const
+{
+  return ui_disconnectExec->isChecked();
+}
+
+bool
+ConfigDlg::externalFalling() const
+{
+  return ui_execFalling->isChecked();
+}
+
+double
+ConfigDlg::externalThreshold() const
+{
+  if (ui_execFalling->isChecked())
+  {
+    return ui_execFallingThreshold->text().toDouble();
+  }
+  
+  return ui_execRaisingThreshold->text().toDouble();
+}
+
+QString
+ConfigDlg::externalCommand() const
+{
+  return ui_commandExec->text();
+}
+
 void
 ConfigDlg::setSampleTimeSLOT( int sampleTime )
 {
@@ -755,4 +885,50 @@ ConfigDlg::setGraphSizeSLOT( int size, int length )
   winLength->setValue( length );
   
   applySLOT();
+}
+
+void
+ConfigDlg::browseExecSLOT()
+{
+  QString filename = QFileDialog::getOpenFileName( QString::null, "*", this );
+    
+  if (!filename.isEmpty()) 
+  {
+    ui_commandExec->setText( filename );
+  }  
+}
+
+void
+ConfigDlg::descriptionSLOT( QWidget * )
+{
+  switch (tabWidget->currentPageIndex())
+  {
+  case 0:
+    ui_description->setText( tr("Here you can configure the sampling"
+                                " frequency and start options for the"
+                                " recorder." ));
+    break;
+    
+  case 1:
+    ui_description->setText( tr("Here you can configure the vertical scale"
+                                " of the recorder and the length (in time)"
+                                " of the window." ));
+    break;
+    
+  case 2:
+    ui_description->setText( tr("Here you can configure the serial port"
+                                " and protocol for your DMM. There is"
+                                " also a number of predefined models." ));
+    break;
+    
+  case 3:
+    ui_description->setText( tr("Here you can configure QtDMM's visual"
+                                " appearance and it's behaviour." ));
+    break;
+    
+  case 4:
+    ui_description->setText( tr("Here you can configure if an external"
+                                " command is to be started and when." ));
+    break;
+  } 
 }

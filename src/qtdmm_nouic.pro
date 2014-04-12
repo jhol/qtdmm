@@ -14,8 +14,11 @@ HEADERS   = configdlg.h \
             simplecfg.h \
             printdlg.h \
             readerthread.h \
-            readevent.h \ 
+            readevent.h \
             colorbutton.h \
+            qprocess.h \
+            qprocess_unix.h \
+            qcleanuphandler.h \
             uiconfigdlg.h \
             uimainwid.h \
             uiprintdlg.h  
@@ -31,11 +34,13 @@ SOURCES   = main.cpp \
             printdlg.cpp \
             readerthread.cpp \
             colorbutton.cpp \
+            qprocess.cpp \
+            qprocess_unix.cpp \
             uiconfigdlg.cpp \
             uimainwid.cpp \
             uiprintdlg.cpp
 LIBS      = 
 TARGET    = qtdmm
-VERSION   = 0.4
+VERSION   = 0.5
 DESTDIR   = ../bin
 

@@ -20,7 +20,6 @@
 
 #include <readerthread.h>
 #include <unistd.h>
-#include <iostream.h>
 
 ReaderThread::ReaderThread( QObject *receiver ) :
   QThread(),
@@ -40,6 +39,17 @@ void
 ReaderThread::setFormat( ReadEvent::DataFormat format )
 {
   m_format = format;
+}
+  
+void 
+ReaderThread::setHandle( int handle ) 
+{ 
+  m_handle = handle; 
+  
+  if (-1 == m_handle) 
+  {
+    m_status = ReaderThread::NotConnected;
+  }
 }
 
 void 

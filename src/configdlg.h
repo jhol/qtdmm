@@ -77,6 +77,11 @@ public:
   bool saveWindowPosition() const;
   bool alertUnsavedData() const;
   bool useTextLabel() const;
+  bool startExternal() const;
+  bool externalFalling() const;
+  double externalThreshold() const;
+  QString externalCommand() const;
+  bool disconnectExternal() const;
   
 public slots:
   void connectSLOT( bool );
@@ -104,6 +109,10 @@ protected slots:
   void dmmFactorySLOT();
   void preferencesDefaultSLOT();
   void preferencesFactorySLOT();
+  void executeDefaultSLOT();
+  void executeFactorySLOT();
+  void browseExecSLOT();
+  void descriptionSLOT( QWidget * );
   
 };
 
