@@ -233,6 +233,9 @@ DisplayWid::setDisplayMode( int dm, bool minMax, bool bar, int numValues )
     
   case 8:
     m_range = 6000;
+    
+  case 9:
+    m_range = 40000;
     break;
   }
   
@@ -370,7 +373,7 @@ DisplayWid::paintEvent( QPaintEvent * )
         step /= 20;
         off = (width()-20*step)/2-2;
       }
-      else if (1 == m_displayMode || 3 == m_displayMode)
+      else if (1 == m_displayMode || 3 == m_displayMode || 9 == m_displayMode)
       {
         step /= 40;
         off = (width()-40*step)/2-2;
@@ -435,16 +438,19 @@ void
 DisplayWid::drawSmallNumber( QPainter *p, const QString & num )
 {
   int x = 0;  
-  int offset = ((m_displayMode > 1) && (m_displayMode != 8) ? 0 : 1);
+  int offset = 0;
           
+  while (num[offset] == ' ' && offset<num.length()) ++offset;
+  
   if (num[offset] == '-')
   {
     p->drawPixmap( 0, 9, *m_smallMinus );
+    offset++;
   }
   
   x += 12;
      
-  for (unsigned i=1+offset; i<num.length(); i++)
+  for (unsigned i=offset; i<num.length(); i++)
   {
     if (num[i] == '.')
     {
@@ -583,7 +589,7 @@ DisplayWid::drawBigUnit( QPainter *p, const QString & str )
   {
     p->drawPixmap( x, 0, *m_bigHz );
   }
-  else if (str.mid(index) == "F")
+  else if (str.mid(index) == "F") // ignore Farenheit
   {
     p->drawPixmap( x, 0, *m_bigF );
   }
@@ -702,17 +708,19 @@ void
 DisplayWid::drawBigNumber( QPainter *p, const QString & num )
 {
   int x = 0;  
-  int offset = ((m_displayMode > 1) && (m_displayMode != 8) ? 0 : 1);
+  int offset = 0;
+  while (num[offset] == ' ' && offset<num.length()) ++offset;
   bool comma = false;
           
   if (num[offset] == '-')
   {
     p->drawPixmap( x, 0, *m_bigMinus );
+    offset++;
   }
   
   x += 28;
     
-  for (unsigned i=1+offset; i<num.length(); i++)
+  for (unsigned i=offset; i<num.length(); i++)
   {
     if (num[i] == '.')
     {
@@ -817,6 +825,7 @@ DisplayWid::calcNumDigits( int dm )
     case 2:
     case 3:
     case 4:
+    case 9:
       numDigits = 5;
       break;
     case 5:

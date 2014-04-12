@@ -39,6 +39,8 @@ is known to work with the following DMM's:
     Voltcraft    VC 670
     Voltcraft    VC 820
     Voltcraft    VC 840
+    Voltcraft    VC 920
+    Voltcraft    VC 940
 
 The following models should work but need to be confirmed by a user:
 
@@ -64,7 +66,7 @@ QtDMM is distributed under the GNU Public License, version 2.
 
 The tab size of the sourcefiles is 2 
 
--- 20/12/2005
+-- 19/12/2011
    Matthias Toussaint
    <qtdmm@mtoussaint.de>
 

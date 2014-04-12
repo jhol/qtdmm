@@ -33,6 +33,13 @@ class DMM : public QObject
   Q_OBJECT
       
 public:
+  enum {
+    f_rts=1,
+    f_cts=2,
+    f_dsr=4,
+    f_dtr=8
+  };
+  
   DMM( QObject *parent=0, const char *name=0 );
   virtual ~DMM();
   
@@ -44,7 +51,7 @@ public:
   bool isOpen() const { return m_handle >= 0; }
   void setFormat( ReadEvent::DataFormat );
   void setName( const QString & );
-  void setPortSettings( int bits, int stopBits, int parity, bool externalSetup );
+  void setPortSettings( int bits, int stopBits, int parity, bool externalSetup, bool rts, bool cts, bool dsr, bool dtr );
   void setNumValues( int );
   void setConsoleLogging( bool on ) { m_consoleLogging = on; }
   
@@ -70,7 +77,8 @@ protected:
   struct termios            m_oldSettings;
   bool                      m_consoleLogging;
   bool                      m_externalSetup;
-      
+  int                       m_flags;
+  
   void timerEvent( QTimerEvent * );
   void customEvent( QCustomEvent * );
   QString insertComma( const QString &, int );

@@ -77,6 +77,11 @@ public:
   int bits() const;
   int stopBits() const;
   int numValues() const;
+  bool rts() const;
+  bool cts() const;
+  bool dsr() const;
+  bool dtr() const;
+
   QColor bgColor() const;
   QColor gridColor() const;
   QColor dataColor() const;

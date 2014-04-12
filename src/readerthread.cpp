@@ -182,7 +182,7 @@ ReaderThread::formatLength() const
   case ReadEvent::IsoTech:
     return 22;
   case ReadEvent::VC940Continuous:
-    return 12;
+    return 11;
   case ReadEvent::QM1537Continuous:
     return 14;
   case ReadEvent::RS22812Continuous:

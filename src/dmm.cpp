@@ -52,11 +52,13 @@ DMM::~DMM()
 }
 
 void
-DMM::setPortSettings( int bits, int stopBits, int parity, bool externalSetup )
+DMM::setPortSettings( int bits, int stopBits, int parity, bool externalSetup, 
+                      bool rts, bool cts, bool dsr, bool dtr )
 {
   m_externalSetup = externalSetup;
   m_parity  = parity;
   m_c_cflag = CREAD | CLOCAL;
+  m_flags = (rts?f_rts:0)|(cts?f_cts:0)|(dsr?f_dsr:0)|(dtr?f_dtr:0);
   
   if (stopBits == 2)
   {
@@ -248,8 +250,20 @@ DMM::open()
       
       return false;
     }
+
+    if (m_flags & f_rts) mdlns |= TIOCM_RTS;
+    else     mdlns &= ~TIOCM_RTS;
+
+    if (m_flags & f_cts) mdlns |= TIOCM_CTS;
+    else     mdlns &= ~TIOCM_CTS;
+    
+    if (m_flags & f_dtr) mdlns |= TIOCM_DTR;
+    else     mdlns &= ~TIOCM_DTR;
+
+    if (m_flags & f_dsr) mdlns |= TIOCM_DSR;
+    else     mdlns &= ~TIOCM_DSR;
   
-    mdlns &= ~TIOCM_RTS;
+    //mdlns &= ~TIOCM_RTS;
     if (-1 == ioctl( m_handle, TIOCMSET, &mdlns )) 
     {
       ::close(m_handle);
@@ -399,7 +413,17 @@ DMM::insertComma( const QString & val, int pos )
 QString 
 DMM::insertCommaIT( const QString & val, int pos )
 {
-  return val.left(pos) + "." + val.mid(pos);
+  QString res;
+  if (val[0] == '-' || val[0] == ' ')
+  {
+    res = val.left(pos+1) + "." + val.mid(pos+1);
+  }
+  else
+  {
+    res = val.left(pos) + "." + val.mid(pos);
+  }
+  
+  return res;
 }
 
 void
@@ -416,45 +440,49 @@ DMM::setNumValues( int numValues )
 
 void DMM::readVC940Continuous( ReadEvent *re )
 {
-  QString val;
+  QString val = " ";
   QString special;
   QString unit;
   
-  // Just guessing
-  for (int i=0; i<4; ++i)
-  {
-    val += re->string()[i];
-  }
-  if (re->string()[4]&0x0f != 0x0a)
-  {
-    val += re->string()[4];
-  }
   
   double scale = 1.0;
   
   int function = re->string()[6] & 0x0f;
   int range    = re->string()[5] & 0x0f;
+  int mode     = re->string()[7];
+  int mode2    = re->string()[8];
+  
+  if (function != 12 && mode2 & 0x04) val = "-";
+
+  for (int i=0; i<4; ++i)
+  {
+    val += re->string()[i];
+  }
+  if (re->string()[4] != 'A')
+  {
+    val += re->string()[4];
+  }
   
   switch (function)
   {
     case 0:
-      insertCommaIT( val, 3 );
+      val = insertCommaIT( val, 3 );
       special = "AC";
       unit = "mV";
       scale = 1e-3;
       break;
     case 1:
-      insertCommaIT( val, range );
+      val = insertCommaIT( val, range );
       special = "DC";
       unit = "V";
       break;
     case 2:
-      insertCommaIT( val, range );
+      val = insertCommaIT( val, range );
       special = "AC";
       unit = "V";
       break;
     case 3:
-      insertCommaIT( val, 3 );
+      val = insertCommaIT( val, 3 );
       special = "DC";
       unit = "mV";
       scale = 1e-3;
@@ -464,25 +492,30 @@ void DMM::readVC940Continuous( ReadEvent *re )
       switch (range)
       {
         case 1:
-          insertCommaIT( val, 3 );
+          val = insertCommaIT( val, 3 );
           break;
         case 2:
-          insertCommaIT( val, 4 );
+          val = insertCommaIT( val, 1 );
+          unit = "kOhm";
+          scale = 1e3;
           break;
         case 3:
+          val = insertCommaIT( val, 2 );
+          unit = "kOhm";
+          scale = 1e3;
           break;
         case 4:
-          insertCommaIT( val, 3 );
+          val = insertCommaIT( val, 3 );
           unit = "kOhm";
           scale = 1e3;
           break;
         case 5:
-          insertCommaIT( val, 1 );
+          val = insertCommaIT( val, 1 );
           unit = "MOhm";
           scale = 1e6;
           break;
         case 6:
-          insertCommaIT( val, 2 );
+          val = insertCommaIT( val, 2 );
           unit = "MOhm";
           scale = 1e6;
           break;
@@ -494,37 +527,37 @@ void DMM::readVC940Continuous( ReadEvent *re )
       switch (range)
       {
         case 1:
-          insertCommaIT( val, 2 );
+          val = insertCommaIT( val, 2 );
           unit = "nF";
           scale = 1e-9;
           break;
         case 2:
-          insertCommaIT( val, 3 );
+          val = insertCommaIT( val, 3 );
           unit = "nF";
           scale = 1e-9;
           break;
         case 3:
-          insertCommaIT( val, 4 );
-          unit = "nF";
-          scale = 1e-9;
+          val = insertCommaIT( val, 1 );
+          unit = "uF";
+          scale = 1e-6;
           break;
         case 4:
-          insertCommaIT( val, 2 );
+          val = insertCommaIT( val, 2 );
           unit = "uF";
           scale = 1e-6;
           break;
         case 5:
-          insertCommaIT( val, 3 );
+          val = insertCommaIT( val, 3 );
           unit = "uF";
           scale = 1e-6;
           break;
         case 6:
-          insertCommaIT( val, 4 );
+          val = insertCommaIT( val, 4 );
           unit = "uF";
           scale = 1e-6;
           break;
         case 7:
-          insertCommaIT( val, 2 );
+          val = insertCommaIT( val, 2 );
           unit = "mF";
           scale = 1e-3;
           break;
@@ -534,50 +567,129 @@ void DMM::readVC940Continuous( ReadEvent *re )
     case 6:
       special = "TE";
       unit = "C";
+      val = insertCommaIT( val, 4 );
       break;
     case 7:
-      special = "DC";
+      if (mode & 0x01) 
+      {
+        // can't handle AC+DC
+        special = "AC";
+      }
+      else special = "DC";
       switch (range)
       {
         case 0:
-          insertCommaIT( val, 3 );
+          val = insertCommaIT( val, 3 );
           break;
         case 1:
-          insertCommaIT( val, 4 );
+          val = insertCommaIT( val, 4 );
           break;
       }
       unit = "uA";
       scale = 1e-6;
       break;
     case 8:
-      special = "DC";
+      if (mode & 0x01) 
+      {
+        // can't handle AC+DC
+        special = "AC";
+      }
+      else special = "DC";
       switch (range)
       {
         case 0:
-          insertCommaIT( val, 2 );
+          val = insertCommaIT( val, 2 );
           break;
         case 1:
-          insertCommaIT( val, 3 );
+          val = insertCommaIT( val, 3 );
           break;
       }
       unit = "mA";
       scale = 1e-3;
       break;
     case 9:
-      special = "DC";
+      if (mode & 0x01) 
+      {
+        // can't handle AC+DC
+        special = "AC";
+      }
+      else special = "DC";
+      val = insertCommaIT( val, 2 );
       unit = "A";
       break;
-    case 10:   // what the heck is this?
-      special = "FR";
-      unit = "Hz";
+    case 10:   // buzzer
+      special = "OH";
+      unit = "Ohm";
+      val = insertCommaIT( val, 3 );
       break;
     case 11:
       special = "DI";
-      unit = "";
+      unit = "V";
+      val = insertCommaIT( val, 1 );
       break;
+    case 12:
+      if (mode2 & 0x04)
+      {
+        special = "PC";
+        unit = "%";
+        val = insertCommaIT( val, 3 );
+      }
+      else
+      {
+        special = "FR";
+        unit = "Hz";
+        switch (range)
+        {
+          case 0:
+            val = insertCommaIT( val, 2 );
+            break;
+          case 1:
+            val = insertCommaIT( val, 3 );
+            break;
+          case 2:
+            val = insertCommaIT( val, 1 );
+            unit = "kHz";
+            scale = 1e3;
+            break;
+          case 3:
+            val = insertCommaIT( val, 2 );
+            unit = "kHz";
+            scale = 1e3;
+            break;
+          case 4:
+            val = insertCommaIT( val, 3 );
+            unit = "kHz";
+            scale = 1e3;
+            break;
+          case 5:
+            val = insertCommaIT( val, 1 );
+            unit = "MHz";
+            scale = 1e6;
+            break;
+          case 6:
+            val = insertCommaIT( val, 2 );
+            unit = "MHz";
+            scale = 1e6;
+            break;
+          case 7:
+            val = insertCommaIT( val, 3 );
+            unit = "MHz";
+            scale = 1e6;
+            break;
+        }
+      }
+      break;
+    case 13:
+      special = "TE";
+      unit = "F";
+      val = insertCommaIT( val, 4 );
+      break;
+
   }
   
   double d_val = val.toDouble() * scale;
+  
+  //printf( "d_val=%f val=%s unit=%s special=%s\n", d_val, val.latin1(), unit.latin1(), special.latin1() );
   
   emit value( d_val, val, unit, special, true, re->id() );
 

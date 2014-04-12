@@ -35,6 +35,10 @@ struct DMMInfo
   int   parity;
   int   display;
   bool  externalSetup;
+  bool  rts;
+  bool  cts;
+  bool  dsr;
+  bool  dtr;
 };
 
 class DmmPrefs : public UIDmmPrefs
@@ -50,6 +54,10 @@ public:
   int speed() const;
   int numValues() const;
   bool externalSetup() const;
+  bool rts() const;
+  bool cts() const;
+  bool dsr() const;
+  bool dtr() const;
   ReadEvent::DataFormat format() const;
   int display() const;
   QString dmmName() const;
