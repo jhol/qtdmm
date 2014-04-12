@@ -62,6 +62,7 @@ public:
   
 signals:
   void info( const QString & );
+  void error( const QString & );
   void running( bool );
   void graphSize( int, int );
   void sampleTime( int );

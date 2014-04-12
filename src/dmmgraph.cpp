@@ -31,8 +31,11 @@
 #include <qtextstream.h>
 #include <qdatetime.h>
 #include <qmessagebox.h>
+#include <qregexp.h>
 
 #include <icon.xpm>
+
+#include <iostream.h>
 
 DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   QWidget( parent, name ),
@@ -906,6 +909,14 @@ DMMGraph::importDataSLOT()
 
       if (!line.isNull())
       {
+        QRegExp re( "[0-9]+\\.[0-9]+\\.[0-9]+\t[0-9]+:[0-9]+:[0-9]+\t[0-9]*\\.[0-9]+\t.*" );
+        if (re.match(line) == -1)
+        {
+          emit error( tr("Oops! Seems not to be a valid file") );
+          
+          return;
+        }
+        
         QTime startTime = QTime( line.mid( 11, 2 ).toInt(), 
                                  line.mid( 14, 2 ).toInt(),
                                  line.mid( 17, 2 ).toInt() );
@@ -913,6 +924,9 @@ DMMGraph::importDataSLOT()
                                  line.mid( 3, 2 ).toInt(),
                                  line.mid( 0, 2 ).toInt() );
 
+        
+        setUnit( line.mid( 27, 1 ) );
+        
         cnt++;
 
         while (!(line = ts.readLine()).isNull())
@@ -976,6 +990,9 @@ DMMGraph::importDataSLOT()
       
       file.close();
       m_dirty = false;
+      
+      emit error( fn );
+      
       update();
     }
   }

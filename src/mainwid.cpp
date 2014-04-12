@@ -55,6 +55,8 @@ MainWid::MainWid( QWidget *parent, const char *name ) :
            this, SIGNAL( error( const QString & )));
   connect( ui_graph, SIGNAL( info( const QString & ) ),
            this, SIGNAL( info( const QString & ) ));
+  connect( ui_graph, SIGNAL( error( const QString & ) ),
+           this, SIGNAL( error( const QString & ) ));
   connect( ui_graph, SIGNAL( running( bool ) ),
            this, SLOT( runningSLOT( bool ) ));
   connect( m_configDlg, SIGNAL( accepted() ),

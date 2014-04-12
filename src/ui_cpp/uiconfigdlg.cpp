@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Form implementation generated from reading ui file 'uiconfigdlg.ui'
 **
-** Created: Sun Sep 2 19:18:58 2001
+** Created: Tue Sep 4 11:07:57 2001
 **      by:  The User Interface Compiler (uic)
 **
 ** WARNING! All changes made in this file will be lost!

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Form implementation generated from reading ui file 'uimainwid.ui'
 **
-** Created: Sun Sep 2 19:18:58 2001
+** Created: Tue Sep 4 11:08:06 2001
 **      by:  The User Interface Compiler (uic)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -79,8 +79,8 @@ UIMainWid::UIMainWid( QWidget* parent,  const char* name )
     QPixmap image0( ( const char** ) image0_data );
     if ( !name )
 	setName( "UIMainWid" );
-    resize( 645, 451 ); 
-    setCaption( tr( "QtDMM: (c) 2001 M. Toussaint" ) );
+    resize( 641, 451 ); 
+    setCaption( tr( "QtDMM 0.4.1" ) );
     setIcon( image0 );
     setIconText( tr( "QtDMM 0.4" ) );
     setFrameShape( QFrame::StyledPanel );

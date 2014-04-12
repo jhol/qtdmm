@@ -12,13 +12,13 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>645</width>
+            <width>641</width>
             <height>451</height>
         </rect>
     </property>
     <property stdset="1">
         <name>caption</name>
-        <string>QtDMM: (c) 2001 M. Toussaint</string>
+        <string>QtDMM 0.4.1</string>
     </property>
     <property stdset="1">
         <name>icon</name>

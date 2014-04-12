@@ -58,7 +58,7 @@ MainWin::MainWin( QWidget *parent, const char *name ) :
   
   setMinimumSize( 500, 450 );
   
-  setCaption( tr("QtDMM: (c) 2001 M.Toussaint" ));
+  setCaption( tr("QtDMM 0.4.1" ));
   
   adjustSize();
   
