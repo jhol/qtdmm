@@ -20,12 +20,10 @@
 
 #include <qcolordialog.h>
 #include <qdir.h>
-#include <qheader.h>
 #include <qlabel.h>
 #include <qmessagebox.h>
 #include <qprinter.h>
 #include <qpushbutton.h>
-#include <qwidgetstack.h>
 
 #include <configdlg.h>
 #include <configitem.h>
