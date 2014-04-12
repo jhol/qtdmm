@@ -20,7 +20,7 @@
 
 #include <mainwin.h>
 #include <mainwid.h>
-#include <qtoolbar.h>
+#include <Q3ToolBar>
 #include <qiconset.h>
 #include <qtoolbutton.h>
 #include <qpopupmenu.h>
@@ -359,19 +359,19 @@ MainWin::versionSLOT()
 void
 MainWin::createToolBars()
 {
-  m_dmmTB = new QToolBar( this );
+  m_dmmTB = new Q3ToolBar( this );
   m_connectAction->addTo( m_dmmTB );
   m_resetAction->addTo( m_dmmTB );
-  addToolBar( m_dmmTB, tr("DMM"), QMainWindow::Top, true );
+  addToolBar( m_dmmTB, tr("DMM"), Qt::Top, true );
   
-  m_graphTB = new QToolBar( this );
+  m_graphTB = new Q3ToolBar( this );
   m_startAction->addTo( m_graphTB );
   m_stopAction->addTo( m_graphTB );
   m_graphTB->addSeparator();
   m_clearAction->addTo( m_graphTB );
   addToolBar( m_graphTB, tr("Recorder") );
   
-  m_fileTB = new QToolBar( this );
+  m_fileTB = new Q3ToolBar( this );
   m_printAction->addTo( m_fileTB );
   m_exportAction->addTo( m_fileTB );
   m_importAction->addTo( m_fileTB );
@@ -381,13 +381,13 @@ MainWin::createToolBars()
   m_quitAction->addTo( m_fileTB );
   addToolBar( m_fileTB, tr("File") );
   
-  m_helpTB = new QToolBar( this );
+  m_helpTB = new Q3ToolBar( this );
   m_helpAction->addTo( m_helpTB );
   addToolBar( m_helpTB, tr("Help") );
   
-  m_displayTB = new QToolBar( this );
+  m_displayTB = new Q3ToolBar( this );
   m_display = new DisplayWid( m_displayTB );
-  addToolBar( m_displayTB, tr("Display"), Top, true );
+  addToolBar( m_displayTB, tr("Display"), Qt::Top, true );
   
   connect( m_displayTB, SIGNAL( visibilityChanged( bool ) ),
            this, SLOT( setToolbarVisibilitySLOT() ));

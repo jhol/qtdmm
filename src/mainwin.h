@@ -25,7 +25,7 @@
 
 class MainWid;
 class Q3Action;
-class QToolBar;
+class Q3ToolBar;
 class QLabel;
 class DisplayWid;
 
@@ -48,11 +48,11 @@ protected slots:
   
 protected:
   MainWid     *m_wid;  
-  QToolBar    *m_dmmTB;
-  QToolBar    *m_graphTB;
-  QToolBar    *m_fileTB;
-  QToolBar    *m_helpTB;
-  QToolBar    *m_displayTB;
+  Q3ToolBar    *m_dmmTB;
+  Q3ToolBar    *m_graphTB;
+  Q3ToolBar    *m_fileTB;
+  Q3ToolBar    *m_helpTB;
+  Q3ToolBar    *m_displayTB;
   DisplayWid  *m_display;
   Q3Action    *m_connectAction;
   Q3Action    *m_resetAction;
