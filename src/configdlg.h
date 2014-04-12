@@ -71,7 +71,14 @@ public:
   QColor displayTextColor() const;
   QColor startColor() const;
   QColor externalColor() const;
+  QColor intColor() const;
+  QColor intThresholdColor() const;
   int lineWidth() const;
+  int intLineWidth() const;
+  int lineMode() const;
+  int pointMode() const;
+  int intLineMode() const;
+  int intPointMode() const;
   void writePrinter( QPrinter * );
   void readPrinter( QPrinter * );
   void setWinRect( const QRect & );
@@ -85,6 +92,10 @@ public:
   QString externalCommand() const;
   bool disconnectExternal() const;
   bool crosshair() const;
+  double intScale() const;
+  double intThreshold() const;
+  double intOffset() const;
+  bool showIntegration() const;
   
 public slots:
   void connectSLOT( bool );
@@ -114,6 +125,8 @@ protected slots:
   void preferencesFactorySLOT();
   void executeDefaultSLOT();
   void executeFactorySLOT();
+  void graphDefaultSLOT();
+  void graphFactorySLOT();
   void browseExecSLOT();
   void descriptionSLOT( QWidget * );
   

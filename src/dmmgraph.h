@@ -22,11 +22,14 @@
 #define DMMGRAPH_HH
 
 #include <qwidget.h>
-#include <qscrollbar.h>
 #include <qarray.h>
 #include <qdatetime.h>
-#include <qprinter.h>
-#include <qlabel.h>
+#include <qpointarray.h>
+
+class QPainter;
+class QScrollBar;
+class QPrinter;
+class QLabel;
 
 class DMMGraph : public QWidget
 {
@@ -34,10 +37,26 @@ class DMMGraph : public QWidget
 public:
   enum SampleMode
   {
-    Manual,
+    Manual = 0,
     Time,
     Raising,
     Falling
+  };
+    
+  enum PointMode
+  {
+    NoPoint = 0,
+    Circle,
+    Square,
+    Diamond,
+    X
+  };
+    
+  enum LineMode
+  {
+    NoLine = 0,
+    Solid,
+    Dot
   };
     
   DMMGraph( QWidget *parent=0, const char *name=0 );
@@ -55,12 +74,15 @@ public:
   void setScale( bool autoScale, double min, double max );
   void setColors( const QColor & bg, const QColor & grid,
                   const QColor & data, const QColor & cursor,
-                  const QColor & start, const QColor & external );
-  void setLine( int w );
+                  const QColor & start, const QColor & external,
+                  const QColor & integration, const QColor & intThreshold );
+  void setLine( int d, int i );
   void setExternal( bool on, bool falling=false, double threshold=0 );
   bool dirty() const { return m_dirty; }
   void setAlertUnsaved( bool on ) { m_alertUnsaved = on; }
   void setCrosshair( bool on ) { m_crosshair = on; }
+  void setLineStyle( int, int, int, int );
+  void setIntegration( bool, double, double, double );
   
 signals:
   void info( const QString & );
@@ -78,53 +100,66 @@ public slots:
   void importDataSLOT();
   
 protected:
-  QScrollBar     *scrollbar;
-  int             m_size;
-  int             m_length;
-  double          m_scaleMin;
-  double          m_scaleMax;
-  bool            m_autoScale;
-  QArray<double> *m_array;
-  int             m_pointer;
-  double          m_yfactor;
-  double          m_xfactor;
-  double          m_ystep;
-  QString         m_unit;
-  QString         m_hUnit;
-  double          m_xstep;
-  double          m_hUnitFact;
-  double          m_maxUnit;
-  int             m_sampleTime;
-  int             m_sampleLength;
-  bool            m_running;
-  int             m_sampleCounter;
-  int             m_remainingLength;
-  SampleMode      m_mode;
-  QTime           m_startTime;
-  QDateTime       m_graphStart;
-  double          m_sum;
-  bool            m_first;
-  QPoint          m_mpos;
-  QLabel         *m_infoBox;
-  bool            m_mouseDown;
-  double          m_raisingThreshold;
-  double          m_fallingThreshold;
-  double          m_lastVal;
-  bool            m_lastValValid;
-  QColor          m_bgColor;
-  QColor          m_gridColor;
-  QColor          m_dataColor;
-  QColor          m_cursorColor;
-  QColor          m_startColor;
-  QColor          m_externalColor;
-  int             m_lineWidth;
-  bool            m_dirty;
-  bool            m_alertUnsaved;
-  bool            m_startExternal;
-  bool            m_externalFalling;
-  double          m_externalThreshold;
-  bool            m_externalStarted;
-  bool            m_crosshair;
+  QScrollBar               *scrollbar;    
+  int                       m_size;       
+  int                       m_length;     
+  double                    m_scaleMin;   
+  double                    m_scaleMax;   
+  bool                      m_autoScale;  
+  QArray<double>           *m_array;
+  QArray<double>           *m_arrayInt;
+  int                       m_pointer;
+  double                    m_yfactor;
+  double                    m_xfactor;
+  double                    m_ystep;
+  QString                   m_unit;
+  QString                   m_hUnit;
+  double                    m_xstep;
+  double                    m_hUnitFact;
+  double                    m_maxUnit;
+  int                       m_sampleTime;
+  int                       m_sampleLength;
+  bool                      m_running;
+  int                       m_sampleCounter;
+  int                       m_remainingLength;
+  SampleMode                m_mode;
+  QTime                     m_startTime;
+  QDateTime                 m_graphStart;
+  double                    m_sum;
+  bool                      m_first;
+  QPoint                    m_mpos;
+  QLabel                   *m_infoBox;
+  bool                      m_mouseDown;
+  double                    m_raisingThreshold;
+  double                    m_fallingThreshold;
+  double                    m_lastVal;
+  bool                      m_lastValValid;
+  QColor                    m_bgColor;
+  QColor                    m_gridColor;
+  QColor                    m_dataColor;
+  QColor                    m_cursorColor;
+  QColor                    m_startColor;
+  QColor                    m_externalColor;
+  QColor                    m_intColor;
+  QColor                    m_intThresholdColor;
+  int                       m_lineWidth;
+  int                       m_intLineWidth;
+  bool                      m_dirty;
+  bool                      m_alertUnsaved;
+  bool                      m_startExternal;
+  bool                      m_externalFalling;
+  double                    m_externalThreshold;
+  bool                      m_externalStarted;
+  bool                      m_crosshair;
+  PointMode                 m_pointMode;
+  PointMode                 m_intPointMode;
+  LineMode                  m_lineMode;
+  LineMode                  m_intLineMode;
+  QPointArray               m_drawArray;
+  double                    m_integrationScale;
+  double                    m_integrationThreshold;
+  double                    m_integrationOffset;
+  bool                      m_showIntegration;
   
   void paintEvent( QPaintEvent * );
   void resizeEvent( QResizeEvent * );
@@ -152,7 +187,11 @@ protected:
   void mouseReleaseEvent( QMouseEvent * );
   void drawCursor( const QPoint & );
   void fillInfoBox( const QPoint & );
-  
+  void drawPoint( PointMode, QPainter *, int, int );
+
+private:
+  Qt::PenStyle penStyle( LineMode );
+
 };
 
 #endif // DMMGRAPH_HH

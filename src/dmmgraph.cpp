@@ -31,6 +31,9 @@
 #include <qdatetime.h>
 #include <qmessagebox.h>
 #include <qregexp.h>
+#include <qlabel.h>
+#include <qscrollbar.h>
+#include <qprinter.h>
 
 #include <xpm/icon.xpm>
 
@@ -54,9 +57,19 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   m_dirty( false ),
   m_alertUnsaved( true ),
   m_externalStarted( false ),
-  m_crosshair( true )
+  m_crosshair( true ),
+  m_pointMode( Circle ),
+  m_intPointMode( Square ),
+  m_lineMode( Solid ),
+  m_intLineMode( NoLine ),
+  m_integrationScale( 1.0 ),
+  m_integrationThreshold( 0.0 ),
+  m_integrationOffset( 0.0 )
 {
-  m_array = new QArray<double> (m_length);
+  m_array    = new QArray<double> (m_length);
+  m_arrayInt = new QArray<double> (m_length);
+  
+  m_drawArray.resize( m_length );
   
   scrollbar = new QScrollBar( QScrollBar::Horizontal, this );
   scrollbar->setGeometry( 0, height()-16, width(), 16 );
@@ -287,25 +300,95 @@ void
 DMMGraph::paintData( QPainter *p, int w, int h, double xfactor, 
                      double yfactor, bool color, bool printer )
 {  
+  // draw cursor
+  //
   int x = (int)qRound( (m_pointer-scrollbar->value()-1)/xfactor ) + 51;
+  
   if (!printer && x>50 && x <= w)
   {
     p->setPen( m_cursorColor );
     p->drawLine( x, 1, x, h-1-20 );
   }
+  
+  // draw integration curve
+  //
+  int y;
+  int pCnt;
+  
+  if (m_showIntegration)
+  {
+    y = (int)qRound( 1+(m_scaleMax-m_integrationOffset-(*m_arrayInt)[scrollbar->value()]*m_integrationScale)/yfactor );
 
-  int y = (int)qRound( 1+(m_scaleMax-(*m_array)[scrollbar->value()])/yfactor );
+    if (color)
+    {
+      p->setPen( QPen( m_intColor, m_intLineWidth, 
+                 penStyle( m_intLineMode ), Qt::RoundCap, Qt::RoundJoin ) );
+    }
+    else
+    {
+      p->setPen( QPen( Qt::darkGray, m_intLineWidth, 
+                 penStyle( m_intLineMode ), Qt::RoundCap, Qt::RoundJoin ) );
+    }
+
+    pCnt = 1;
+    m_drawArray.setPoint( 0, QPoint( 51, y ) );
+
+    for (int i=scrollbar->value()+1; i<m_pointer; i++)
+    {
+      int x = (int)qRound( (i-scrollbar->value())/xfactor ) + 51;
+      if (x <= w)
+      {
+        y = (int)qRound( 1+(m_scaleMax-m_integrationOffset-(*m_arrayInt)[i]*m_integrationScale)/yfactor );
+        //y = (int)qRound( 1+(m_scaleMax-(*m_arrayInt)[i])/yfactor );
+
+        m_drawArray.setPoint( pCnt++, QPoint( x, y ) );
+      }
+    }   
+    if (pCnt)
+      p->drawPolyline( m_drawArray, 0, pCnt );
+    
+    //y = (int)qRound( 1+(m_scaleMax-(*m_arrayInt)[scrollbar->value()])/yfactor );
+    y = (int)qRound( 1+(m_scaleMax-m_integrationOffset-(*m_arrayInt)[scrollbar->value()]*m_integrationScale)/yfactor );
+    
+    if (color)
+    {
+      p->setPen( m_intColor );
+    }
+    else
+    {
+      p->setPen( Qt::darkGray );
+    }
+
+    for (int i=scrollbar->value()+1; i<m_pointer; i++)
+    {
+      int x = (int)qRound( (i-scrollbar->value())/xfactor ) + 51;
+      if (x <= w)
+      {
+        y = (int)qRound( 1+(m_scaleMax-m_integrationOffset-(*m_arrayInt)[i]*m_integrationScale)/yfactor );
+        //y = (int)qRound( 1+(m_scaleMax-(*m_arrayInt)[i])/yfactor );
+
+        drawPoint( m_intPointMode, p, x, y );
+      }
+    }   
+  }
+  
+  // draw data curve
+  //
+  y = (int)qRound( 1+(m_scaleMax-(*m_array)[scrollbar->value()])/yfactor );
 
   if (color)
   {
-    p->setPen( QPen( m_dataColor, m_lineWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
+    p->setPen( QPen( m_dataColor, m_lineWidth, 
+               penStyle( m_lineMode ), Qt::RoundCap, Qt::RoundJoin ) );
   }
   else
   {
-    p->setPen( QPen( Qt::black, m_lineWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
+    p->setPen( QPen( Qt::black, m_lineWidth, 
+               penStyle( m_lineMode ), Qt::RoundCap, Qt::RoundJoin ) );
   }
   
-  p->moveTo( 51, y );
+  pCnt = 1;
+  m_drawArray.setPoint( 0, QPoint( 51, y ) );
 
   for (int i=scrollbar->value()+1; i<m_pointer; i++)
   {
@@ -314,7 +397,31 @@ DMMGraph::paintData( QPainter *p, int w, int h, double xfactor,
     {
       int y = (int)qRound( 1+(m_scaleMax-(*m_array)[i])/yfactor );
 
-      p->lineTo( x, y );
+      m_drawArray.setPoint( pCnt++, QPoint( x, y ) );
+    }
+  }   
+  if (pCnt)
+    p->drawPolyline( m_drawArray, 0, pCnt );
+  
+  y = (int)qRound( 1+(m_scaleMax-(*m_array)[scrollbar->value()])/yfactor );
+
+  if (color)
+  {
+    p->setPen( m_dataColor );
+  }
+  else
+  {
+    p->setPen( Qt::black );
+  }
+  
+  for (int i=scrollbar->value()+1; i<m_pointer; i++)
+  {
+    int x = (int)qRound( (i-scrollbar->value())/xfactor ) + 51;
+    if (x <= w)
+    {
+      int y = (int)qRound( 1+(m_scaleMax-(*m_array)[i])/yfactor );
+
+      drawPoint( m_pointMode, p, x, y );
     }
   }   
 }
@@ -336,6 +443,21 @@ DMMGraph::paintThresholds( QPainter *p, int w, int /* h */, double /* xfactor */
 
     p->drawLine( 50, (int)qRound( 1+(m_scaleMax-m_externalThreshold)/yfactor ),
                  w, (int)qRound( 1+(m_scaleMax-m_externalThreshold)/yfactor) );
+  }
+  
+  if (m_showIntegration)
+  {
+    if (printer && !color)
+    {
+      p->setPen( Qt::darkGray );
+    }
+    else
+    {
+      p->setPen( m_intThresholdColor );
+    }
+
+    p->drawLine( 50, (int)qRound( 1+(m_scaleMax-m_integrationThreshold)/yfactor ),
+                 w, (int)qRound( 1+(m_scaleMax-m_integrationThreshold)/yfactor) );
   }
   
   if (m_mode == Raising || m_mode == Falling)
@@ -377,6 +499,7 @@ DMMGraph::setGraphSize( int size, int length )
   scrollbar->setPageStep( m_size );
   
   m_array->resize( m_length );
+  m_arrayInt->resize( m_length );
   if (m_pointer >= m_length)
   {
     m_pointer = m_length-1;
@@ -403,6 +526,8 @@ DMMGraph::startSLOT()
   
   m_graphStart = QDateTime::currentDateTime();
   m_externalStarted = false;
+  
+  (*m_arrayInt)[0] = 0;
 }
 
 void
@@ -494,12 +619,28 @@ DMMGraph::addValue( double val )
       for (int i=1; i<m_length; i++)
       {
         (*m_array)[i-1] = (*m_array)[i];
+        (*m_arrayInt)[i-1] = (*m_arrayInt)[i];
       }
       m_pointer = m_length-1;
     }
 
+    if (m_pointer > 0)
+    {
+      if (m_lastVal <= m_integrationThreshold)
+      {
+        (*m_arrayInt)[m_pointer] = 0.0;
+      }
+      else
+      {
+        (*m_arrayInt)[m_pointer] = (*m_arrayInt)[m_pointer-1]+val;
+      }
+    }
+    else
+    {
+      (*m_arrayInt)[m_pointer] = QMAX( val, m_integrationThreshold );
+    }
+    
     (*m_array)[m_pointer++] = val;
-
     bool resFlag = false;
 
     if (m_autoScale)
@@ -1107,22 +1248,36 @@ DMMGraph::setScale( bool autoScale, double min, double max )
 void
 DMMGraph::setColors( const QColor & bg, const QColor & grid,
                      const QColor & data, const QColor & cursor,
-                     const QColor & start, const QColor & external )
+                     const QColor & start, const QColor & external,
+                     const QColor & integration, const QColor & intThreshold )
 {
-  m_bgColor       = bg;
-  m_gridColor     = grid;
-  m_dataColor     = data;
-  m_cursorColor   = cursor;
-  m_startColor    = start;
-  m_externalColor = external;
+  m_bgColor           = bg;
+  m_gridColor         = grid;
+  m_dataColor         = data;
+  m_cursorColor       = cursor;
+  m_startColor        = start;
+  m_externalColor     = external;
+  m_intColor          = integration;
+  m_intThresholdColor = intThreshold;
    
   update();
 }
 
 void
-DMMGraph::setLine( int w )
+DMMGraph::setLineStyle( int lineMode, int pointMode,
+                        int intLineMode, int intPointMode )
 {
-  m_lineWidth = w;
+  m_lineMode = (LineMode)lineMode;
+  m_pointMode = (PointMode)pointMode;
+  m_intLineMode = (LineMode)intLineMode;
+  m_intPointMode = (PointMode)intPointMode;  
+}
+
+void
+DMMGraph::setLine( int d, int i )
+{
+  m_lineWidth    = d;
+  m_intLineWidth = i;
   
   update();
 }
@@ -1133,4 +1288,57 @@ DMMGraph::setExternal( bool on, bool falling, double threshold )
   m_startExternal = on;
   m_externalFalling = falling;
   m_externalThreshold = threshold;
+}
+
+void
+DMMGraph::drawPoint( PointMode mode, QPainter *p, int x, int y )
+{
+  static QPointArray arr(4);
+  
+  switch (mode)
+  {
+  case NoPoint:
+    return;
+  case Square:
+    p->drawRect( x-2, y-2, 5, 5 );
+    return;
+  case Circle:
+    p->drawEllipse( x-2, y-2, 5, 5 );
+    return;
+  case Diamond:
+    arr.setPoint( 0, QPoint( x-3, y ) );
+    arr.setPoint( 1, QPoint( x, y+3 ) );
+    arr.setPoint( 2, QPoint( x+3, y ) );
+    arr.setPoint( 3, QPoint( x, y-3 ) );
+    p->drawPolygon( arr );
+    return;
+  case X:
+    p->drawLine( x-3, y-3, x+3, y+3 );
+    p->drawLine( x+3, y-3, x-3, y+3 );
+  }
+}
+
+Qt::PenStyle
+DMMGraph::penStyle( LineMode mode )
+{
+  switch (mode)
+  {
+  case NoLine:
+    return Qt::NoPen;
+  case Solid:
+    return Qt::SolidLine;
+  case Dot:
+    return Qt::DotLine;
+  }
+  
+  return Qt::SolidLine;
+}
+
+void
+DMMGraph::setIntegration( bool showInt, double sc, double th, double off )
+{
+  m_showIntegration = showInt;
+  m_integrationScale = sc;
+  m_integrationThreshold = th;
+  m_integrationOffset = off;
 }

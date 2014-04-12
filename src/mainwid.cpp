@@ -42,7 +42,7 @@ MainWid::MainWid( QWidget *parent, const char *name ) :
   m_dmm = new DMM( this );
   m_external = new QProcess( this );
   
-  m_configDlg = new ConfigDlg( 0 );
+  m_configDlg = new ConfigDlg( this );
   m_configDlg->hide();
   
   m_configDlg->readPrinter( &m_printer );
@@ -313,20 +313,32 @@ MainWid::readConfig()
                        m_configDlg->dataColor(),
                        m_configDlg->cursorColor(),
                        m_configDlg->startColor(),
-                       m_configDlg->externalColor() );
+                       m_configDlg->externalColor(),
+                       m_configDlg->intColor(),
+                       m_configDlg->intThresholdColor() );
   
   ui_graph->setExternal( m_configDlg->startExternal(),
                          m_configDlg->externalFalling(),
                          m_configDlg->externalThreshold() );
   
+  ui_graph->setLineStyle( m_configDlg->lineMode(),
+                          m_configDlg->pointMode(),
+                          m_configDlg->intLineMode(),
+                          m_configDlg->intPointMode() );
+      
   QColorGroup cg = colorGroup();
   cg.setColor( QColorGroup::Background, m_configDlg->displayBgColor() );
   cg.setColor( QColorGroup::Foreground, m_configDlg->displayTextColor() );
   
   ui_display->setPalette( QPalette( cg, cg, cg ) );
       
-  ui_graph->setLine( m_configDlg->lineWidth() );
+  ui_graph->setLine( m_configDlg->lineWidth(), m_configDlg->intLineWidth() );
   
+  ui_graph->setIntegration( m_configDlg->showIntegration(),
+                            m_configDlg->intScale(),
+                            m_configDlg->intThreshold(),
+                            m_configDlg->intOffset() );
+   
   if (m_configDlg->sampleMode() == DMMGraph::Time)
   {
     QString txt;
