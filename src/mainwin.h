@@ -24,7 +24,7 @@
 #include <qmainwindow.h>
 
 class MainWid;
-class QAction;
+class Q3Action;
 class QToolBar;
 class QLabel;
 class DisplayWid;
@@ -54,21 +54,21 @@ protected:
   QToolBar    *m_helpTB;
   QToolBar    *m_displayTB;
   DisplayWid  *m_display;
-  QAction     *m_connectAction;
-  QAction     *m_resetAction;
-  QAction     *m_startAction;
-  QAction     *m_stopAction;
-  QAction     *m_clearAction;
-  QAction     *m_printAction;
-  QAction     *m_exportAction;
-  QAction     *m_importAction;
-  QAction     *m_configAction;
-  QAction     *m_configDmmAction;
-  QAction     *m_configRecorderAction;
-  QAction     *m_quitAction;
-  QAction     *m_helpAction;
-  QAction     *m_showTipsAction;
-  QAction     *m_versionAction;
+  Q3Action    *m_connectAction;
+  Q3Action    *m_resetAction;
+  Q3Action    *m_startAction;
+  Q3Action    *m_stopAction;
+  Q3Action    *m_clearAction;
+  Q3Action    *m_printAction;
+  Q3Action    *m_exportAction;
+  Q3Action    *m_importAction;
+  Q3Action    *m_configAction;
+  Q3Action    *m_configDmmAction;
+  Q3Action    *m_configRecorderAction;
+  Q3Action    *m_quitAction;
+  Q3Action    *m_helpAction;
+  Q3Action    *m_showTipsAction;
+  Q3Action    *m_versionAction;
   bool         m_running;
   QLabel      *m_error;
   QLabel      *m_info;

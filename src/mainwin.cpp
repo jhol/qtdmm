@@ -25,7 +25,7 @@
 #include <qtoolbutton.h>
 #include <qpopupmenu.h>
 #include <qmenubar.h>
-#include <qaction.h>
+#include <Q3Action>
 #include <qmessagebox.h>
 #include <qlabel.h>
 #include <qstatusbar.h>
@@ -139,7 +139,9 @@ MainWin::setConsoleLogging( bool on )
 void
 MainWin::createActions()
 {
-  m_connectAction = new QAction ( tr("Connect"), 
+  using namespace Qt;
+
+  m_connectAction = new Q3Action ( tr("Connect"), 
                                   QIconSet(QPixmap((const char **)connect_on_xpm)), 
                                   tr("Connect"), 
                                   CTRL+Key_C, 
@@ -147,35 +149,35 @@ MainWin::createActions()
   m_connectAction->setWhatsThis( tr("<b>Connect to the Multimeter</b><p>This will establish"
       " the serial connection to the dmm. If not connected the serial port is free"
       " and can be used by other software." ));
-  m_resetAction   = new QAction ( tr("Reset"), 
+  m_resetAction   = new Q3Action ( tr("Reset"), 
                                   QIconSet(QPixmap((const char **)reset_xpm)), 
                                   tr("Reset"), 
                                   CTRL+Key_R, 
                                   this );
   m_resetAction->setWhatsThis( tr("<b>Reset min/max values</b><p>The min/max values in the"
       " display will be reset. You can activate this option at any time." ));
-  m_startAction   = new QAction ( tr("Start"), 
+  m_startAction   = new Q3Action ( tr("Start"), 
                                   QIconSet(QPixmap((const char **)start_xpm)), 
                                   tr("Start"), 
                                   CTRL+Key_S, 
                                   this );
   m_startAction->setWhatsThis( tr("<b>Start the recorder</b><p>If you are in manual mode"
       " this will start the recorder. Press F2 to set the recorder options" ));
-  m_stopAction    = new QAction ( tr("Stop"), 
+  m_stopAction    = new Q3Action ( tr("Stop"), 
                                   QIconSet(QPixmap((const char **)stop_xpm)), 
                                   tr("Stop"), 
                                   CTRL+Key_X, 
                                   this );
   m_stopAction->setWhatsThis( tr("<b>Stop the recorder</b><p>The recorder will be stopped."
       " This is independent from the start mode of the recorder" ));
-  m_clearAction   = new QAction ( tr("Clear"), 
+  m_clearAction   = new Q3Action ( tr("Clear"), 
                                   QIconSet(QPixmap((const char **)clear_xpm)), 
                                   tr("Clear"), 
                                   Key_Delete, 
                                   this );
   m_clearAction->setWhatsThis( tr("<b>Clear the recorder graph</b><p>If the recorder is already"
       " started it will clear the graph and continue recording." ));
-  m_printAction   = new QAction ( tr("Print"), 
+  m_printAction   = new Q3Action ( tr("Print"), 
                                   QIconSet(QPixmap((const char **)print_xpm)), 
                                   tr("Print ..."), 
                                   CTRL+Key_P, 
@@ -184,7 +186,7 @@ MainWin::createActions()
       " define a title and a comment for your printout. The printer itself can also be configured here."
       " To be able to print you need at least one working postscript printer configured in your"
       " system. Printing into a file is also supported." ));
-  m_exportAction   = new QAction ( tr("Export"), 
+  m_exportAction   = new Q3Action ( tr("Export"), 
                                   QIconSet(QPixmap((const char **)export_xpm)), 
                                   tr("Export ..."), 
                                   CTRL+Key_E, 
@@ -192,7 +194,7 @@ MainWin::createActions()
   m_exportAction->setWhatsThis( tr("<b>Export recorder graph</b><p>Here you can export the recorded"
       " data as tab separated list. Each line contains the following values (separated by a tab "
       "character): date (dd.mm.yyyy) time (hh:mm:ss) value (float) unit." ));
-  m_importAction   = new QAction ( tr("Import"), 
+  m_importAction   = new Q3Action ( tr("Import"), 
                                   QIconSet(QPixmap((const char **)import_xpm)), 
                                   tr("Import ..."), 
                                   CTRL+Key_I, 
@@ -200,17 +202,17 @@ MainWin::createActions()
   m_importAction->setWhatsThis( tr("<b>Import data into recorder</b><p>Here you can import previously"
       " exported data files. QtDMM tries to do an educated guess if the file format is correct and"
       " rejects import of files which to not match." ));
-  m_configAction   = new QAction ( tr("Configure"), 
+  m_configAction   = new Q3Action ( tr("Configure"), 
                                   QIconSet(QPixmap((const char **)config_xpm)), 
                                   tr("Configure ..."), 
                                   Key_F2, 
                                   this );
-  m_configDmmAction   = new QAction ( tr("Configure"), 
+  m_configDmmAction   = new Q3Action ( tr("Configure"), 
                                   QIconSet(QPixmap((const char **)config_xpm)), 
                                   tr("Configure ..."), 
                                   SHIFT+Key_F2, 
                                   this );
-  m_configRecorderAction   = new QAction ( tr("Configure"), 
+  m_configRecorderAction   = new Q3Action ( tr("Configure"), 
                                   QIconSet(QPixmap((const char **)config_xpm)), 
                                   tr("Configure ..."), 
                                   CTRL+Key_F2, 
@@ -224,24 +226,24 @@ MainWin::createActions()
   m_configRecorderAction->setWhatsThis( tr("<b>Configure QtDMM</b><p>This will open QtDMM's configuration"
       " dialog. Here you can configure it's visual appearance and all options regarding the "
       "multimeter hardware and the recorder." ));
-  m_quitAction     = new QAction ( tr("Quit"), 
+  m_quitAction     = new Q3Action ( tr("Quit"), 
                                   QIconSet(QPixmap((const char **)quit_xpm)), 
                                   tr("Quit"), 
                                   CTRL+Key_Q, 
                                   this );
   m_quitAction->setWhatsThis( tr("<b>Quit QtDMM</b><p>If the recorder contains unsaved data QtDMM"
       " will give you the option to savve your data first." ));
-  m_helpAction     = new QAction ( tr("Help"), 
+  m_helpAction     = new Q3Action ( tr("Help"), 
                                   QIconSet(QPixmap((const char **)help_xpm)), 
                                   tr("Direct Help"), 
                                   SHIFT+Key_F1, 
                                   this );
   m_helpAction->setWhatsThis( tr("<b>Direct Help</b><p>Enter the direct help mode. You have done this"
       " already when reading this text :)" ));
-  m_showTipsAction  = new QAction ( this );
+  m_showTipsAction  = new Q3Action ( this );
   m_showTipsAction->setText( tr("Show tip of the day") );
   m_showTipsAction->setMenuText( tr("Tip of the day...") );
-  m_versionAction  = new QAction ( this );
+  m_versionAction  = new Q3Action ( this );
   m_versionAction->setText( tr("On version") );
   m_versionAction->setMenuText( tr("On version...") );
   m_versionAction->setWhatsThis( tr("<b>Copyright information</b><p>Show copyright information and some"
