@@ -1,3 +1,5 @@
+24/04/2005 0.8.3
+           - Finally ported to Qt-3.x
 20/10/2002 0.8.2 
            - Added preset for Voltcraft M-3650D
            - Removed performance bug in graph (manual scaling)
@@ -74,7 +76,7 @@
 15/04/2001 0.1
            - Initial release version 0.1
 
--- 03/03/2002
+-- 24/04/2005
    Matthias Toussaint
    <qtdmm@mtoussaint.de>
  

@@ -1,74 +1,57 @@
 #! /bin/sh
 
-if [ -z "$TMAKEPATH" ]
+if [ -z "$QTDIR" ]
 then
     echo "*******************************************************************************"
-    echo " TMAKEPATH is not set. This package requires a correctly set up"
-    echo " tmake. To get tmake go to ftp://ftp.troll.no/freebies/tmake"
+    echo " QTDIR is not set. This package requires a correctly set up"
+    echo " qt. To get qt visit http://www.trolltech.com"
     echo "*******************************************************************************"
     exit -1
 fi
 
-if [ ! -f "$TMAKEPATH/../../bin/tmake" ]
+QMAKE_TEST=`which qmake`
+if [ ! -f "$QMAKE_TEST" ]
 then
     echo "*******************************************************************************"
-    echo " The tmake utility was not found. This package requires a correctly"
-    echo " set up tmake. To get tmake go to ftp://ftp.troll.no/freebies/tmake"
+    echo " The qmake utility was not found. This package requires a correctly"
+    echo " set up qmake. To get qmake visit http://www.trolltech.com or install"
+    echo " a qt development package from your distribution
     echo "*******************************************************************************"
     exit -1
 fi
 
 if [ ! -f "$QTDIR/bin/uic" ]
 then
-  echo "  uic seems not to be installed (part of Qt-Designer package)"
-fi
-
-for ac_option
-do                                                                                                                                    
-  case "$ac_option" in 
-    --help)
-      echo "Usage: ./configure [--help]"
-      echo "   --help:   Print this message"
-      echo
-      cat INSTALL
-      exit 0
-      ;;
-  esac
-done
-
-echo "Creating Makefiles..." 
-
-cd src
-
-echo "Creating regular Makefile"
-
-cd ..
-
-$TMAKEPATH/../../bin/tmake -o Makefile QtDMM.pro
-
-echo "Testing libraries & tools ..."
-
-if [ -z "$QTDIR" ]
-then
     echo "*******************************************************************************"
-    echo " QTDIR is not set. This package requires a correctly set up"
-    echo " Qt. To get Qt, see http://www.trolltech.com"
+    echo " The uic utility was not found. This package requires a correctly"
+    echo " set up uic. To get uic visit http://www.trolltech.com or install"
+    echo " a qt development package from your distribution
     echo "*******************************************************************************"
     exit -1
 fi
 
+echo "Creating Makefiles..." 
+
+
+qmake QtDMM.pro -o Makefile 
+cd src
+qmake src.pro -o Makefile
+cd ..
+
+echo "Testing libraries & tools ..."
+
 echo "#include <qglobal.h>" > qttest.cpp
 echo "#include <stdio.h>" >> qttest.cpp
-echo "int main(int argc, char **argv) { fprintf( stderr, \"Found QT Version %s: \", QT_VERSION_STR );" >> qttest.cpp
-echo "if (QT_VERSION >= 210 && QT_VERSION < 300) return 0; else return -1; }" >> qttest.cpp
-gcc -I$QTDIR/include qttest.cpp
+echo "int main(int argc, char **argv) { fprintf( stderr, \"Found Qt Version %s: \", QT_VERSION_STR );" >> qttest.cpp
+echo "if (QT_VERSION >= 300) return 0; else return -1; }" >> qttest.cpp
+g++ -I$QTDIR/include qttest.cpp
 if ./a.out
 then
 echo "OK"
 rm qttest.cpp 2>/dev/null
 rm a.out 2>/dev/null
 else
-echo "QtDMM needs Qt 2.x"
+echo "Please upgrade your Qt installation"
 rm qttest.cpp 2>/dev/null
 rm a.out 2>/dev/null
 exit -1

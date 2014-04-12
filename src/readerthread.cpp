@@ -20,10 +20,12 @@
 
 #include <readerthread.h>
 #include <unistd.h>
-#include <iostream.h>
 #include <stdio.h>
 
+#include <qapplication.h>
 #include <qsocketnotifier.h>
+
+#include <iostream>
 
 ReaderThread::ReaderThread( QObject *receiver ) :
   QThread(),
@@ -52,16 +54,18 @@ ReaderThread::setFormat( ReadEvent::DataFormat format )
 void 
 ReaderThread::setHandle( int handle ) 
 { 
+  delete m_notifier;
+  m_notifier = 0;
+  
   m_handle = handle; 
   
   if (-1 == m_handle) 
   {
     m_status = ReaderThread::NotConnected;
+    m_readValue = false;
   }
   else
   {
-    delete m_notifier;
-    
     m_notifier = new QSocketNotifier( m_handle, QSocketNotifier::Read );
     
     connect( m_notifier, SIGNAL( activated(int) ),
@@ -76,6 +80,7 @@ ReaderThread::run()
   {
     if (m_readValue) 
     {
+      //std::cerr << "going to read" << std::endl;
       readDMM();
       m_readValue = false;
     }
@@ -86,6 +91,7 @@ ReaderThread::run()
 void
 ReaderThread::startRead()
 {
+  //std::cerr << "start read" << std::endl;
   m_readValue = true;
   m_sendRequest = true;
 }
@@ -93,6 +99,8 @@ ReaderThread::startRead()
 void
 ReaderThread::socketNotifierSLOT( int socket )
 {
+  //std::cerr << "socket call" << std::endl;
+  
   if (m_handle != socket) return;
 
   if (-1 == m_handle) 
@@ -136,7 +144,7 @@ ReaderThread::socketNotifierSLOT( int socket )
         m_sendRequest = true;
         m_length = 0;
 
-        QThread::postEvent( m_receiver, 
+        QApplication::postEvent( m_receiver, 
             new ReadEvent( m_buffer, formatLength(), m_id, m_format ) );
         
         m_id = (m_id+1) % m_numValues;

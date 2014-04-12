@@ -1,4 +1,4 @@
-QtDMM 0.7 (c) 2001-2002 M.Toussaint
+QtDMM 0.8.4 (c) 2001-2005 M.Toussaint
 
 QtDMM is a simple DMM readout software including a configurable transient 
 recorder. A friend of mine asked me  for a DMM readout software for Linux 
@@ -52,7 +52,7 @@ You'll find 3 'official' icon files for QtDMM in this directory:
 
 The tab size of the sourcefiles is 2 
 
--- 03/03/2002
+-- 24/04/2005
    Matthias Toussaint
    <qtdmm@mtoussaint.de>
 

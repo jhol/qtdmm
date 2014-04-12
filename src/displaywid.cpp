@@ -375,7 +375,8 @@ DisplayWid::paintEvent( QPaintEvent * )
 
       if (m_paintBar)
       {
-        p.fillRect( off, height()-10, (double)(width()-2*off)*percent, 5, 
+        p.fillRect( off, height()-10, 
+                    (int)qRound((double)(width()-2*off)*percent ), 5, 
                     colorGroup().foreground() );
       }
     }

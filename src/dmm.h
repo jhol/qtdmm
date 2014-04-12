@@ -68,7 +68,7 @@ protected:
   QString                   m_name;
   
   void timerEvent( QTimerEvent * );
-  bool event( QEvent * );
+  void customEvent( QCustomEvent * );
   QString insertComma( const QString &, int );
   
 };

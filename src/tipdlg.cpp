@@ -31,7 +31,14 @@ const char *TipDlg::s_tipText[] = {
     " the checkbox below this text. The tips can be switched "
     "on again at any time"
      " in the preferences dialog.",
-		 
+		
+    "<font size=+2>QtDMM can't connect?</font><p>"
+    "Make shure you have read/write permission for the device"
+    " the multimeter is connected to. In doubt call a:<br>"
+        " <tt>chmod a+rw /dev/&lt;device&gt;</tt> (as root).<br>"
+    "<tt>&lt;device&gt;</tt> will be something like <tt>ttyS0</tt>"
+    " or <tt>usb/ttyUSB0</tt>. This depend on your configuration.",
+    
     "<font size=+2>Quick help</font><p>"
     "Click on the context help button in the titlebar of the window."
     " You can click any of the controls or windows of QtDMM to get"

@@ -1,0 +1,24 @@
+Index: uitipdlg.ui
+===================================================================
+RCS file: /home/cvs/QtDMM/src/uitipdlg.ui,v
+retrieving revision 1.1
+diff -r1.1 uitipdlg.ui
+14,15c14,15
+<             <width>485</width>
+<             <height>215</height>
+---
+>             <width>505</width>
+>             <height>221</height>
+126c126
+<                                 <pixmap>image0</pixmap>
+---
+>                                 <pixmap>image1</pixmap>
+130c130
+<                                 <bool>true</bool>
+---
+>                                 <bool>false</bool>
+294a295,298
+>     </image>
+>     <image>
+>         <name>image1</name>
+>         <data format="XPM.GZ" length="4607">789cd5d7c96edb301000d0bbbf42306f46112f71921a453fa1458f01821e649a34b538015af75014fdf770385a484924c7966aa04319d208d2f370a448ce72913c7ffb922c96b39fe7f49cf184abf447b238fc3a9d7ebf7cfffc67367fdc267a59eb65fe6136bf4b78f2f5ed55c036d3db6c6502d20cd3f54e4a480b4c371b4c4b48d75b18907248ef531890ee217dd8c1803485f449c280f408e9ee1106a40748f9eaf0919b9272936e61402a2095b2ae4a612a04a6125308339d91f10f0c7641788c4b8816710cbd3f25478bd88621f6c4b010d7a013880c1a7462bfe77e83936202238d198768a43732f01ec2e3618d1fdc079f5b19f5b9b6616fdfca70e752cf614c3fae33ecb90ccde756865d776b5cd78f31c614f7fa1486d54e67fb32a33bfe5f638a9e8e36486fb9b0417b53868d29de51531842070df11a4290119f2104fc4aeb22833f61bc73d186596240c470eac0c38f4311aea36e480008196d4ffb8052b8ce74048deada0e55d010cc201ec3ee42b774056528ac0294a0e16982aa185345e63752d6ed42ae03d7f59eac2a246838df3e64b0701dced9431754efadda31ca885ddbe61e68ae85ca9be8c82423cf958be474a3fec6cab0117b7e71034fe91939c968abd061ffad9b1d45d1742566f405548ac22031e3e825182b0a44c8c6d0b38b6e548494fa8157878bc4ef0f81554807e12d4230e029648ed748597a1192c13920dd4ac80643a304a3ec174236e0ac12a25f88dfa0fd4769cd8d5f6bd851197f3fcdde0148110f7b</data>

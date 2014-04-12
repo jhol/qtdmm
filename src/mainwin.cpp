@@ -44,7 +44,7 @@
 #include <help.xpm>
 #include <icon.xpm>
 
-#define VERSION_STRING "0.8.2"
+#define VERSION_STRING "0.8.3"
 
 MainWin::MainWin( QWidget *parent, const char *name ) :
   QMainWindow( parent, name ),
@@ -310,7 +310,7 @@ MainWin::versionSLOT()
   msg += qVersion();
   msg += " from Trolltech AS Norway <font color=blue><u>www.trolltech.com</u></font>"
          " and is licensed under <b>GPL</b>.</div><br>"
-         "&copy; 2001, 2002 Matthias Toussaint &nbsp;-&nbsp;&nbsp;<font color=blue><u>qtdmm@mtoussaint.de</u></font>"
+         "&copy; 2001-2005 Matthias Toussaint &nbsp;-&nbsp;&nbsp;<font color=blue><u>qtdmm@mtoussaint.de</u></font>"
          "<p><br>The icons (except the DMM icon) are taken from the KDE project.<p>";
           
   QMessageBox version( tr("QtDMM: Welcome!" ),
@@ -361,13 +361,7 @@ MainWin::createToolBars()
 void
 MainWin::createMenu()
 {
-  QToolBar *tb = new QToolBar( this );
-  QMenuBar *menu = new QMenuBar( tb );
-  menu->setFrameStyle( QFrame::NoFrame );
-  tb->setStretchableWidget( menu ); 
-  addToolBar( tb, tr("Menubar"), QMainWindow::Top, false );
-  setDockEnabled( tb, Left, false );
-  setDockEnabled( tb, Right, false );
+  QMenuBar *menu = menuBar();
   
   QPopupMenu *file = new QPopupMenu( menu );
   m_exportAction->addTo( file );

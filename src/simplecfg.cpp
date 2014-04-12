@@ -22,7 +22,6 @@
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qstringlist.h>
-#include <iostream.h>
 
 SimpleCfgGroup::SimpleCfgGroup( const QString & name ) :
   groupName( name )

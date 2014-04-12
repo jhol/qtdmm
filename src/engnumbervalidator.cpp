@@ -20,9 +20,9 @@
 
 #include <engnumbervalidator.h>
 
-EngNumberValidator::EngNumberValidator( QWidget *parent, 
+EngNumberValidator::EngNumberValidator( QObject *parent, 
                                         const char *name ) :
-  QValidator(parent, name )
+  QValidator( parent, name )
 {
 }
   

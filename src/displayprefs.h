@@ -1,7 +1,7 @@
 //======================================================================
-// File:		engnumbervalidator.h
+// File:		displayprefs.h
 // Author:	Matthias Toussaint
-// Created:	Fri Oct 11 20:29:37 CEST 2002
+// Created:	Sun Nov 24 15:08:12 CET 2002
 //----------------------------------------------------------------------
 // Permission to use, copy, modify, and distribute this software and its
 // documentation  for any  purpose and  without fee is  hereby  granted,
@@ -18,22 +18,29 @@
 // (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
-#ifndef ENGNUMBERVALIDATOR_HH
-#define ENGNUMBERVALIDATOR_HH
+#ifndef DISPLAYPREFS_HH
+#define DISPLAYPREFS_HH
 
-#include <qvalidator.h>
+#include <uidisplayprefs.h>
 
-class EngNumberValidator : public QValidator
+class DisplayPrefs : public UIDisplayPrefs
 {
+  Q_OBJECT
 public:
-  EngNumberValidator( QObject *parent=0, const char *name=0 );
-  virtual ~EngNumberValidator();
+  DisplayPrefs( QWidget *parent=0, const char *name=0 );
+  virtual ~DisplayPrefs();
   
-  QValidator::State validate( QString &, int & ) const;
-  
-  static double value( const QString & );
-  static QString engValue( double );
+  bool showBar() const;
+  bool showMinMax() const;
+  QColor displayBgColor() const;
+  QColor displayTextColor() const;
+ 
+public slots:
+  virtual void defaultsSLOT();
+  virtual void factoryDefaultsSLOT();
+  virtual void applySLOT();
   
 };
-  
-#endif // ENGNUMBERVALIDATOR_HH
+
+#endif // DISPLAYPREFS_HH
+

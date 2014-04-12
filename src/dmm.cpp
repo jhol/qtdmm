@@ -22,9 +22,10 @@
 #include <unistd.h>
 #include <errno.h>
 #include <qapplication.h>
-#include <iostream.h>
 
 #include <stdio.h>
+
+#include <iostream>
 
 DMM::DMM( QObject *parent, const char *name ) :
   QObject( parent, name ),
@@ -242,18 +243,18 @@ DMM::open()
 void
 DMM::close()
 {
-  if (-1 != m_handle)
-  {
-    ::close( m_handle );
-  }
-  
   killTimers();
   
   m_error = tr( "Not connected" );
   emit error( m_error );
   
-  m_handle = -1;
-  m_readerThread->setHandle( m_handle );
+  m_readerThread->setHandle( -1 );
+  
+  if (-1 != m_handle)
+  {
+    ::close( m_handle );
+    m_handle = -1;
+  }
   
   m_oldStatus = ReaderThread::NotConnected;
 }
@@ -261,6 +262,7 @@ DMM::close()
 void
 DMM::timerEvent( QTimerEvent * )
 {
+  //std::cerr << "timer event" << std::endl;
   if (-1 == m_handle)
   {
     emit error( m_error );
@@ -271,11 +273,9 @@ DMM::timerEvent( QTimerEvent * )
   }
 }
 
-bool
-DMM::event( QEvent *ev )
+void
+DMM::customEvent( QCustomEvent *ev )
 {
-  if (QObject::event(ev)) return true;
-  
   if (QEvent::User == ev->type())
   {
     QString val;
@@ -615,11 +615,7 @@ DMM::event( QEvent *ev )
       emit error( m_error );
     }
     m_oldStatus = m_readerThread->status();
-
-    return false;
   }
-  
-  return true;
 }
 
 QString

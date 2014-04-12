@@ -1036,7 +1036,7 @@ DMMGraph::mouseMoveEvent( QMouseEvent *ev )
       //cerr << "delta=" << m_mpos.x()-ev->pos().x() << " offset=" << offset << endl;
       if (fabs(offset) >= 1)
       {
-        scrollbar->setValue( scrollbar->value() + offset );
+        scrollbar->setValue( scrollbar->value() + (int)qRound(offset) );
         m_mpos = ev->pos();
       }
     }
@@ -1238,7 +1238,7 @@ DMMGraph::exportDataSLOT()
     
     for (int i=0; i<m_pointer; i++)
     {
-      QDateTime dt = m_graphStart.addSecs( i*m_sampleTime/10. );
+      QDateTime dt = m_graphStart.addSecs( i*(int)qRound(m_sampleTime/10.) );
       QString line;
       line.sprintf( "%02d.%02d.%04d\t%02d:%02d:%02d\t%g\t%s\n",
           dt.date().day(), dt.date().month(), dt.date().year(),

@@ -24,8 +24,6 @@ HEADERS   = \
             prefwidget.h \
             printdlg.h \
             qcleanuphandler.h \
-            qprocess.h \
-            qprocess_unix.h \
             readerthread.h \
             readevent.h \
             recorderprefs.h \
@@ -65,8 +63,6 @@ SOURCES   = \
             mainwin.cpp \
             prefwidget.cpp \
             printdlg.cpp \
-            qprocess.cpp \
-            qprocess_unix.cpp \
             readerthread.cpp \
             readevent.cpp \
             recorderprefs.cpp \
@@ -76,6 +72,6 @@ SOURCES   = \
 
 LIBS      = 
 TARGET    = qtdmm
-VERSION   = 0.8.2
+VERSION   = 0.8.3
 DESTDIR   = ../bin
 
