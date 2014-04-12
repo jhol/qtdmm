@@ -23,7 +23,7 @@
 
 #include <qevent.h>
 
-class ReadEvent : public QCustomEvent
+class ReadEvent : public QEvent
 {
 public:
   enum DataFormat
