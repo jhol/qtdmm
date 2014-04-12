@@ -36,7 +36,8 @@ public:
     VC820Continuous,
     IsoTech,
     VC940Continuous,
-    QM1537Continuous
+    QM1537Continuous,
+    RS22812Continuous
   };
     
   ReadEvent( char *str, int len, int id, DataFormat df );

@@ -78,6 +78,6 @@ macx {
   RC_FILE   = QtDMMIcon.icns
 }
 TARGET    = qtdmm
-VERSION   = 0.8.11
+VERSION   = 0.8.12
 DESTDIR   = ../bin
 

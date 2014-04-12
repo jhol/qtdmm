@@ -77,6 +77,7 @@ protected:
   void readQM1537Continuous();
   void readVC820();
   void readVC940();
+  void readRS22812Continuous();
   
   int formatLength() const;
   bool checkFormat();

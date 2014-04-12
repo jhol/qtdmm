@@ -1008,7 +1008,7 @@ DMMGraph::mousePressEvent( QMouseEvent *ev )
     
     if (m_connected)
     {
-      m_popup->insertItem( tr("Diconnect"), IDDisconnect );
+      m_popup->insertItem( tr("Disconnect"), IDDisconnect );
     }
     else
     {

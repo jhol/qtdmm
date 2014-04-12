@@ -319,7 +319,7 @@ DMM::customEvent( QCustomEvent *ev )
       {
         for (int i=0; i<re->length(); ++i)
         {
-          fprintf( stdout, "%02X ", re->string()[i] );
+          fprintf( stdout, "%02X ", re->string()[i] & 0x0ff );
         }
         fprintf( stdout, "\n" );
       }
@@ -346,6 +346,9 @@ DMM::customEvent( QCustomEvent *ev )
         break;
       case ReadEvent::QM1537Continuous:
         readQM1537Continuous( re );
+        break;
+      case ReadEvent::RS22812Continuous:
+        readRS22812Continuous( re );
         break;
       }
     }
@@ -572,6 +575,165 @@ void DMM::readVC940Continuous( ReadEvent *re )
   emit value( d_val, val, unit, special, true, re->id() );
 
   m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
+}
+
+void DMM::readRS22812Continuous( ReadEvent *re )
+{
+  QString val;
+  QString special;
+  QString unit;
+  
+  const char *in = re->string();
+  
+  if (m_consoleLogging)
+  {
+    for (int i=0; i<re->length(); ++i)
+    {
+      fprintf( stdout, "%02X ", in[i] & 0x0ff );
+    }
+    fprintf( stdout, "\n" );
+  }
+  
+  // check for overflow else find sign and fill in digits
+  //
+  if (((in[3] & 0x0f7) == 0x000) && 
+      ((in[4] & 0x0f7) == 0x027) && 
+      ((in[5] & 0x0f7) == 0x0d7))
+  {
+    val = "   0L ";
+  }
+  else
+  {
+    if(in[7] & 0x08)
+    {
+      val = " -";   // negative;
+    }
+    else
+    {
+      val = "  ";
+    }
+    
+    // create string;
+    //
+    for (int i=0; i<4; ++i)
+    {
+      val += RS22812Digit( in[6-i] );
+    }
+  }
+  
+  // find comma (really decimal point) [germans use commas instead of decimal points] position
+  //
+  if (in[3] & 0x08)
+  {
+    val = insertComma( val, 3 );
+  }
+  else if (in[4] & 0x08)
+  {
+    val = insertComma( val, 2 );
+  }
+  else if(in[5] & 0x08)
+  {
+    val = insertComma( val, 1 );
+  }
+  
+  double d_val = val.toDouble();
+  
+  // try to find some special modes
+  //
+  if (in[7] & 0x40) 
+  {
+    special = "DI";
+  }
+  if (in[7] & 0x04)
+  {
+    special = "AC";
+  }
+  else
+  {
+    special = "DC";
+  }
+   
+  // try to find mode
+  //
+  if (in[1] & 0x08)
+  {
+    unit    = "F";
+    special = "CA";
+  }
+  else if (in[1] & 0x40)
+  {
+    unit    = "Ohm";
+    special = "OH";
+  }
+  else if (in[1] & 0x04)
+  {
+    unit = "A";
+  }
+  else if (in[1] & 0x80)
+  {
+    unit    = "Hz";
+    special = "HZ";
+  }
+  else if (in[1] & 0x02)
+  {
+    unit = "V";
+  }
+  else if (in[2] & 0x80)
+  {
+    unit    = "%";
+    special = "PC";
+  }
+  else 
+  {
+    std::cerr << "Unknown unit!" << std::endl;
+  }
+  
+  // try to find prefix
+  //
+  if (in[2] & 0x40)
+  {
+    d_val /= 1e9;
+    unit.prepend( "n" );
+  }
+  else if (in[2] & 0x80)
+  {
+    d_val /= 1e6;
+    unit.prepend( "u" );
+  }
+  else if (in[1] & 0x01)
+  {
+    d_val /= 1e3;
+    unit.prepend( "m" );
+  }
+  else if (in[1] & 0x20)
+  {
+    d_val *= 1e3;
+    unit.prepend( "k" );
+  }
+  else if (in[1] & 0x10)
+  {
+    d_val *= 1e6;
+    unit.prepend( "M" );
+  }
+  
+  emit value( d_val, val, unit, special, true, re->id() );
+  
+  m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
+}
+
+char *DMM::RS22812Digit( int byte )
+{
+  int     digit[10] = { 0xd7, 0x50, 0xb5, 0xf1, 0x72, 0xe3, 0xe7, 0x51, 0xf7, 0xf3 };
+  char *c_digit[10] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+     
+  byte &= 0x0f7;
+     
+  for (int n=0; n<10; n++)
+  {
+    if (byte == digit[n]) return c_digit[n];
+  }
+    
+  return 0;
 }
 
 void DMM::readASCII( ReadEvent *re )

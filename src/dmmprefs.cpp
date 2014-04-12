@@ -47,6 +47,7 @@
 //              6: IsoTech
 //              7: VC940
 //              8: QM1537
+//              9: 9 binary bytes continuous (22-812)
 //    bits
 //    stopBits
 //    number of values (For DMM's that send several lines at once)
@@ -54,11 +55,13 @@
 //    [don't ask for any logic behind the digits, changing would break configs]
 //    display digits (0,1,2,3 - 2000, 4000, 20000, 50000, 100000, 200000, 400000,
 //                              1000000, 6000, 40000)
-//
+//- Added
 struct DMMInfo dmm_info[] = { 
                               {"Digitek DT-9062", 3, 5, 8, 1, 1, 0, 1},
+                              {"Digitek INO2513", 3, 5, 8, 1, 1, 0, 1},  // no image
                               
                               {"Digitech QM1350", 0, 0, 7, 2, 1, 0, 1},  // no image
+                              {"Digitech QM1462", 3, 5, 8, 1, 1, 0, 1},  // no image
                               {"Digitech QM1538", 3, 5, 8, 1, 1, 0, 1},  // no image
                               {"Digitech QM1537", 3, 8, 8, 1, 1, 0, 1},  // no image
                               
@@ -71,7 +74,7 @@ struct DMMInfo dmm_info[] = {
                               {"MASTECH M9803R", 5, 4, 7, 1, 1, 1, 1},
                               
                               {"McVoice M-345pro", 0, 0, 7, 2, 1, 0, 1},
-                              {"McVoice M-980T", 5, 4, 7, 1, 1, 1, 1},
+                              {"McVoice M-980T", 5, 4, 7, 1, 1, 0, 1},
                               
                               {"Metex M-3660D", 1, 0, 7, 2, 1, 0, 1},
                               {"Metex M-3830D", 1, 0, 7, 2, 4, 0, 1},      // no image
@@ -85,12 +88,16 @@ struct DMMInfo dmm_info[] = {
                               
                               {"PeakTech 3330", 3, 5, 8, 1, 1, 0, 1},
                               {"PeakTech 4010", 5, 0, 7, 2, 1, 0, 1},
+                              {"PeakTech 4015A", 5, 0, 7, 2, 4, 0, 4},
                               {"PeakTech 4360", 0, 0, 7, 2, 1, 0, 1},
                               {"PeakTech 4390", 5, 0, 7, 2, 4, 0, 1},
                               {"PeakTech 451", 0, 1, 7, 2, 1, 0, 1},       // no image
                               
                               {"Radioshack 22-805 DMM", 0, 0, 7, 2, 1, 0, 1},
                               {"Radioshack RS22-168A", 1, 0, 7, 2, 1, 0, 1},   // no image
+                              {"Radioshack 22-812", 4, 9, 8, 1, 1, 0, 1},
+                              
+                              {"Tenma 72-7745", 3, 5, 8, 1, 1, 0, 1},
                               
                               {"Sinometer MAS-343", 0, 0, 7, 2, 1, 0, 1},
                               
