@@ -305,7 +305,7 @@ DMM::customEvent( QCustomEvent *ev )
 
         if (m_consoleLogging)
         {
-          for (int i=0; i<tmp.length(); ++i)
+          for (unsigned i=0; i<tmp.length(); ++i)
           {
             fprintf( stdout, "%02X ", re->string()[i] );
           }

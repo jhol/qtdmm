@@ -1244,7 +1244,7 @@ DMMGraph::exportDataSLOT()
     {
       QDateTime dt = m_graphStart.addSecs( i*(int)qRound(m_sampleTime/10.) );
       QString line;
-      line.sprintf( "%02d.%02d.%04d\t%02d:%02d:%02d\t%g\t%s\n",
+      line.sprintf( "%02d.%02d.%04d\t%02d:%02d:%02d\t%06g\t%s\n",
           dt.date().day(), dt.date().month(), dt.date().year(),
           dt.time().hour(), dt.time().minute(), dt.time().second(),
           (*m_array)[i],
@@ -1327,7 +1327,7 @@ DMMGraph::importDataSLOT()
         m_graphStart = QDateTime( startDate, startTime );
         graphEnd = QDateTime( startDate, startTime );
         
-        setUnit( line.mid( 27, 1 ) );
+        setUnit( line.mid( 27, 3 ) );
         
         cnt++;
 

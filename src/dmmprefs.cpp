@@ -41,16 +41,19 @@
 //    display digits (0,1,2,3 - 3 1/2, 3 3/4, 4 1/1, 4 3/4)
 //
 struct DMMInfo dmm_info[] = { 
+                              {"Digitech QM1350", 0, 0, 7, 2, 1, 0, 1},
                               {"ELV M9803R", 5, 4, 7, 1, 1, 1, 1},
                               {"Metex M-3660D", 1, 0, 7, 2, 1, 0, 1},
                               {"Metex M-3830D", 1, 0, 7, 2, 4, 0, 1},
                               {"Metex M-3850D", 1, 0, 7, 2, 4, 0, 1},
+                              {"Metex M-3850M", 5, 0, 7, 2, 4, 0, 1},
                               {"Metex ME-11", 0, 0, 7, 2, 1, 0, 1},
                               {"Metex ME-22", 3, 0, 7, 2, 1, 0, 1},
                               {"Metex ME-32", 0, 0, 7, 2, 1, 0, 1},
                               {"Metex ME-42", 0, 0, 7, 2, 1, 0, 1},
                               {"Metex universal system 9160", 1, 0, 7, 2, 4, 0, 1},
                               {"PeakTech-4010", 5, 0, 7, 2, 1, 0, 1},
+                              {"PeakTech-4390", 5, 0, 7, 2, 4, 0, 1},
                               {"PeakTech-451", 0, 1, 7, 2, 1, 0, 1},
                               {"Radioshack 22-805 DMM", 0, 0, 7, 2, 1, 0, 1},
                               {"Voltcraft M-3650D", 1, 0, 7, 2, 1, 0, 1},
@@ -105,7 +108,7 @@ void
 DmmPrefs::defaultsSLOT()
 {
   port->setCurrentItem( m_cfg->getInt( "Port settings", "device", 0 ) );
-  portNumber->setValue( QMIN( 2, m_cfg->getInt( "Port settings", "device-number", 0 )) );
+  portNumber->setValue( m_cfg->getInt( "Port settings", "device-number", 0 ) );
   baudRate->setCurrentItem( m_cfg->getInt( "Port settings", "baud", 0 ) );
   bitsCombo->setCurrentItem( m_cfg->getInt( "Port settings", "bits", 7 )-5 );
   stopBitsCombo->setCurrentItem( m_cfg->getInt( "Port settings", "stop-bits", 2 )-1);

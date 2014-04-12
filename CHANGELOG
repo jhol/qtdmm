@@ -1,3 +1,11 @@
+15/08/2005 0.8.6
+           - Cleaned up compiler warnings
+           - Added Metex M-3850M and PeakTech-4390
+             (Thanks to Hubert Mayer)
+           - Added Digitech QM 1350 (James Cameron)
+           - Import/Export issue (Hubert Mayer)
+           - Configuration problem for large port numbers
+             (Hubert Mayer) 
 12/05/2005 0.8.5
            - Fixed window save behaviour (nobody noticed yet?)
            - Fixed sampling counter

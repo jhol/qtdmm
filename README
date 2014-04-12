@@ -1,4 +1,4 @@
-QtDMM 0.8.4 (c) 2001-2005 M.Toussaint
+QtDMM 0.8.6 (c) 2001-2005 M.Toussaint
 
 QtDMM is a simple DMM readout software including a configurable transient 
 recorder. A friend of mine asked me  for a DMM readout software for Linux 
@@ -6,26 +6,38 @@ because he didn't want to use  the MS-Windows version which came with the
 multimeter. To help  him out I wrote this little piece of software.
 The transient recorder features manual start, scheduled start (at a given 
 time) and  triggered automatic  start when given  thresholds are reached.
+
+If you call QtDMM  with the commandline option --console it  will display
+some debug output. This might (or hight not :) help resolve problems.
+
 It was written  for Metex (and compatible like VOLTCRAFT)  multimeter and
 is known to work with the following DMM's:
 
+    Digitech     QM1350
+    ELV          M9803R
     Metex        M-3660D
     Metex        M-3830D
     Metex        M-3850D
+    Metex        M-3850M
     Metex        ME-11
     Metex        ME-22
     Metex        ME-32
     Metex        ME-42
     Metex        Universal system 9160
     PeakTech     4010
+    PeakTech     4390
     PeakTech     451
-    Radioshack   DMM 22-805
+    Radioshack   22-805 DMM
+    Voltcraft    M-3650D
     Voltcraft    M-4660
     Voltcraft    ME-11
+    Voltcraft    ME-22T
     Voltcraft    ME-32
+    Voltcraft    VC 670
 
 The following models should work but need to be confirmed by a user:
 
+    Voltcraft    ME-42
     Voltcraft    M-3860
     Voltcraft    M-4660A
     Voltcraft    M-4660M
@@ -43,12 +55,6 @@ it is  and it seems  to be quite stable. It still needs some improvements
 but does it's job quite well.
 
 QtDMM is distributed under the GNU Public License, version 2.
-
-You'll find 3 'official' icon files for QtDMM in this directory:
-
-- qtdmm-16x16.xpm
-- qtdmm-32.32.xpm
-- qtdmm-48x48.xpm
 
 The tab size of the sourcefiles is 2 
 

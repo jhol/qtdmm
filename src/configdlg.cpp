@@ -414,6 +414,9 @@ ConfigDlg::thresholdChangedSLOT( DMMGraph::CursorMode mode, double value )
   case DMMGraph::Integration:
     m_integration->setThreshold( value );
     break;
+  default:
+    std::cerr << "Unexpected CursorMode in configdlg.cpp:418" << std::endl;
+    break;
   }
 }
 

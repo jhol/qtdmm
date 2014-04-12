@@ -240,7 +240,8 @@ ReaderThread::readMetex14()
 {
   if (m_sendRequest)
   {
-    size_t ret = ::write( m_handle, "D\n", 2 );
+    /* TODO: Errorhandling */
+    /*size_t ret = */ ::write( m_handle, "D\n", 2 );
     //std::cerr << "WROTE: " << ret << std::endl;
     m_sendRequest = false;
   }

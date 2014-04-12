@@ -1,11 +1,8 @@
-Installation QtDMM 0.7 (c) 2001-2002 M.Toussaint
+Installation QtDMM 0.8 (c) 2001-2005 M.Toussaint
 
 Requirements:
 -------------
-- Qt library >= 2.1.0 <http://www.trolltech.com> thread version
-- tmake (I think version >= 1.5 , but I'm not shure) <http://www.trolltech.com>
-- Additionally you should have Qt-Designer installed (standard for current
-  Qt version)
+- Qt library >= 3.0 <http://www.trolltech.com> developer version
 - A supported multimeter or a compatible model
 
 Compilation:
@@ -15,7 +12,6 @@ some of the major Linux distributions you have to install a qt-devel package
 (or similar package name) in  order to get the header files for Qt, wich are
 essential for the compilation.
 
-* tmake can be found at ftp://ftp.trollteech.com
 * moc and uic  are part  of the original source  tarballs of Qt or  might be 
   hidden in a developer package of Qt for your distribution.
 
@@ -37,7 +33,7 @@ presets and future users can benefit from you help.
 If you encounter any problems don't hesitate to contact me 
 
 
--- 03/03/2002
+-- 15/08/2005
    Matthias Toussaint
    <qtdmm@mtoussaint.de>
 
