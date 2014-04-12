@@ -1982,7 +1982,7 @@ You have two choices:
                         <property>
                             <name>layoutSpacing</name>
                         </property>
-                        <hbox>
+                        <grid>
                             <property stdset="1">
                                 <name>margin</name>
                                 <number>10</number>
@@ -1991,7 +1991,7 @@ You have two choices:
                                 <name>spacing</name>
                                 <number>5</number>
                             </property>
-                            <widget>
+                            <widget row="0"  column="0"  rowspan="1"  colspan="3" >
                                 <class>QComboBox</class>
                                 <item>
                                     <property>
@@ -2014,7 +2014,50 @@ You have two choices:
                                     <string>Here you may select the DMM type. Currently you can select between &lt;b&gt;Metex/Voltcraft&lt;/b&gt; and a &lt;b&gt;PeakTech-451&lt;/b&gt;. Selecting &lt;b&gt;Metex/Voltcraft&lt;/b&gt; it should run with all DMM's of this brand wich are compatible with their 14 byte protocol.&lt;p&gt;The PeakTech setting was only tested with this model.</string>
                                 </property>
                             </widget>
-                        </hbox>
+                            <widget row="1"  column="0" >
+                                <class>QLabel</class>
+                                <property stdset="1">
+                                    <name>name</name>
+                                    <cstring>TextLabel1_4</cstring>
+                                </property>
+                                <property stdset="1">
+                                    <name>text</name>
+                                    <string>Ignore lines:</string>
+                                </property>
+                            </widget>
+                            <widget row="1"  column="1" >
+                                <class>QSpinBox</class>
+                                <property stdset="1">
+                                    <name>name</name>
+                                    <cstring>ignoreSpin</cstring>
+                                </property>
+                                <property stdset="1">
+                                    <name>maxValue</name>
+                                    <number>10</number>
+                                </property>
+                            </widget>
+                            <spacer row="1"  column="2" >
+                                <property>
+                                    <name>name</name>
+                                    <cstring>Spacer1</cstring>
+                                </property>
+                                <property stdset="1">
+                                    <name>orientation</name>
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property stdset="1">
+                                    <name>sizeType</name>
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property>
+                                    <name>sizeHint</name>
+                                    <size>
+                                        <width>20</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                        </grid>
                     </widget>
                     <spacer>
                         <property>

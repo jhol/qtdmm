@@ -27,9 +27,12 @@
 #include <qvalidator.h>
 #include <qradiobutton.h>
 
-struct DMMInfo dmm_info[] = { {"Metex/Voltcraft ME-32", 0, 0, 7, 2},
-                              {"PeakTech-451", 1, 1, 7, 2},
-                              { "",0,0,0,0} };
+// when all needed parameter are found this hardcoded version will
+// be replaced by a file
+struct DMMInfo dmm_info[] = { {"Metex/Voltcraft ME-32", 0, 0, 7, 2, 0},
+                              {"PeakTech-451", 1, 1, 7, 2, 0},
+                              {"Voltcraft M-4660", 1, 0, 7, 2, 3},
+                              { "",0,0,0,0,0} };
                       
 ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
   UIConfigDlg( parent, name, true )
@@ -38,7 +41,6 @@ ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
   path += "/.qtdmmrc";
   
   m_cfg = new SimpleCfg( path );
-  cancelSLOT();
   
   QDoubleValidator *dval = new QDoubleValidator( -99999.9, 99999.9, 5, this );
   scaleMinEd->setValidator( dval );
@@ -62,9 +64,12 @@ ConfigDlg::ConfigDlg( QWidget *parent, const char *name ) :
   {
     modelCombo->insertItem( dmm_info[id++].name );
   }
-  
+
   connect( modelCombo, SIGNAL( activated( int ) ),
            this, SLOT( modelSLOT( int )));
+  
+  cancelSLOT();
+  
 }
 
 ConfigDlg::~ConfigDlg()
@@ -103,6 +108,8 @@ ConfigDlg::applySLOT()
   m_cfg->setInt( "Port settings", "stop-bits", stopBitsCombo->currentItem()+1 );
   
   m_cfg->setInt( "DMM", "data-format", protocolCombo->currentItem() );
+  m_cfg->setInt( "DMM", "ignore-lines", ignoreSpin->value() );
+  m_cfg->setInt( "DMM", "model", modelCombo->currentItem() );
   
   m_cfg->save();
 }
@@ -168,7 +175,10 @@ ConfigDlg::cancelSLOT()
   stopBitsCombo->setCurrentItem( m_cfg->getInt( "Port settings", "stop-bits", 2 )-1);
   
   protocolCombo->setCurrentItem( m_cfg->getInt( "DMM", "data-format", 0 ));
-
+  ignoreSpin->setValue( m_cfg->getInt( "DMM", "ignore-lines", 0 ));
+  modelCombo->setCurrentItem( m_cfg->getInt( "DMM", "model", 0 ));
+  
+  modelSLOT( modelCombo->currentItem() );
 }
 
 void
@@ -352,6 +362,12 @@ ConfigDlg::format() const
   return ReadEvent::Metex14;
 }
 
+int
+ConfigDlg::ignoreLines() const
+{
+  return ignoreSpin->value();
+}
+
 void
 ConfigDlg::modelSLOT( int id )
 {
@@ -359,13 +375,18 @@ ConfigDlg::modelSLOT( int id )
   protocolCombo->setDisabled( id != 0 );
   bitsCombo->setDisabled( id != 0 );
   stopBitsCombo->setDisabled( id != 0 );
+  ignoreSpin->setDisabled( id != 0 );
   if (id != 0) message->hide();
   else         message->show();
   
-  baudRate->setCurrentItem( dmm_info[id-1].baud );
-  protocolCombo->setCurrentItem( dmm_info[id-1].protocol );
-  bitsCombo->setCurrentItem( dmm_info[id-1].bits-5 );
-  stopBitsCombo->setCurrentItem( dmm_info[id-1].stopBits-1 );
+  if (id > 0)
+  {
+    baudRate->setCurrentItem( dmm_info[id-1].baud );
+    protocolCombo->setCurrentItem( dmm_info[id-1].protocol );
+    bitsCombo->setCurrentItem( dmm_info[id-1].bits-5 );
+    stopBitsCombo->setCurrentItem( dmm_info[id-1].stopBits-1 );
+    ignoreSpin->setValue( dmm_info[id-1].ignoreLines );
+  }
 }
 
 int

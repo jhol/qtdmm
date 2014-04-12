@@ -29,8 +29,7 @@ DMM::DMM( QObject *parent, const char *name ) :
   QObject( parent, name ),
   m_handle( -1 ),
   m_speed( 600 ),
-  m_device( "/dev/ttyS1" ),
-  m_format( ReadEvent::Metex14 )
+  m_device( "/dev/ttyS1" )
 {
   m_buffer[14] = '\0';
   
@@ -76,7 +75,6 @@ DMM::setPortSettings( int bits, int stopBits )
 void
 DMM::setFormat( ReadEvent::DataFormat format )
 {
-  m_format = format;
   m_readerThread->setFormat( format );
 }
 
@@ -84,6 +82,12 @@ void
 DMM::setSpeed( int speed )
 {
   m_speed = speed;
+}
+
+void
+DMM::setIgnoreLines( int lines )
+{
+  m_readerThread->setIgnoreLines( lines );
 }
 
 void

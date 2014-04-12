@@ -34,6 +34,7 @@ struct DMMInfo
   int   protocol;
   int   bits;
   int   stopBits;
+  int   ignoreLines;
 };
 
 class ConfigDlg : public UIConfigDlg
@@ -59,6 +60,7 @@ public:
   ReadEvent::DataFormat format() const;
   int bits() const;
   int stopBits() const;
+  int ignoreLines() const;
   
 protected:
   SimpleCfg *m_cfg;

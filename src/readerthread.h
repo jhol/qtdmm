@@ -43,6 +43,7 @@ public:
   void startRead();
   void setHandle( int handle ) { m_handle = handle; }
   void setFormat( ReadEvent::DataFormat );
+  void setIgnoreLines( int );
   
   ReadStatus status() const { return m_status; }
   
@@ -53,6 +54,7 @@ protected:
   bool                  m_readValue;
   char                  m_buffer[15];
   ReadEvent::DataFormat m_format;
+  int                   m_ignoreLines;
   
   void readDMM();
   

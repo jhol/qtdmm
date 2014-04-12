@@ -48,6 +48,7 @@ if [ x"$HAS_UIC" = xno ]
 then
   echo "Creating regular Makefile without uic"
   cp qtdmm_nouic.pro src.pro
+  cp ui_cpp/* .
 else
   echo "Creating regular Makefile"
   cp qtdmm.pro src.pro

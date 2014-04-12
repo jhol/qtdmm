@@ -26,7 +26,8 @@ ReaderThread::ReaderThread( QObject *receiver ) :
   QThread(),
   m_receiver( receiver ),
   m_readValue( false ),
-  m_format( ReadEvent::Metex14 )
+  m_format( ReadEvent::Metex14 ),
+  m_ignoreLines( 0 )
 {
   m_buffer[14] = '\0';
 }
@@ -39,6 +40,12 @@ void
 ReaderThread::setFormat( ReadEvent::DataFormat format )
 {
   m_format = format;
+}
+
+void 
+ReaderThread::setIgnoreLines( int lines )
+{
+  m_ignoreLines = lines;
 }
 
 void
@@ -105,6 +112,31 @@ ReaderThread::readDMM()
       }
     } 
     while ('\r' != byte);
+
+    // ignore additional lines
+    // <Michael Petruzelka>                          
+    for (int i=0; i<m_ignoreLines; i++)                                     
+    {                                                                 
+      do                                                              
+      {                                                               
+        retval = ::read( m_handle, &byte, 1);      
+                
+        // Do some errorchecking (mt)           
+        if (-1 == retval)
+        {
+          m_status = ReaderThread::Error;
+
+          return;
+        }
+        else if (0 == retval)
+        {
+          m_status = ReaderThread::Timeout;
+
+          return;
+        }
+      }                                                               
+      while ('\r' != byte);                                           
+    }        
   }
   else if (m_format == ReadEvent::PeakTech10)
   {
@@ -133,6 +165,7 @@ ReaderThread::readDMM()
       else
       {
         // wait for #
+        // (Dr. Ralf Wieland)
         if(byte=='#')
         {
 	        flag=true;
