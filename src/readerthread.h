@@ -29,7 +29,7 @@
 
 class QSocketNotifier;
 
-class ReaderThread : public QObject, public QThread
+class ReaderThread : public QThread
 {
   Q_OBJECT
       
