@@ -22,10 +22,34 @@
 #include <mainwin.h>
 
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <qstring.h>
+
+void myMessageOutput( QtMsgType type, const char *msg )
+{
+  QString txt = msg;
+  
+  switch ( type ) {
+    case QtDebugMsg:
+      fprintf( stderr, "Debug: %s\n", msg );
+      //abort();
+      break;
+    case QtWarningMsg:     
+      if (txt.contains( "Absolute index" )) abort();
+      //fprintf( stderr, "Warning: %s\n", msg );
+      //abort();
+      break;
+    case QtFatalMsg:
+      fprintf( stderr, "Fatal: %s\n", msg );
+      //abort();                    // deliberately core dump
+  }
+}
 
 int
 main( int argc, char **argv )
 {
+  qInstallMsgHandler( myMessageOutput );
   QApplication app( argc, argv );
   
   MainWin mainWin( 0 );

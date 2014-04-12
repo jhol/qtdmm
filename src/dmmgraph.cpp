@@ -34,6 +34,7 @@
 #include <qscrollbar.h>
 #include <qtextstream.h>
 #include <qtooltip.h>
+#include <qstringlist.h>
 
 #include <dmmgraph.h>
 
@@ -175,7 +176,7 @@ DMMGraph::print( QPrinter *prt, const QString & title, const QString & comment )
   p.drawText( 0, tRect.height()+10, maxWidth, tHeight, Qt::AlignLeft | Qt::AlignVCenter, 
               tr( "Sampling start:" ) );
   p.drawText( maxWidth+10, tRect.height()+10, w-maxWidth-10, tHeight, Qt::AlignLeft | Qt::AlignVCenter, 
-              m_graphStart.toString() );
+              m_graphStartDateTime.toString() );
   
   p.drawText( 0, tRect.height()+10+tHeight, maxWidth, tHeight, Qt::AlignLeft | Qt::AlignVCenter, 
               tr( "Sampling resolution:" ) );
@@ -318,6 +319,8 @@ void
 DMMGraph::paintVerticalGrid( QPainter *p, double xfactor, double xstep,
                              double maxUnit, double hUnitFact, const QString & hUnit, bool color )
 {
+  int sv = QMAX( 0, scrollbar->value() );
+  
   if (color)
   {
     p->setPen( QPen( m_gridColor, 0, Qt::DotLine ) );
@@ -331,7 +334,7 @@ DMMGraph::paintVerticalGrid( QPainter *p, double xfactor, double xstep,
   double val = xstep;
   while (val < maxUnit)
   {
-    int x = m_graphRect.x() + (int)qRound( 1+(val)/hUnitFact - scrollbar->value()/xfactor );
+    int x = m_graphRect.x() + (int)qRound( 1+(val)/hUnitFact - sv/xfactor );
     if (x > m_graphRect.x() && x < m_graphRect.x()+m_graphRect.width()-1)
     {
       p->drawLine( x, m_graphRect.y(), x, m_graphRect.y()+m_graphRect.height()+3 );
@@ -354,9 +357,11 @@ DMMGraph::paintData( QPainter *p, double xfactor,
 {  
   p->setClipRect( m_graphRect );
   
+  int sv = QMAX( 0, scrollbar->value() );
+
   // draw cursor
   //
-  int x = (int)qRound( (m_pointer-scrollbar->value()-1)/xfactor ) + m_graphRect.x();
+  int x = (int)qRound( (m_pointer-sv-1)/xfactor ) + m_graphRect.x();
   
   if (!printer && x>m_graphRect.x() && x <= m_graphRect.x()+m_graphRect.width()-1)
   {
@@ -373,7 +378,7 @@ DMMGraph::paintData( QPainter *p, double xfactor,
   {
     y = (int)qRound( m_graphRect.y()+
         (m_scaleMax-m_integrationOffset-
-          (*m_arrayInt)[scrollbar->value()]*m_integrationScale)/yfactor );
+          (*m_arrayInt)[sv]*m_integrationScale)/yfactor );
 
     if (color)
     {
@@ -389,9 +394,9 @@ DMMGraph::paintData( QPainter *p, double xfactor,
     pCnt = 1;
     m_drawArray.setPoint( 0, QPoint( m_graphRect.x(), y ) );
 
-    for (int i=scrollbar->value()+1; i<m_pointer; i++)
+    for (int i=sv+1; i<m_pointer; i++)
     {
-      int x = (int)qRound( (i-scrollbar->value())/xfactor ) + 51;
+      int x = (int)qRound( (i-sv)/xfactor ) + 51;
       if (x <= m_graphRect.x()+m_graphRect.width())
       {
         y = (int)qRound( m_graphRect.y()+(m_scaleMax-m_integrationOffset-
@@ -406,7 +411,7 @@ DMMGraph::paintData( QPainter *p, double xfactor,
     
     //y = (int)qRound( 1+(m_scaleMax-(*m_arrayInt)[scrollbar->value()])/yfactor );
     y = (int)qRound( m_graphRect.y()+(m_scaleMax-m_integrationOffset-
-        (*m_arrayInt)[scrollbar->value()]*m_integrationScale)/yfactor );
+        (*m_arrayInt)[sv]*m_integrationScale)/yfactor );
     
     if (color)
     {
@@ -417,9 +422,9 @@ DMMGraph::paintData( QPainter *p, double xfactor,
       p->setPen( Qt::darkGray );
     }
 
-    for (int i=scrollbar->value()+1; i<m_pointer; i++)
+    for (int i=sv+1; i<m_pointer; i++)
     {
-      int x = (int)qRound( (i-scrollbar->value())/xfactor ) + m_graphRect.x();
+      int x = (int)qRound( (i-sv)/xfactor ) + m_graphRect.x();
       if (x <= m_graphRect.x()+m_graphRect.width())
       {
         y = (int)qRound( m_graphRect.y()+(m_scaleMax-m_integrationOffset-
@@ -432,8 +437,8 @@ DMMGraph::paintData( QPainter *p, double xfactor,
   }
   
   // draw data curve
-  //
-  y = (int)qRound( m_graphRect.y()+(m_scaleMax-(*m_array)[scrollbar->value()])/yfactor );
+  //  
+  y = (int)qRound( m_graphRect.y()+(m_scaleMax-(*m_array)[sv])/yfactor );
 
   if (color)
   {
@@ -449,9 +454,9 @@ DMMGraph::paintData( QPainter *p, double xfactor,
   pCnt = 1;
   m_drawArray.setPoint( 0, QPoint( m_graphRect.x(), y ) );
 
-  for (int i=scrollbar->value()+1; i<m_pointer; i++)
+  for (int i=sv+1; i<m_pointer; i++)
   {
-    int x = (int)qRound( (i-scrollbar->value())/xfactor ) + m_graphRect.x();
+    int x = (int)qRound( (i-sv)/xfactor ) + m_graphRect.x();
     if (x <= m_graphRect.x()+m_graphRect.width())
     {
       int y = (int)qRound( m_graphRect.y()+(m_scaleMax-(*m_array)[i])/yfactor );
@@ -462,7 +467,7 @@ DMMGraph::paintData( QPainter *p, double xfactor,
   if (pCnt)
     p->drawPolyline( m_drawArray, 0, pCnt );
   
-  y = (int)qRound( m_graphRect.y()+(m_scaleMax-(*m_array)[scrollbar->value()])/yfactor );
+  y = (int)qRound( m_graphRect.y()+(m_scaleMax-(*m_array)[sv])/yfactor );
 
   if (color)
   {
@@ -473,9 +478,9 @@ DMMGraph::paintData( QPainter *p, double xfactor,
     p->setPen( Qt::black );
   }
   
-  for (int i=scrollbar->value()+1; i<m_pointer; i++)
+  for (int i=sv+1; i<m_pointer; i++)
   {
-    int x = (int)qRound( (i-scrollbar->value())/xfactor ) + m_graphRect.x();
+    int x = (int)qRound( (i-sv)/xfactor ) + m_graphRect.x();
     if (x <= m_graphRect.x()+m_graphRect.width())
     {
       int y = (int)qRound( m_graphRect.y()+(m_scaleMax-(*m_array)[i])/yfactor );
@@ -567,6 +572,7 @@ DMMGraph::setGraphSize( int size, int length )
   m_size = (int)((double)size/m_sampleTime*10.);
   m_length = (int)((double)length/m_sampleTime*10. + 1);
   
+  scrollbar->setMinValue( 0 );
   scrollbar->setMaxValue( m_length-1-m_size );
   scrollbar->setLineStep( (m_size-1)/10 );
   scrollbar->setPageStep( m_size );
@@ -598,7 +604,7 @@ DMMGraph::startSLOT()
   emitInfo();  
   emit running( true );
   
-  m_graphStart = QDateTime::currentDateTime();
+  m_graphStartDateTime = QDateTime::currentDateTime();
   m_externalStarted = false;
   
   (*m_arrayInt)[0] = 0;
@@ -911,7 +917,7 @@ DMMGraph::clearSLOT()
     }
   }
   
-  m_graphStart = QDateTime::currentDateTime();
+  m_graphStartDateTime = QDateTime::currentDateTime();
   m_first = true;
   m_dirty = false;
   
@@ -995,7 +1001,7 @@ DMMGraph::mousePressEvent( QMouseEvent *ev )
   }
   else if(ev->button() == RightButton)
   {
-    /*m_popup->clear();
+    m_popup->clear();
     
     if (m_running)
     {
@@ -1014,7 +1020,7 @@ DMMGraph::mousePressEvent( QMouseEvent *ev )
     m_popup->insertItem( tr("Configure scale") );
     m_popup->insertItem( tr("Configure graph") );
 
-    m_popup->popup( ev->globalPos() );*/
+    m_popup->popup( ev->globalPos() );
   }
   else if (ev->button() == MidButton)
   {
@@ -1030,6 +1036,8 @@ DMMGraph::mouseMoveEvent( QMouseEvent *ev )
 {
   if (m_scaleMin == m_scaleMax || m_scaleMin == 1e40) return;
   
+  int sv = QMAX( 0, scrollbar->value() );
+  
   if (!m_mouseDown)
   {
     if (m_mousePan)
@@ -1040,7 +1048,7 @@ DMMGraph::mouseMoveEvent( QMouseEvent *ev )
       //cerr << "delta=" << m_mpos.x()-ev->pos().x() << " offset=" << offset << endl;
       if (fabs(offset) >= 1)
       {
-        scrollbar->setValue( scrollbar->value() + (int)qRound(offset) );
+        scrollbar->setValue( QMIN( scrollbar->maxValue(), sv + (int)qRound(offset) ) );
         m_mpos = ev->pos();
       }
     }
@@ -1143,9 +1151,11 @@ DMMGraph::drawCursor( const QPoint & pos )
   p.setPen( Qt::white );
   p.drawLine( pos.x(), m_graphRect.y(), pos.x(), m_graphRect.height()+m_graphRect.y()-1 );
   
+  int sv = QMAX( 0, scrollbar->value() );
+  
   if (m_crosshair)
   {
-    int x = (int)qRound( (pos.x()-m_graphRect.x())*m_xfactor + scrollbar->value() );
+    int x = (int)qRound( (pos.x()-m_graphRect.x())*m_xfactor + sv );
     if (x < 0) x = 0;
   
     if (x < m_pointer)
@@ -1160,11 +1170,13 @@ DMMGraph::drawCursor( const QPoint & pos )
 void
 DMMGraph::fillInfoBox( const QPoint & pos )
 {
-  int x = (int)qRound( (pos.x()-m_graphRect.x())*m_xfactor + scrollbar->value() );
+  int sv = QMAX( 0, scrollbar->value() );
+  
+  int x = (int)qRound( (pos.x()-m_graphRect.x())*m_xfactor + sv );
   if (x < 0) x = 0;
   int sec = (int)((double)x * m_sampleTime/10.);
   
-  QTime t = m_graphStart.time().addSecs( sec );
+  QTime t = m_graphStartDateTime.time().addSecs( sec );
   QString tmpStr = t.toString();
   
   if (x < m_pointer)
@@ -1242,7 +1254,7 @@ DMMGraph::exportDataSLOT()
     
     for (int i=0; i<m_pointer; i++)
     {
-      QDateTime dt = m_graphStart.addSecs( i*(int)qRound(m_sampleTime/10.) );
+      QDateTime dt = m_graphStartDateTime.addSecs( i*(int)qRound(m_sampleTime/10.) );
       QString line;
       line.sprintf( "%02d.%02d.%04d\t%02d:%02d:%02d\t%06g\t%s\n",
           dt.date().day(), dt.date().month(), dt.date().year(),
@@ -1301,6 +1313,10 @@ DMMGraph::importDataSLOT()
     // First pass -> figure out size and sample time              
     QFile file( fn );      
     
+    QStringList token;
+    QStringList dateToken;
+    QStringList timeToken;
+    
     if (file.open( IO_ReadOnly ))
     {
       QTextStream ts( &file );
@@ -1317,14 +1333,18 @@ DMMGraph::importDataSLOT()
           return;
         }
         
-        QTime startTime = QTime( line.mid( 11, 2 ).toInt(), 
-                                 line.mid( 14, 2 ).toInt(),
-                                 line.mid( 17, 2 ).toInt() );
-        QDate startDate = QDate( line.mid( 6, 4 ).toInt(), 
-                                 line.mid( 3, 2 ).toInt(),
-                                 line.mid( 0, 2 ).toInt() );
+        token = QStringList::split( "\t", line );       
+        dateToken = QStringList::split( ".", token[0] );
+        timeToken = QStringList::split( ":", token[1] );
+        
+        QTime startTime = QTime( timeToken[0].toInt(), 
+                                 timeToken[1].toInt(),
+                                 timeToken[2].toInt() );
+        QDate startDate = QDate( dateToken[2].toInt(), 
+                                 dateToken[1].toInt(),
+                                 dateToken[0].toInt() );
 
-        m_graphStart = QDateTime( startDate, startTime );
+        m_graphStartDateTime = QDateTime( startDate, startTime );
         graphEnd = QDateTime( startDate, startTime );
         
         setUnit( line.mid( 27, 3 ) );
@@ -1335,33 +1355,44 @@ DMMGraph::importDataSLOT()
         {
           line = ts.readLine();
           
-          QTime nowTime = QTime( line.mid( 11, 2 ).toInt(), 
-                                 line.mid( 14, 2 ).toInt(),
-                                 line.mid( 17, 2 ).toInt() );   
-          QDate nowDate = QDate( line.mid( 6, 4 ).toInt(), 
-                                 line.mid( 3, 2 ).toInt(),
-                                 line.mid( 0, 2 ).toInt() );
-
-          sample += QDateTime( startDate, startTime ).secsTo( 
-              QDateTime( nowDate, nowTime ) );
-
-          startTime = nowTime;
-          startDate = nowDate;
-
-          graphEnd = QDateTime( startDate, startTime );
+          if (!line.isEmpty())
+          {
+            token = QStringList::split( "\t", line );
+            dateToken = QStringList::split( ".", token[0] );
+            timeToken = QStringList::split( ":", token[1] );
           
-          cnt++;
-
+            QTime nowTime = QTime( timeToken[0].toInt(), 
+                                    timeToken[1].toInt(),
+                                    timeToken[2].toInt() );
+            QDate nowDate = QDate( dateToken[2].toInt(), 
+                                    dateToken[1].toInt(),
+                                    dateToken[0].toInt() );
+  
+            sample += QDateTime( startDate, startTime ).secsTo( 
+                QDateTime( nowDate, nowTime ) );
+  
+            startTime = nowTime;
+            startDate = nowDate;
+  
+            graphEnd = QDateTime( startDate, startTime );
+            
+            cnt++;
+          }
         }
       }
       file.close();
     }
     
-    m_sampleTime = m_graphStart.secsTo( graphEnd );
+    m_sampleTime = m_graphStartDateTime.secsTo( graphEnd );
     
     int size = m_size*m_sampleTime;
     int length = (m_length-1)*m_sampleTime;
     
+    std::cerr << "we have " << cnt << " lines" << std::endl;
+    std::cerr << "m_sampleTime " << m_sampleTime << std::endl;
+    std::cerr << "size " << size << std::endl;
+    std::cerr << "length " << length << std::endl;
+        
     if (cnt > 1)
     {
       if (sample/(cnt-1) != m_sampleTime)
@@ -1371,18 +1402,21 @@ DMMGraph::importDataSLOT()
       m_sampleTime = sample/(cnt-1);
     }
     
-    if (cnt*m_sampleTime > length)
+  /*  if (cnt*m_sampleTime > length)
     {
       if (size > cnt*m_sampleTime) size = cnt*m_sampleTime;
       emit graphSize( size, cnt*m_sampleTime );
       setGraphSize( size, cnt*m_sampleTime );
-    }
-    
+  }*/
+  
     m_scaleMin =  1e40;
     m_scaleMax = -1e40;
     
     if (file.open( IO_ReadOnly ))
     {
+      // TEST
+      setGraphSize( size, cnt*m_sampleTime );
+      
       int i = 0;
       
       QTextStream ts( &file );
@@ -1390,7 +1424,11 @@ DMMGraph::importDataSLOT()
       
       while (!(line = ts.readLine()).isNull())
       {
-        (*m_array)[i++] = line.mid( 20, 6 ).toDouble();
+        if (!line.isEmpty())
+        {
+          token = QStringList::split( "\t", line );
+          (*m_array)[i++] = token[2].toDouble();
+        }
       }
             
       m_sampleCounter = m_pointer = cnt;
@@ -1405,6 +1443,9 @@ DMMGraph::importDataSLOT()
       
       computeUnitFactor();
     }
+    
+    // TEST    
+    emit graphSize( size, cnt*m_sampleTime );
   }
 }
 
@@ -1610,7 +1651,7 @@ DMMGraph::computeUnitFactor()
   m_factor = 1.;
   m_prefix = "";
   
-  if (m_unit == "C") return;
+  if (m_unit == "C" || m_unit == "%") return;
   
   if (QMAX( fabs(m_scaleMax*m_factor), fabs(m_scaleMin*m_factor)) > 1000)
   {

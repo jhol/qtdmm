@@ -555,6 +555,37 @@ ConfigDlg::setShowTipsSLOT( bool on )
   m_gui->setShowTipsSLOT( on );
 }
 
+bool ConfigDlg::showDmmToolbar() const
+{
+  return m_gui->showDmmToolbar();
+}
+
+bool ConfigDlg::showGraphToolbar() const
+{
+  return m_gui->showGraphToolbar();
+}
+
+bool ConfigDlg::showFileToolbar() const
+{
+  return m_gui->showFileToolbar();
+}
+
+bool ConfigDlg::showHelpToolbar() const
+{
+  return m_gui->showHelpToolbar();
+}
+
+bool ConfigDlg::showDisplay() const
+{
+  return m_gui->showDisplay();
+}
+
+void ConfigDlg::setToolbarVisibility( bool disp, bool dmm, bool graph,
+                                      bool file, bool help )
+{
+  m_gui->setToolbarVisibility( disp, dmm, graph, file, help );
+}
+
 /////////////////////////////////////////////////////////////////
 // SCALE
 //

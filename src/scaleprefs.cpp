@@ -30,6 +30,8 @@
 
 #include <scale.xpm>
 
+#include <iostream>
+
 #define MINUTE_SECS   60
 #define HOUR_SECS     60*60
 #define DAY_SECS      60*60*24
@@ -140,6 +142,42 @@ ScalePrefs::scaleMax() const
 void
 ScalePrefs::zoomInSLOT( double fac )
 {
+  double size = (double)ui_winSize->value() / fac;
+  
+  switch (sizeUnit->currentItem())
+  {
+    case 0:
+      if (size < 10.0)
+      {
+        size = 10.0;
+      }
+      break;
+    case 1:
+      if (size < 1.0)
+      {
+        size *= 60.0;
+        sizeUnit->setCurrentItem( 0 );
+      }
+      break;
+    case 2:
+      if (size < 1.0)
+      {
+        size *= 60.0;
+        sizeUnit->setCurrentItem( 1 );
+      }
+      break;
+    case 3:
+      if (size < 1.0)
+      {
+        size *= 24.0;
+        sizeUnit->setCurrentItem( 2 );
+      }
+      break;
+  }
+  
+  ui_winSize->setValue( (int)size );
+  
+  /*
   double val = ui_winSize->value();
   
   if (val > 10)
@@ -154,11 +192,53 @@ ScalePrefs::zoomInSLOT( double fac )
   val = QMAX( 1, val );
   
   ui_winSize->setValue( (int)val );
+  */
 }
 
 void
 ScalePrefs::zoomOutSLOT( double fac )
 {
+  double size = (double)ui_winSize->value() * fac;
+  
+  double winSec = (double)windowSeconds() * fac;
+  double totalSec = (double)totalSeconds();
+  
+  if (winSec <= totalSec)
+  {
+    switch (sizeUnit->currentItem())
+    {
+      case 0:
+        if (size > 600)
+        {
+          size /= 60.0;
+          sizeUnit->setCurrentItem( 1 );
+        }
+        break;
+      case 1:
+        if (size > 300)
+        {
+          size /= 60.0;
+          sizeUnit->setCurrentItem( 2 );
+        }
+        break;
+      case 2:
+        if (size > 48)
+        {
+          size /= 24.0;
+          sizeUnit->setCurrentItem( 3 );
+        }
+        break;
+    }
+    
+    ui_winSize->setValue( (int)size );
+  }
+  else  // clamp to total length
+  {
+    ui_winSize->setValue( winLength->value() );
+    sizeUnit->setCurrentItem( lengthUnit->currentItem() );
+  }
+
+  /*
   double val = ui_winSize->value();
   
   if (val > 10)
@@ -172,6 +252,7 @@ ScalePrefs::zoomOutSLOT( double fac )
   
   val = QMAX( 2, val );
   ui_winSize->setValue( (int)val );
+  */
 }
 
 int

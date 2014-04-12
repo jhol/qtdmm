@@ -44,6 +44,7 @@ public:
   bool saveWindowSize() const;
   void setDisplay( DisplayWid * );
   void setConsoleLogging( bool );
+  void setToolbarVisibility( bool, bool, bool, bool, bool );
   
 signals:
   void running( bool );
@@ -52,6 +53,7 @@ signals:
   void useTextLabel( bool );
   void winGeometry( const QRect & );
   void setConnect( bool );
+  void toolbarVisibility( bool, bool, bool, bool, bool );
   
 public slots:
   void valueSLOT( double, const QString &, const QString &, 

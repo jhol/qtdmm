@@ -74,6 +74,11 @@ protected:
   void customEvent( QCustomEvent * );
   QString insertComma( const QString &, int );
   
+  void readASCII( ReadEvent * );
+  void readVC820Continuous( ReadEvent * );
+  void readM9803RContinuous( ReadEvent * );
+  char *DMM::vc820Digit( int );
+  
 };
 
 #endif // DMM_HH

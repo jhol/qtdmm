@@ -32,7 +32,8 @@ public:
     PeakTech10,
     Voltcraft14Continuous,
     Voltcraft15Continuous,
-    M9803RContinuous
+    M9803RContinuous,
+    VC820Continuous
   };
     
   ReadEvent( char *str, int len, int id, DataFormat df );
@@ -41,9 +42,11 @@ public:
   const char *string() const { return m_str; }
   DataFormat format() const { return m_format; }
   int id() const { return m_id; }
+  int length() const { return m_length; }
   
 private:
   char       m_str[20];
+  int        m_length;
   DataFormat m_format;
   int        m_id;
   

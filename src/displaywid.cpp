@@ -47,6 +47,7 @@
 #include <DBM.xpm>
 #include <Ohm.xpm>
 #include <deg.xpm>
+#include <percent.xpm>
 
 #include <numbers_small.xpm>
 #include <decimal_small.xpm>
@@ -68,6 +69,7 @@
 #include <DBM_small.xpm>
 #include <Ohm_small.xpm>
 #include <deg_small.xpm>
+#include <percent_small.xpm>
 
 #include <min_str.xpm>
 #include <max_str.xpm>
@@ -113,6 +115,7 @@ DisplayWid::DisplayWid( QWidget *parent, const char *name ) :
   m_bigDBM = createBitmap((const char **)DBM_xpm);
   m_bigOhm = createBitmap((const char **)Ohm_xpm);
   m_bigDeg = createBitmap((const char **)deg_xpm);
+  m_bigPercent = createBitmap((const char **)percent_xpm);
   
   m_smallDigit = createBitmap((const char **)numbers_small_xpm);
   m_smallSpecialChar = createBitmap((const char **)specialchars_small_xpm);
@@ -135,6 +138,7 @@ DisplayWid::DisplayWid( QWidget *parent, const char *name ) :
   m_smallDBM = createBitmap((const char **)DBM_small_xpm);
   m_smallOhm = createBitmap((const char **)Ohm_small_xpm);
   m_smallDeg = createBitmap((const char **)deg_small_xpm);
+  m_smallPercent = createBitmap((const char **)percent_small_xpm);
   
   m_minStr = createBitmap((const char **)min_str_xpm);
   m_maxStr = createBitmap((const char **)max_str_xpm);
@@ -177,37 +181,52 @@ void
 DisplayWid::setDisplayMode( int dm, bool minMax, bool bar, int numValues )
 {
   m_displayMode = dm;
-  m_showMinMax = minMax;
-  m_showBar = bar;
-  m_numValues = numValues;
+  m_showMinMax  = minMax;
+  m_showBar     = bar;
+  m_numValues   = numValues;
   
-  int numDigits = 4 + (m_displayMode > 1 ? 1 : 0);
-  
+  int numDigits = calcNumDigits( m_displayMode );
+    
   m_minMaxW = m_showMinMax ? (numDigits)*18+30+24 : 10;
+  int digitsW = (numDigits)*49+30+30;
   m_extraH = m_numValues > 1 ? 24 : 0;
   m_extraW = (numDigits)*18+30+10;
   m_minW = m_extraW * (m_numValues-1);
   
+  setFixedSize( QMAX( m_minW, digitsW+m_minMaxW ), 76 + (m_showBar ? 26 : 2)+m_extraH );
+  
   switch (m_displayMode)
   {
   case 0:
-    setFixedSize( QMAX( m_minW, 250+m_minMaxW ), 76 + (m_showBar ? 26 : 2)+m_extraH );
     m_range = 2000;
     break;
     
   case 1:
-    setFixedSize( QMAX( m_minW, 250+m_minMaxW ), 76 + (m_showBar ? 26 : 2)+m_extraH );
     m_range = 4000;
     break;
     
   case 2:
-    setFixedSize( QMAX( m_minW, 250+m_minMaxW+49 ), 76 + (m_showBar ? 26 : 2)+m_extraH );
     m_range = 20000;
     break;
     
   case 3:
-    setFixedSize( QMAX( m_minW, 250+m_minMaxW+49 ), 76 + (m_showBar ? 26 : 2)+m_extraH );
     m_range = 50000;
+    break;
+    
+  case 4:
+    m_range = 100000;
+    break;
+  
+  case 5:
+    m_range = 200000;
+    break;
+  
+  case 6:
+    m_range = 400000;
+    break;
+  
+  case 7:
+    m_range = 1000000;
     break;
   }
   
@@ -269,7 +288,7 @@ DisplayWid::paintEvent( QPaintEvent * )
   pix.fill( colorGroup().background() );
   QPainter p;
   
-  int numDigits = 4 + (m_displayMode > 1 ? 1 : 0);
+  int numDigits = calcNumDigits( m_displayMode );
   
   if (!m_value[0].isEmpty())
   {
@@ -406,7 +425,7 @@ DisplayWid::drawSmallNumber( QPainter *p, const QString & num )
 {
   int x = 0;  
   int offset = (m_displayMode > 1 ? 0 : 1);
-  
+          
   if (num[offset] == '-')
   {
     p->drawPixmap( 0, 9, *m_smallMinus );
@@ -577,6 +596,10 @@ DisplayWid::drawBigUnit( QPainter *p, const QString & str )
   {
     p->drawPixmap( x, 0, *m_bigV );
   }
+  else if (str.mid(index) == "%")
+  {
+    p->drawPixmap( x, 0, *m_bigPercent );
+  }
 }
 
 void
@@ -658,6 +681,10 @@ DisplayWid::drawSmallUnit( QPainter *p, const QString & str )
   {
     p->drawPixmap( x, 0, *m_smallV );
   }
+  else if (str.mid(index) == "%")
+  {
+    p->drawPixmap( x, 0, *m_smallPercent );
+  }
 }
 
 void
@@ -666,10 +693,11 @@ DisplayWid::drawBigNumber( QPainter *p, const QString & num )
   int x = 0;  
   int offset = (m_displayMode > 1 ? 0 : 1);
   bool comma = false;
+          
   
   if (num[offset] == '-')
   {
-    p->drawPixmap( 0, 0, *m_bigMinus );
+    p->drawPixmap( x, 0, *m_bigMinus );
   }
   
   x += 28;
@@ -761,4 +789,31 @@ DisplayWid::drawBigNumber( QPainter *p, const QString & num )
       x += 49;
     }
   }
+}
+
+int
+DisplayWid::calcNumDigits( int dm )
+{
+  int numDigits = 0;
+  
+  switch (dm)
+  {
+    default:
+    case 0:
+    case 1:
+      numDigits = 4;
+      break;
+    case 2:
+    case 3:
+    case 4:
+      numDigits = 5;
+      break;
+    case 5:
+    case 6:
+    case 7:
+      numDigits = 6;
+      break;
+  }
+  
+  return numDigits;
 }

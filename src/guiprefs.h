@@ -40,7 +40,13 @@ public:
   bool saveWindowPosition() const;
   bool saveWindowSize() const;
   void setShowTipsSLOT( bool on );
-
+  bool showDmmToolbar() const;
+  bool showGraphToolbar() const;
+  bool showFileToolbar() const;
+  bool showHelpToolbar() const;
+  bool showDisplay() const;
+  void setToolbarVisibility( bool, bool, bool, bool, bool );
+  
 signals:
   void showTips( bool );
   

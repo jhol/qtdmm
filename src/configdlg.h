@@ -114,6 +114,12 @@ public:
   int currentTipId() const;
   QString dmmName() const;
   void showPage( PageType );
+  bool showDmmToolbar() const;
+  bool showGraphToolbar() const;
+  bool showFileToolbar() const;
+  bool showHelpToolbar() const;
+  bool showDisplay() const;
+  void setToolbarVisibility( bool, bool, bool, bool, bool );
   
 public slots:
   void connectSLOT( bool );

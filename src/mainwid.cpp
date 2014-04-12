@@ -462,7 +462,12 @@ MainWid::readConfig()
   }
   
   emit useTextLabel( m_configDlg->useTextLabel() );
-  
+  emit toolbarVisibility( m_configDlg->showDisplay(),
+                          m_configDlg->showDmmToolbar(),
+                          m_configDlg->showGraphToolbar(),
+                          m_configDlg->showFileToolbar(),
+                          m_configDlg->showHelpToolbar() );
+                          
   if (reopen)
   {
     m_dmm->open();
@@ -573,4 +578,10 @@ MainWid::showTipsSLOT()
   }
   
   m_tipDlg->show();
+}
+
+void MainWid::setToolbarVisibility( bool disp, bool dmm, bool graph,
+                                    bool file, bool help )
+{
+  m_configDlg->setToolbarVisibility( disp, dmm, graph, file, help );
 }

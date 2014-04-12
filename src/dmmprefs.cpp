@@ -22,6 +22,11 @@
 #include <qcombobox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
+#include <qtoolbutton.h>
+#include <qlineedit.h>
+#include <qfiledialog.h>
+#include <qdir.h>
+#include <qfileinfo.h>
 
 #include <dmmprefs.h>
 #include <simplecfg.h>
@@ -33,7 +38,7 @@
 //    name
 //    baud (600=0,1200,1800,2400,4800,9600)
 //    protocol (14 bytes polling 'D'=0, 10 bytes continuous [PeakTech]
-//              14 continuous, 15 continuous, 11 bin continuous)
+//              14 continuous, 15 continuous, 11 bin continuous, 14 bin continuous)
 //    bits
 //    stopBits
 //    number of values (For DMM's that send several lines at once)
@@ -43,6 +48,8 @@
 struct DMMInfo dmm_info[] = { 
                               {"Digitech QM1350", 0, 0, 7, 2, 1, 0, 1},
                               {"ELV M9803R", 5, 4, 7, 1, 1, 1, 1},
+                              {"MASTECH M9803R", 5, 4, 7, 1, 1, 1, 1},
+                              {"McVoice M-980T", 5, 4, 7, 1, 1, 1, 1},
                               {"Metex M-3660D", 1, 0, 7, 2, 1, 0, 1},
                               {"Metex M-3830D", 1, 0, 7, 2, 4, 0, 1},
                               {"Metex M-3850D", 1, 0, 7, 2, 4, 0, 1},
@@ -56,12 +63,15 @@ struct DMMInfo dmm_info[] = {
                               {"PeakTech-4390", 5, 0, 7, 2, 4, 0, 1},
                               {"PeakTech-451", 0, 1, 7, 2, 1, 0, 1},
                               {"Radioshack 22-805 DMM", 0, 0, 7, 2, 1, 0, 1},
+                              {"Radioshack RS22-168A", 1, 0, 7, 2, 1, 0, 1},
                               {"Voltcraft M-3650D", 1, 0, 7, 2, 1, 0, 1},
                               {"Voltcraft M-4660", 1, 0, 7, 2, 4, 0, 3},
                               {"Voltcraft ME-11", 0, 0, 7, 2, 1, 0, 1},
                               {"Voltcraft ME-22T", 3, 0, 7, 2, 1, 0, 1},
                               {"Voltcraft ME-32", 0, 0, 7, 2, 1, 0, 1},
                               {"Voltcraft VC 670", 4, 2, 7, 1, 1, 0, 3},
+                              {"Voltcraft VC 820", 3, 5, 8, 1, 1, 0, 1},
+                              {"Voltcraft VC 840", 3, 5, 8, 1, 1, 0, 1},
                               {"*Voltcraft ME-42", 0, 0, 7, 2, 1, 0, 1},
                               {"*Voltcraft M-3860", 5, 0, 7, 2, 4, 0, 2},
                               {"*Voltcraft M-4660A", 5, 0, 7, 2, 4, 0, 3},
@@ -97,7 +107,12 @@ DmmPrefs::DmmPrefs( QWidget *parent, const char *name ) :
   
   connect( ui_model, SIGNAL( activated( int ) ),
            this, SLOT( modelSLOT( int )));
+  connect( ui_load, SIGNAL( clicked() ),
+           this, SLOT( loadSLOT()));
+  connect( ui_save, SIGNAL( clicked() ),
+           this, SLOT( saveSLOT()));
 
+  m_path = QDir::currentDirPath();
 }
 
 DmmPrefs::~DmmPrefs()
@@ -173,6 +188,10 @@ DmmPrefs::applySLOT()
 void
 DmmPrefs::modelSLOT( int id )
 {
+  ui_filename->setDisabled( id != 0 );
+  ui_save->setDisabled( id != 0 );
+  ui_load->setDisabled( id != 0 );
+
   baudRate->setDisabled( id != 0 );
   ui_protocol->setDisabled( id != 0 );
   ui_baudLabel->setDisabled( id != 0 );
@@ -205,6 +224,8 @@ DmmPrefs::modelSLOT( int id )
     parityCombo->setCurrentItem( dmm_info[id-1].parity );
     displayCombo->setCurrentItem( dmm_info[id-1].display );
     ui_numValues->setValue( dmm_info[id-1].numValues );
+    
+    ui_filename->setText( "" );
   }
 }
 
@@ -278,4 +299,78 @@ DmmPrefs::device() const
   QString txt;
   txt.sprintf( "%s%d", port->currentText().latin1(), portNumber->value() ); 
   return txt;
+}
+
+void
+DmmPrefs::loadSLOT()
+{
+  QString filename = 
+      QFileDialog::getOpenFileName( m_path,
+                                    "DMM description (*.ini)",
+                                    this,
+                                    "open file dialog",
+                                    tr("Load DMM description") );
+  
+  if (!filename.isNull())
+  {
+    QFileInfo info( filename );
+    m_path = info.filePath();
+    ui_filename->setText( info.fileName() );
+    
+    SimpleCfg cfg( filename );
+    cfg.load();
+    
+    port->setCurrentItem( cfg.getInt( "Port settings", "device", 0 ) );
+    portNumber->setValue( cfg.getInt( "Port settings", "device-number", 0 ) );
+    baudRate->setCurrentItem( cfg.getInt( "Port settings", "baud", 0 ) );
+    bitsCombo->setCurrentItem( cfg.getInt( "Port settings", "bits", 7 )-5 );
+    stopBitsCombo->setCurrentItem( cfg.getInt( "Port settings", "stop-bits", 2 )-1);
+    parityCombo->setCurrentItem( cfg.getInt( "Port settings", "parity", 0 ) );  
+    displayCombo->setCurrentItem( cfg.getInt( "DMM", "display", 1 ) );
+  
+    protocolCombo->setCurrentItem( cfg.getInt( "DMM", "data-format", 0 ));
+    ui_numValues->setValue( cfg.getInt( "DMM", "number-of-values", 1 ));
+  }
+}
+
+void
+DmmPrefs::saveSLOT()
+{
+  QString filename = 
+      QFileDialog::getSaveFileName( m_path,
+                                    "DMM description (*.ini)",
+                                    this,
+                                    "save file dialog",
+                                    tr("Save DMM description") );
+  
+  if (!filename.isNull())
+  {
+    QFileInfo info( filename );
+    m_path = info.filePath();
+    ui_filename->setText( info.fileName() );
+    
+    SimpleCfg cfg( filename );
+    cfg.setComment( 
+      "#####################################################################\n"
+      "# This file was automagically created by QtDMM a simple DMM readout #\n"
+      "# software. QtDMM is copyright  by Matthias Toussaint. Don't change #\n"
+      "# this file unless you know what you are doing.                     #\n"
+      "#                                                                   #\n"
+      "# Contact: qtdmm@mtoussaint.de                                      #\n"
+      "#####################################################################\n\n" );
+    
+    cfg.setInt( "Port settings", "device", port->currentItem() );
+    cfg.setInt( "Port settings", "device-number", portNumber->value() );
+    cfg.setInt( "Port settings", "baud", baudRate->currentItem() );
+    cfg.setInt( "Port settings", "bits", bitsCombo->currentItem()+5 );
+    cfg.setInt( "Port settings", "stop-bits", stopBitsCombo->currentItem()+1 );
+    cfg.setInt( "Port settings", "parity", parityCombo->currentItem() );
+  
+    cfg.setInt( "DMM", "display", displayCombo->currentItem() );
+  
+    cfg.setInt( "DMM", "data-format", protocolCombo->currentItem() );
+    cfg.setInt( "DMM", "number-of-values", ui_numValues->value() );
+    
+    cfg.save();
+  }
 }

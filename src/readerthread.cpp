@@ -132,10 +132,14 @@ ReaderThread::socketNotifierSLOT( int socket )
     { 
       m_fifo[m_length] = byte;
 
+      //fprintf( stderr, "READ: %02X - %02X %d\n", (unsigned)byte, (unsigned)byte & 0xf0, m_length );
+      
       if (checkFormat())
       {
         m_length = (m_length-formatLength()+1+FIFO_LENGTH)%FIFO_LENGTH;
 
+        //fprintf( stderr, "Format Ok!\n" );
+        
         for (int i=0; i<formatLength(); ++i)
         {
           m_buffer[i] = m_fifo[m_length];
@@ -173,6 +177,8 @@ ReaderThread::formatLength() const
     return 11;
   case ReadEvent::PeakTech10:
     return 12;
+  case ReadEvent::VC820Continuous:
+    return 14;
   }
   
   return 0;
@@ -230,6 +236,13 @@ ReaderThread::checkFormat()
   else if (m_format == ReadEvent::PeakTech10 && m_length >= 11)
   {
     if (m_fifo[(m_length-11+FIFO_LENGTH)%FIFO_LENGTH] == '#') return true; 
+  }
+  else if (m_format == ReadEvent::VC820Continuous)// && m_length >= 13)
+  {
+    //fprintf( stderr, "CHECK: %02x %02x %s\n", m_fifo[m_length], (m_fifo[m_length] & 0xf0),
+    //         ((m_fifo[m_length] & 0xf0) == 0xe0) ? "OK" : "BAD" );
+    if ((m_fifo[m_length] & 0xf0) == 0xe0) return true; 
+    //if (m_fifo[(m_length-1+FIFO_LENGTH)%FIFO_LENGTH] & 0xf0 == 0xe0) return true; 
   }
   
   return false;

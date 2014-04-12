@@ -140,7 +140,7 @@ protected:
   int                       m_remainingLength;
   SampleMode                m_mode;
   QTime                     m_startTime;
-  QDateTime                 m_graphStart;
+  QDateTime                 m_graphStartDateTime;
   double                    m_sum;
   bool                      m_first;
   QPoint                    m_mpos;

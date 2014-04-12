@@ -1,3 +1,10 @@
+20/12/2005 0.8.7
+           - Added support for VC820, VC840, MASTECH M9803R, McVoice M-980T and
+             Radioshack RS22-168A
+           - Save manual settings to file
+           - GUI configuration
+           - Up to 6 digits in display now
+
 15/08/2005 0.8.6
            - Cleaned up compiler warnings
            - Added Metex M-3850M and PeakTech-4390

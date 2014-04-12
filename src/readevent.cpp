@@ -24,6 +24,7 @@
 
 ReadEvent::ReadEvent( char *str, int len, int id, DataFormat df ) :
   QCustomEvent( QEvent::User ),
+  m_length( len ),
   m_format (df ),
   m_id( id )
 {

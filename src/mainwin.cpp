@@ -44,7 +44,7 @@
 #include <help.xpm>
 #include <icon.xpm>
 
-#define VERSION_STRING "0.8.4"
+#define VERSION_STRING "0.8.7"
 
 #include <iostream>
 
@@ -93,7 +93,9 @@ MainWin::MainWin( QWidget *parent, const char *name ) :
            this, SLOT( setUsesTextLabel( bool ) ));
   connect( m_wid, SIGNAL( setConnect( bool ) ),
            this, SLOT( setConnectSLOT( bool ) ));
-
+  connect( m_wid, SIGNAL( toolbarVisibility( bool, bool, bool, bool, bool )),
+           this, SLOT( toolbarVisibilitySLOT( bool, bool, bool, bool, bool ) ));
+  
   QRect winRect = m_wid->winRect();
   m_wid->applySLOT();  
     
@@ -268,6 +270,8 @@ MainWin::createActions()
   connect( m_configRecorderAction, SIGNAL( activated() ),
            m_wid, SLOT( configRecorderSLOT() ));
   connect( m_quitAction, SIGNAL( activated() ),
+           this, SLOT( setToolbarVisibilitySLOT() ));
+  connect( m_quitAction, SIGNAL( activated() ),
            m_wid, SLOT( quitSLOT() ));
   connect( m_helpAction, SIGNAL( activated() ),
            m_wid, SLOT( helpSLOT() ));
@@ -315,14 +319,15 @@ MainWin::versionSLOT()
   msg += "</h1><hr>"
          "<div align=right><i>A simple recorder for DMM's</i></div><p>"
          "<div align=justify>A simple display software for a variety of digital multimeter such as:<p>"
-         "<table><tr><td><b>ELV</b></td><td>M9803R</td></tr>"
-         "<tr><td><b>Metex</b></td><td>M-3660D, M-3830D, M-3850D, ME-11, ME-22, ME-32 and Universal system 9160</td></tr>"
-         "<tr><td><b>PeakTech</b></td><td>4010 and 451</td></tr>"
+      "<table><tr><td><b>Digitech</b></td><td>QM&nbsp;1350</td></tr>"
+      "<tr><td><b>ELV</b></td><td>M9803R</td></tr>"
+      "<tr><td><b>Metex</b></td><td>M-3660D, M-3830D, M-3850D, M-3850M, ME-11, ME-22, ME-32, ME-42 and Universal system 9160</td></tr>"
+         "<tr><td><b>PeakTech</b></td><td>4010, 4390 and 451</td></tr>"
          "<tr><td><b>RadioShack</b></td><td>22-805</td></tr>"
-         "<tr><td><b>Voltcraft</b></td><td>M-3650D, M-4660, ME-11, ME-22T, ME-32 and VC&nbsp;670</td></tr>"
+      "<tr><td><b>Voltcraft</b></td><td>M-3650D, M-4660, ME-11, ME-22T, ME-32, VC&nbsp;670 and VC&nbsp;820</td></tr>"
          "<tr><td colspan=2>Implemented, but not yet confirmed by a user are:</td></tr>"
          "<tr><td><b>Voltcraft</b></td><td>ME-42, M-3860, M-4660A, M-4660M, MXD-4660A, VC&nbsp;630, VC&nbsp;650"
-         ", VC&nbsp;635 and VC&nbsp;655</td></tr></table>"
+  ", VC&nbsp;635, VC&nbsp;655 and VC&nbsp;840</td></tr></table>"
          "Other compatible models may work also.<p>"
          "QtDMM features min/max memory and a configurable "
          "recorder with import/export and printing function. Sampling may"
@@ -334,7 +339,7 @@ MainWin::versionSLOT()
   msg += " from Trolltech AS Norway <font color=blue><u>www.trolltech.com</u></font>"
          " and is licensed under <b>GPL</b>.</div><br>"
          "&copy; 2001-2005 Matthias Toussaint &nbsp;-&nbsp;&nbsp;<font color=blue><u>qtdmm@mtoussaint.de</u></font>"
-         "<p><br>The icons (except the DMM icon) are taken from the KDE project.<p>";
+         "<p><br>The icons (except the DMM icon) have been taken from the KDE project.<p>";
           
   QMessageBox version( tr("QtDMM: Welcome!" ),
                        tr( msg ),
@@ -375,10 +380,22 @@ MainWin::createToolBars()
   
   m_helpTB = new QToolBar( this );
   m_helpAction->addTo( m_helpTB );
+  addToolBar( m_helpTB, tr("Help") );
   
   m_displayTB = new QToolBar( this );
   m_display = new DisplayWid( m_displayTB );
   addToolBar( m_displayTB, tr("Display"), Top, true );
+  
+  connect( m_displayTB, SIGNAL( visibilityChanged( bool ) ),
+           this, SLOT( setToolbarVisibilitySLOT() ));
+  connect( m_helpTB, SIGNAL( visibilityChanged( bool ) ),
+           this, SLOT( setToolbarVisibilitySLOT() ));
+  connect( m_fileTB, SIGNAL( visibilityChanged( bool ) ),
+           this, SLOT( setToolbarVisibilitySLOT() ));
+  connect( m_graphTB, SIGNAL( visibilityChanged( bool ) ),
+           this, SLOT( setToolbarVisibilitySLOT() ));
+  connect( m_dmmTB, SIGNAL( visibilityChanged( bool ) ),
+           this, SLOT( setToolbarVisibilitySLOT() ));
 }
 
 void
@@ -429,6 +446,8 @@ MainWin::createMenu()
 void
 MainWin::closeEvent( QCloseEvent *ev )
 {
+  setToolbarVisibilitySLOT();
+                               
   if (m_wid->closeWin())
   {
     ev->accept();
@@ -439,8 +458,29 @@ MainWin::closeEvent( QCloseEvent *ev )
   } 
 }
 
+void MainWin::setToolbarVisibilitySLOT()
+{
+  m_wid->setToolbarVisibility( m_displayTB->isVisible(),
+                               m_dmmTB->isVisible(),
+                               m_graphTB->isVisible(),
+                               m_fileTB->isVisible(),
+                               m_helpTB->isVisible() );
+}
+
 void
 MainWin::setConnectSLOT( bool on )
 {
   m_connectAction->setOn( on );
 }
+
+void
+MainWin::toolbarVisibilitySLOT( bool disp, bool dmm, bool graph, 
+                                bool file, bool help )
+{
+  m_dmmTB->setShown( dmm );
+  m_graphTB->setShown( graph );
+  m_fileTB->setShown( file );
+  m_helpTB->setShown( help );
+  m_displayTB->setShown( disp );
+}
+

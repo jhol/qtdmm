@@ -43,6 +43,8 @@ protected slots:
   void connectSLOT( bool );
   void versionSLOT();
   void setConnectSLOT( bool );
+  void toolbarVisibilitySLOT( bool, bool, bool, bool, bool );
+  void setToolbarVisibilitySLOT();
   
 protected:
   MainWid     *m_wid;  
@@ -75,7 +77,6 @@ protected:
   void createActions();
   void createMenu();
   void closeEvent( QCloseEvent * );
-  
 };
 
 #endif // MAINWIN_HH

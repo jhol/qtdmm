@@ -157,6 +157,18 @@ DMM::open()
   attr.c_lflag = 0;
   //attr.c_iflag = IGNBRK;
   attr.c_cflag = m_c_cflag;
+  
+  // According to Thomas Hoffman flags should be like this
+  //
+  if (0 == m_parity)          // Ignore parity errors
+  {
+    attr.c_iflag = IGNBRK | IGNPAR ;
+  }
+  else
+  {
+    attr.c_iflag = IGNBRK | INPCK | ISTRIP;
+  }
+  /*
   if (0 == m_parity)          // Ignore parity errors
   {
     attr.c_iflag = IGNBRK | IGNPAR | INPCK;
@@ -165,10 +177,10 @@ DMM::open()
   {
     attr.c_iflag = IGNBRK | IGNPAR;
   }
-  
+  */
   //attr.c_cflag = CS7 | CSTOPB | CREAD | CLOCAL;
   attr.c_cc[VTIME]= 0;
-  attr.c_cc[VMIN]= 0;
+  attr.c_cc[VMIN]= 1;
   
   if (600 == m_speed)
   {
@@ -238,6 +250,8 @@ DMM::open()
     return false;
   }
   
+  tcsetattr( m_handle, TCSAFLUSH, &attr );
+  
   m_error = tr( "Connecting ..." );
   emit error( m_error );
   
@@ -291,322 +305,33 @@ DMM::customEvent( QCustomEvent *ev )
 {
   if (QEvent::User == ev->type())
   {
-    QString val;
-    QString special;
-    QString unit;
-  
     if (ReaderThread::Ok == m_readerThread->status())
     {
       ReadEvent *re = (ReadEvent *)ev;
       
-      if (re->format() != ReadEvent::M9803RContinuous)
+      if (m_consoleLogging)
       {
-        QString tmp = re->string();
-
-        if (m_consoleLogging)
+        for (int i=0; i<re->length(); ++i)
         {
-          for (unsigned i=0; i<tmp.length(); ++i)
-          {
-            fprintf( stdout, "%02X ", re->string()[i] );
-          }
-          fprintf( stdout, "\n" );
+          fprintf( stdout, "%02X ", re->string()[i] );
         }
-        
-        if (re->format() == ReadEvent::Metex14 ||
-            re->format() == ReadEvent::Voltcraft14Continuous ||
-            re->format() == ReadEvent::Voltcraft15Continuous)
-        {
-          val     = tmp.mid( 2, 7 ); //.stripWhiteSpace();
-          unit    = tmp.mid( 9, 4 ).stripWhiteSpace();
-          special = tmp.left( 3 ).stripWhiteSpace();
-        }
-        else if (re->format() == ReadEvent::PeakTech10)
-        {
-          val     = tmp.mid( 1, 6 ); //.stripWhiteSpace();
-          unit    = tmp.mid( 7, 4 ).stripWhiteSpace();
-        }
-
-        double d_val = val.toDouble();
-
-        if (unit.left(1) == "p")
-        {
-          d_val /= 1.0E12;
-        }
-        else if (unit.left(1) == "n")
-        {
-          d_val /= 1.0E9;
-        }
-        else if (unit.left(1) == "u")
-        {
-          d_val /= 1.0E6;
-        }
-        else if (unit.left(1) == "m")
-        {
-          d_val /= 1.0E3;
-        }
-        else if (unit.left(1) == "k")
-        {
-          d_val *= 1.0E3;
-        }
-        else if (unit.left(1) == "M")
-        {
-          d_val *= 1.0E6;
-        }
-        else if (unit.left(1) == "G")
-        {
-          d_val *= 1.0E9;
-        }
-        
-        emit value( d_val, val, unit, special, true, re->id() );
-
-        m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
+        fprintf( stdout, "\n" );
       }
-      else
-      {        
-        if (re->string()[0] & 0x01)
-        {
-          val = "  0L";
-        }
-        else
-        {
-          val = re->string()[0] == 0x08 ? " -" : "  ";
-          val += QChar( '0'+re->string()[4] );
-          val += QChar( '0'+re->string()[3] );
-          val += QChar( '0'+re->string()[2] );
-          val += QChar( '0'+re->string()[1] );
-        }
-        
-        double d_val = val.toDouble();
 
-        bool showBar = true;
-        
-        switch (re->string()[5])
-        {
-        case 0x00:
-          switch (re->string()[6])
-          {
-          case 0x00:
-            unit = "mV";
-            val = insertComma( val, 3 );
-            d_val /= 10000.;
-            break;
-          case 0x01:
-            unit = "V";
-            val = insertComma( val, 1 );
-            d_val /= 1000.;
-            break;
-          case 0x02:
-            unit = "V";
-            val = insertComma( val, 2 );
-            d_val /= 100.;
-            break;
-          case 0x03:
-            unit = "V";
-            val = insertComma( val, 3 );
-            d_val /= 10.;
-            break;
-          case 0x04:
-            unit = "V";
-            break;
-          }
-          special = "DC";
-          break;
-        case 0x01:
-          switch (re->string()[6])
-          {
-          case 0x00:
-            unit = "mV";
-            val = insertComma( val, 3 );
-            d_val /= 10000.;
-            break;
-          case 0x01:
-            unit = "V";
-            val = insertComma( val, 1 );
-            d_val /= 1000.;
-            break;
-          case 0x02:
-            unit = "V";
-            val = insertComma( val, 2 );
-            d_val /= 100.;
-            break;
-          case 0x03:
-            unit = "V";
-            val = insertComma( val, 3 );
-            d_val /= 10.;
-            break;
-          case 0x04:
-            unit = "V";
-            break;
-          }
-          special = "AC";
-          break;
-        case 0x02:
-          switch (re->string()[6])
-          {
-          case 0x00:
-            unit = "mA";
-            val = insertComma( val, 1 );
-            d_val /= 1000.;
-            break;
-          case 0x01:
-            unit = "mA";
-            val = insertComma( val, 2 );
-            d_val /= 100.;
-            break;
-          case 0x02:
-            unit = "mA";
-            val = insertComma( val, 3 );
-            d_val /= 10.;
-            break;
-          }
-          special = "DC";
-          break;
-        case 0x03:
-          switch (re->string()[6])
-          {
-          case 0x00:
-            unit = "mA";
-            val = insertComma( val, 1 );
-            d_val /= 1000.;
-            break;
-          case 0x01:
-            unit = "mA";
-            val = insertComma( val, 2 );
-            d_val /= 100.;
-            break;
-          case 0x02:
-            unit = "mA";
-            val = insertComma( val, 3 );
-            d_val /= 10.;
-            break;
-          }
-          special = "AC";
-          break;
-        case 0x04:
-          switch (re->string()[6])
-          {
-          case 0x00:
-            unit = "Ohm";
-            val = insertComma( val, 1 );
-            d_val /= 10.;
-            break;
-          case 0x01:
-            unit = "kOhm";
-            val = insertComma( val, 1 );
-            d_val /= 1000.;
-            break;
-          case 0x02:
-            unit = "kOhm";
-            val = insertComma( val, 2 );
-            d_val /= 100.;
-            break;
-          case 0x03:
-            unit = "kOhm";
-            val = insertComma( val, 3 );
-            d_val /= 10.;
-            break;
-          case 0x04:
-            unit = "kOhm";
-            break;
-          case 0x05:
-            unit = "MOhm";
-            val = insertComma( val, 2 );
-            d_val /= 100.;
-            break;
-          }
-          special = "OH";
-          break;
-        case 0x05:
-          switch (re->string()[6])
-          {
-          case 0x00:
-            unit = "Ohm";
-            val = insertComma( val, 3 );
-            d_val /= 10.;
-            break;
-          }
-          special = "OH";
-          break;
-        case 0x06:
-          unit = "V";
-          val = insertComma( val, 1 );
-          d_val /= 1000.;
-          special = "DI";
-          break;
-        case 0x08:
-          unit = "A";
-          val = insertComma( val, 2 );
-          d_val /= 100.;
-          special = "DC";
-          break;
-        case 0x09:
-          unit = "A";
-          val = insertComma( val, 2 );
-          d_val /= 100.;
-          special = "AC";
-          break;
-        case 0x0A:
-          showBar = false;
-          switch (re->string()[6])
-          {
-          case 0x00:
-            unit = "kHz";
-            val = insertComma( val, 1 );
-            //d_val /= 1000.;
-            break;
-          case 0x01:
-            unit = "kHz";
-            val = insertComma( val, 2 );
-            d_val *= 10.;
-            break;
-          case 0x05:
-            unit = "Hz";
-            val = insertComma( val, 2 );
-            d_val /= 100.;
-            break;
-          case 0x06:
-            unit = "Hz";
-            val = insertComma( val, 3 );
-            d_val /= 10.;
-            break;
-          }
-          special = "HZ";
-          break;
-        case 0x0C:
-          switch (re->string()[6])
-          {
-          case 0x00:
-            unit = "nF";
-            val = insertComma( val, 1 );
-            d_val /= 1e12;
-            break;
-          case 0x01:
-            unit = "nF";
-            val = insertComma( val, 2 );
-            d_val /= 1e11;
-            break;
-          case 0x02:
-            unit = "nF";
-            val = insertComma( val, 3 );
-            d_val /= 1e10;
-            break;
-          case 0x03:
-            unit = "uF";
-            val = insertComma( val, 1 );
-            d_val /= 1e9;
-            break;
-          case 0x04:
-            unit = "uF";
-            val = insertComma( val, 2 );
-            d_val /= 1e8;
-            break;
-          }
-          special = "CA";
-          break;
-        }
-          
-        emit value( d_val, val, unit, special, showBar, re->id() );
-        m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
+      switch (re->format())
+      {
+      case ReadEvent::Metex14:
+      case ReadEvent::PeakTech10:
+      case ReadEvent::Voltcraft14Continuous:
+      case ReadEvent::Voltcraft15Continuous:
+        readASCII( re );
+        break;
+      case ReadEvent::M9803RContinuous:
+        readM9803RContinuous( re );
+        break;
+      case ReadEvent::VC820Continuous:
+        readVC820Continuous( re );
+        break;
       }
     }
     else
@@ -657,3 +382,468 @@ DMM::setNumValues( int numValues )
 {
   m_readerThread->setNumValues( numValues );
 }
+
+void DMM::readASCII( ReadEvent *re )
+{
+  QString val;
+  QString special;
+  QString unit;
+  
+  QString tmp = re->string();
+        
+  if (re->format() == ReadEvent::Metex14 ||
+      re->format() == ReadEvent::Voltcraft14Continuous ||
+      re->format() == ReadEvent::Voltcraft15Continuous)
+  {
+    val     = tmp.mid( 2, 7 ); //.stripWhiteSpace();
+    unit    = tmp.mid( 9, 4 ).stripWhiteSpace();
+    special = tmp.left( 3 ).stripWhiteSpace();
+  }
+  else if (re->format() == ReadEvent::PeakTech10)
+  {
+    val     = tmp.mid( 1, 6 ); //.stripWhiteSpace();
+    unit    = tmp.mid( 7, 4 ).stripWhiteSpace();
+  }
+
+  double d_val = val.toDouble();
+
+  //std::cerr << "d_val=" << d_val << " val=" << val.latin1() 
+  //    << " unit=" << unit.latin1() << " special=" << special.latin1() << std::endl;
+      
+  if (unit.left(1) == "p")
+  {
+    d_val /= 1.0E12;
+  }
+  else if (unit.left(1) == "n")
+  {
+    d_val /= 1.0E9;
+  }
+  else if (unit.left(1) == "u")
+  {
+    d_val /= 1.0E6;
+  }
+  else if (unit.left(1) == "m")
+  {
+    d_val /= 1.0E3;
+  }
+  else if (unit.left(1) == "k")
+  {
+    d_val *= 1.0E3;
+  }
+  else if (unit.left(1) == "M")
+  {
+    d_val *= 1.0E6;
+  }
+  else if (unit.left(1) == "G")
+  {
+    d_val *= 1.0E9;
+  }
+        
+  emit value( d_val, val, unit, special, true, re->id() );
+
+  m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
+}
+
+void DMM::readM9803RContinuous( ReadEvent *re )
+{
+  QString val;
+  QString special;
+  QString unit;
+  
+  if (re->string()[0] & 0x01)
+  {
+    val = "  0L";
+  }
+  else
+  {
+    val = re->string()[0] == 0x08 ? " -" : "  ";
+    val += QChar( '0'+re->string()[4] );
+    val += QChar( '0'+re->string()[3] );
+    val += QChar( '0'+re->string()[2] );
+    val += QChar( '0'+re->string()[1] );
+  }
+        
+  double d_val = val.toDouble();
+
+  bool showBar = true;
+        
+  switch (re->string()[5])
+  {
+    case 0x00:
+      switch (re->string()[6])
+      {
+        case 0x00:
+          unit = "mV";
+          val = insertComma( val, 3 );
+          d_val /= 10000.;
+          break;
+        case 0x01:
+          unit = "V";
+          val = insertComma( val, 1 );
+          d_val /= 1000.;
+          break;
+        case 0x02:
+          unit = "V";
+          val = insertComma( val, 2 );
+          d_val /= 100.;
+          break;
+        case 0x03:
+          unit = "V";
+          val = insertComma( val, 3 );
+          d_val /= 10.;
+          break;
+        case 0x04:
+          unit = "V";
+          break;
+      }
+      special = "DC";
+      break;
+    case 0x01:
+      switch (re->string()[6])
+      {
+        case 0x00:
+          unit = "mV";
+          val = insertComma( val, 3 );
+          d_val /= 10000.;
+          break;
+        case 0x01:
+          unit = "V";
+          val = insertComma( val, 1 );
+          d_val /= 1000.;
+          break;
+        case 0x02:
+          unit = "V";
+          val = insertComma( val, 2 );
+          d_val /= 100.;
+          break;
+        case 0x03:
+          unit = "V";
+          val = insertComma( val, 3 );
+          d_val /= 10.;
+          break;
+        case 0x04:
+          unit = "V";
+          break;
+      }
+      special = "AC";
+      break;
+    case 0x02:
+      switch (re->string()[6])
+      {
+        case 0x00:
+          unit = "mA";
+          val = insertComma( val, 1 );
+          d_val /= 1000.;
+          break;
+        case 0x01:
+          unit = "mA";
+          val = insertComma( val, 2 );
+          d_val /= 100.;
+          break;
+        case 0x02:
+          unit = "mA";
+          val = insertComma( val, 3 );
+          d_val /= 10.;
+          break;
+      }
+      special = "DC";
+      break;
+    case 0x03:
+      switch (re->string()[6])
+      {
+        case 0x00:
+          unit = "mA";
+          val = insertComma( val, 1 );
+          d_val /= 1000.;
+          break;
+        case 0x01:
+          unit = "mA";
+          val = insertComma( val, 2 );
+          d_val /= 100.;
+          break;
+        case 0x02:
+          unit = "mA";
+          val = insertComma( val, 3 );
+          d_val /= 10.;
+          break;
+      }
+      special = "AC";
+      break;
+    case 0x04:
+      switch (re->string()[6])
+      {
+        case 0x00:
+          unit = "Ohm";
+          val = insertComma( val, 1 );
+          d_val /= 10.;
+          break;
+        case 0x01:
+          unit = "kOhm";
+          val = insertComma( val, 1 );
+          d_val /= 1000.;
+          break;
+        case 0x02:
+          unit = "kOhm";
+          val = insertComma( val, 2 );
+          d_val /= 100.;
+          break;
+        case 0x03:
+          unit = "kOhm";
+          val = insertComma( val, 3 );
+          d_val /= 10.;
+          break;
+        case 0x04:
+          unit = "kOhm";
+          break;
+        case 0x05:
+          unit = "MOhm";
+          val = insertComma( val, 2 );
+          d_val /= 100.;
+          break;
+      }
+      special = "OH";
+      break;
+    case 0x05:
+      switch (re->string()[6])
+      {
+        case 0x00:
+          unit = "Ohm";
+          val = insertComma( val, 3 );
+          d_val /= 10.;
+          break;
+      }
+      special = "OH";
+      break;
+    case 0x06:
+      unit = "V";
+      val = insertComma( val, 1 );
+      d_val /= 1000.;
+      special = "DI";
+      break;
+    case 0x08:
+      unit = "A";
+      val = insertComma( val, 2 );
+      d_val /= 100.;
+      special = "DC";
+      break;
+    case 0x09:
+      unit = "A";
+      val = insertComma( val, 2 );
+      d_val /= 100.;
+      special = "AC";
+      break;
+    case 0x0A:
+      showBar = false;
+      switch (re->string()[6])
+      {
+        case 0x00:
+          unit = "kHz";
+          val = insertComma( val, 1 );
+            //d_val /= 1000.;
+          break;
+        case 0x01:
+          unit = "kHz";
+          val = insertComma( val, 2 );
+          d_val *= 10.;
+          break;
+        case 0x05:
+          unit = "Hz";
+          val = insertComma( val, 2 );
+          d_val /= 100.;
+          break;
+        case 0x06:
+          unit = "Hz";
+          val = insertComma( val, 3 );
+          d_val /= 10.;
+          break;
+      }
+      special = "HZ";
+      break;
+    case 0x0C:
+      switch (re->string()[6])
+      {
+        case 0x00:
+          unit = "nF";
+          val = insertComma( val, 1 );
+          d_val /= 1e12;
+          break;
+        case 0x01:
+          unit = "nF";
+          val = insertComma( val, 2 );
+          d_val /= 1e11;
+          break;
+        case 0x02:
+          unit = "nF";
+          val = insertComma( val, 3 );
+          d_val /= 1e10;
+          break;
+        case 0x03:
+          unit = "uF";
+          val = insertComma( val, 1 );
+          d_val /= 1e9;
+          break;
+        case 0x04:
+          unit = "uF";
+          val = insertComma( val, 2 );
+          d_val /= 1e8;
+          break;
+      }
+      special = "CA";
+      break;
+  }
+          
+  emit value( d_val, val, unit, special, showBar, re->id() );
+  m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
+}
+
+void DMM::readVC820Continuous( ReadEvent *re )
+{
+  QString val;
+  QString special;
+  QString unit;
+    
+  const char *in = re->string();
+  
+  // check for overload else find sign and fill in digits
+  //
+  if (((in[3] & 0x07) == 0x07) && 
+      ((in[4] & 0x0f) == 0x0d) && 
+      ((in[5] & 0x07) == 0x06) &&
+      ((in[6] & 0x0f) == 0x08))
+  {
+    val = "  0L";
+  }
+  else
+  {
+    if(in[1] & 0x08)
+    {
+      val = " -";   // negative;
+    }
+    else
+    {
+      val = "  ";
+    }
+    
+    // create string;
+    //
+    for (int i=0; i<4; ++i)
+    {
+      val += vc820Digit( ((in[1+2*i] << 4 ) & 0xf0) | (in[2+2*i] & 0x0f) );
+    }
+  }
+  
+  // find comma position
+  //
+  if (in[3] & 0x08)
+  {
+    val = insertComma( val, 1 );
+  }
+  else if (in[5] & 0x08)
+  {
+    val = insertComma( val, 2 );
+  }
+  else if(in[7] & 0x08)
+  {
+    val = insertComma( val, 3 );
+  }
+
+  double d_val = val.toDouble();
+  
+  // try to find some special modes
+  //
+  if (in[9] & 0x01) 
+  {
+    special = "DI";
+  }
+  if (in[0] & 0x08)
+  {
+    special = "AC";
+  }
+  else
+  {
+    special = "DC";
+  }
+
+  // try to find mode
+  //
+  if (in[11] & 0x08)
+  {
+    unit    = "F";
+    special = "CA";
+  }
+  else if (in[11] & 0x04)
+  {
+    unit    = "Ohm";
+    special = "OH";
+  }
+  else if (in[12] & 0x08)
+  {
+    unit = "A";
+  }
+  else if (in[12] & 0x02)
+  {
+    unit    = "Hz";
+    special = "HZ";
+  }
+  else if (in[12] & 0x04)
+  {
+    unit = "V";
+  }
+  else if (in[10] & 0x04)
+  {
+    unit    = "%";
+    special = "PC";
+  }
+  else 
+  {
+    std::cerr << "Unknown unit!" << std::endl;
+  }
+
+  // try to find prefix
+  //
+  if (in[9] & 0x04)
+  {
+    d_val /= 1e9;
+    unit.prepend( "n" );
+  }
+  else if (in[9] & 0x08)
+  {
+    d_val /= 1e6;
+    unit.prepend( "u" );
+  }
+  else if (in[10] & 0x08)
+  {
+    d_val /= 1e3;
+    unit.prepend( "m" );
+  }
+  else if (in[9] & 0x02)
+  {
+    d_val *= 1e3;
+    unit.prepend( "k" );
+  }
+  else if (in[10] & 0x02)
+  {
+    d_val *= 1e6;
+    unit.prepend( "M" );
+  }
+
+  emit value( d_val, val, unit, special, true, re->id() );
+  
+  m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
+}
+
+char *DMM::vc820Digit( int byte )
+{
+  int     digit[10] = { 0x7d, 0x05, 0x5b, 0x1f, 0x27, 0x3e, 0x7e, 0x15, 0x7f, 0x3f };
+  char *c_digit[10] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+  
+  byte &= 0x7f;
+  
+  for (int n=0; n<10; n++)
+  {
+    if (byte == digit[n]) return c_digit[n];
+  }
+  
+  return 0;
+}
+

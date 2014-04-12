@@ -60,7 +60,12 @@ public slots:
   
 protected slots:
   void modelSLOT( int );
-
+  void loadSLOT();
+  void saveSLOT();
+  
+protected:
+  QString m_path;
+      
 };
 
 #endif // DMMPREFS_HH
