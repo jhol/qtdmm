@@ -27,7 +27,7 @@
 #include <qmessagebox.h>
 #include <qpainter.h>
 #include <qpixmap.h>
-#include <qpopupmenu.h>
+#include <Q3PopupMenu>
 #include <qprinter.h>
 #include <qregexp.h>
 #include <qscrollbar.h>
@@ -102,7 +102,7 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   
   setMouseTracking( true );
   
-  m_popup = new QPopupMenu( this );
+  m_popup = new Q3PopupMenu( this );
   connect( m_popup, SIGNAL( activated(int) ),
            this, SLOT( popupSLOT(int) ));
 }

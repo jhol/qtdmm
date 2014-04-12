@@ -25,6 +25,7 @@
 #include <qdatetime.h>
 #include <qpointarray.h>
 #include <qwidget.h>
+#include <Q3PopupMenu>
 
 class QLabel;
 class QPainter;
@@ -206,7 +207,7 @@ protected:
   int                       m_externalThresholdY;
   CursorMode                m_cursorMode;
   bool                      m_includeZero;
-  QPopupMenu               *m_popup;
+  Q3PopupMenu              *m_popup;
   bool                      m_mousePan;
   
   void paintEvent( QPaintEvent * );
