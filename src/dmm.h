@@ -73,10 +73,12 @@ protected:
   void timerEvent( QTimerEvent * );
   void customEvent( QCustomEvent * );
   QString insertComma( const QString &, int );
+  QString insertCommaIT( const QString &, int );
   
   void readASCII( ReadEvent * );
   void readVC820Continuous( ReadEvent * );
   void readM9803RContinuous( ReadEvent * );
+  void readIsoTechContinuous( ReadEvent * );
   char *vc820Digit( int );
   
 };

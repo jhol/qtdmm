@@ -93,7 +93,7 @@ protected:
   QBitmap *m_diode;
   QBitmap *m_ac;
   QBitmap *m_dc;
-  QBitmap *m_bar[6];
+  QBitmap *m_bar[7];
   QString  m_value[4];
   QString  m_minValue;
   QString  m_maxValue;

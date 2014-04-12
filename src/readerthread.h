@@ -73,6 +73,7 @@ protected:
   void readVoltcraft15Continuous();
   void readM9803RContinuous();
   void readPeakTech10();
+  void readIsoTech();
   
   int formatLength() const;
   bool checkFormat();

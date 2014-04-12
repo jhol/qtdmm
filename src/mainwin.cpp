@@ -44,7 +44,7 @@
 #include <help.xpm>
 #include <icon.xpm>
 
-#define VERSION_STRING "0.8.8"
+#define VERSION_STRING "0.8.9"
 
 #include <iostream>
 
@@ -337,7 +337,7 @@ MainWin::versionSLOT()
   msg += qVersion();
   msg += " from Trolltech AS Norway <font color=blue><u>www.trolltech.com</u></font>"
          " and is licensed under <b>GPL</b>.</div><br>"
-         "&copy; 2001-2006 Matthias Toussaint &nbsp;-&nbsp;&nbsp;<font color=blue><u>qtdmm@mtoussaint.de</u></font>"
+         "&copy; 2001-2007 Matthias Toussaint &nbsp;-&nbsp;&nbsp;<font color=blue><u>qtdmm@mtoussaint.de</u></font>"
          "<p><br>The icons (except the DMM icon) have been taken from the KDE project.<p>";
           
   QMessageBox version( tr("QtDMM: Welcome!" ),

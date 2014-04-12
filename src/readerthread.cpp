@@ -179,6 +179,8 @@ ReaderThread::formatLength() const
     return 12;
   case ReadEvent::VC820Continuous:
     return 14;
+  case ReadEvent::IsoTech:
+    return 22;
   }
   
   return 0;
@@ -209,6 +211,10 @@ ReaderThread::readDMM()
   else if (m_format == ReadEvent::PeakTech10)
   {
     readPeakTech10();
+  }
+  else if (m_format == ReadEvent::IsoTech)
+  {
+    readIsoTech();
   }
 }
 
@@ -244,6 +250,23 @@ ReaderThread::checkFormat()
     if ((m_fifo[m_length] & 0xf0) == 0xe0) return true; 
     //if (m_fifo[(m_length-1+FIFO_LENGTH)%FIFO_LENGTH] & 0xf0 == 0xe0) return true; 
   }
+  else if (m_format == ReadEvent::IsoTech && m_length >= 22)
+  {
+    for (int i=0; i<11; ++i)
+    {
+      if (m_fifo[m_length-22+i] != m_fifo[m_length-22+11+i])
+      {
+        return false;
+      }
+    }
+    if (m_fifo[m_length-22+9] != 0x0d ||
+        m_fifo[m_length-22+10] != 0x0a)
+    {
+      return false;
+    }
+    
+    return true;
+  }
   
   return false;
 }
@@ -274,6 +297,10 @@ ReaderThread::readVoltcraft15Continuous()
 
 void
 ReaderThread::readM9803RContinuous()
+{
+}
+
+void ReaderThread::readIsoTech()
 {
 }
 

@@ -84,6 +84,7 @@
 #include <thirty_bar.xpm>
 #include <fourty_bar.xpm>
 #include <fifty_bar.xpm>
+#include <sixty_bar.xpm>
 
 #include <iostream>
 
@@ -153,6 +154,7 @@ DisplayWid::DisplayWid( QWidget *parent, const char *name ) :
   m_bar[3] = createBitmap((const char **)thirty_bar_xpm);   
   m_bar[4] = createBitmap((const char **)fourty_bar_xpm);   
   m_bar[5] = createBitmap((const char **)fifty_bar_xpm);   
+  m_bar[6] = createBitmap((const char **)sixty_bar_xpm);   
   
   setBackgroundMode( QWidget::NoBackground );
   
@@ -227,6 +229,10 @@ DisplayWid::setDisplayMode( int dm, bool minMax, bool bar, int numValues )
   
   case 7:
     m_range = 1000000;
+    break;
+    
+  case 8:
+    m_range = 6000;
     break;
   }
   
@@ -369,6 +375,11 @@ DisplayWid::paintEvent( QPaintEvent * )
         step /= 40;
         off = (width()-40*step)/2-2;
       }
+      else if (8 == m_displayMode)
+      {
+        step /= 60;
+        off = (width()-60*step)/2-2;
+      }
       else
       {
         step /= 50;
@@ -424,7 +435,7 @@ void
 DisplayWid::drawSmallNumber( QPainter *p, const QString & num )
 {
   int x = 0;  
-  int offset = (m_displayMode > 1 ? 0 : 1);
+  int offset = ((m_displayMode > 1) && (m_displayMode != 8) ? 0 : 1);
           
   if (num[offset] == '-')
   {
@@ -691,10 +702,9 @@ void
 DisplayWid::drawBigNumber( QPainter *p, const QString & num )
 {
   int x = 0;  
-  int offset = (m_displayMode > 1 ? 0 : 1);
+  int offset = ((m_displayMode > 1) && (m_displayMode != 8) ? 0 : 1);
   bool comma = false;
           
-  
   if (num[offset] == '-')
   {
     p->drawPixmap( x, 0, *m_bigMinus );
@@ -801,6 +811,7 @@ DisplayWid::calcNumDigits( int dm )
     default:
     case 0:
     case 1:
+    case 8:
       numDigits = 4;
       break;
     case 2:

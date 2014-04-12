@@ -33,7 +33,8 @@ public:
     Voltcraft14Continuous,
     Voltcraft15Continuous,
     M9803RContinuous,
-    VC820Continuous
+    VC820Continuous,
+    IsoTech
   };
     
   ReadEvent( char *str, int len, int id, DataFormat df );
@@ -45,7 +46,7 @@ public:
   int length() const { return m_length; }
   
 private:
-  char       m_str[20];
+  char       m_str[23];
   int        m_length;
   DataFormat m_format;
   int        m_id;

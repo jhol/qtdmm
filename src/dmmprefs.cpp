@@ -49,6 +49,7 @@ struct DMMInfo dmm_info[] = {
                               {"Digitech QM1350", 0, 0, 7, 2, 1, 0, 1},
                               {"Digitech QM1538", 3, 5, 8, 1, 1, 0, 1},
                               {"ELV M9803R", 5, 4, 7, 1, 1, 1, 1},
+                              {"Iso-Tech IDM 73", 6, 6, 7, 1, 1, 2, 8},
                               {"MASTECH MAS-345", 0, 0, 7, 2, 1, 0, 1},
                               {"MASTECH M9803R", 5, 4, 7, 1, 1, 1, 1},
                               {"McVoice M-345pro", 0, 0, 7, 2, 1, 0, 1},
@@ -67,6 +68,7 @@ struct DMMInfo dmm_info[] = {
                               {"PeakTech 451", 0, 1, 7, 2, 1, 0, 1},
                               {"Radioshack 22-805 DMM", 0, 0, 7, 2, 1, 0, 1},
                               {"Radioshack RS22-168A", 1, 0, 7, 2, 1, 0, 1},
+                              {"Voltcraft M-3610D", 1, 0, 7, 2, 1, 0, 1},
                               {"Voltcraft M-3650D", 1, 0, 7, 2, 1, 0, 1},
                               {"Voltcraft M-4650CR", 1, 2, 7, 2, 1, 0, 2 },
                               {"Voltcraft M-4660", 1, 0, 7, 2, 4, 0, 3},
@@ -310,6 +312,8 @@ DmmPrefs::speed() const
     return 4800;
   case 5:
     return 9600;
+  case 6:
+    return 19200;
   }
   
   return 600;

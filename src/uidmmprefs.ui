@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>505</width>
-            <height>607</height>
+            <width>534</width>
+            <height>635</height>
         </rect>
     </property>
     <property name="caption">
@@ -250,6 +250,11 @@
                             <string>9600 baud</string>
                         </property>
                     </item>
+                    <item>
+                        <property name="text">
+                            <string>19200 baud</string>
+                        </property>
+                    </item>
                     <property name="name">
                         <cstring>baudRate</cstring>
                     </property>
@@ -338,7 +343,7 @@
                         <cstring>ui_displayLabel</cstring>
                     </property>
                     <property name="text">
-                        <string>&amp;Display</string>
+                        <string>&amp;Digits</string>
                     </property>
                     <property name="alignment">
                         <set>AlignVCenter|AlignRight</set>
@@ -352,42 +357,47 @@
                 <widget class="QComboBox" row="2" column="4">
                     <item>
                         <property name="text">
-                            <string>3 1/2</string>
+                            <string>2000</string>
                         </property>
                     </item>
                     <item>
                         <property name="text">
-                            <string>3 3/4</string>
+                            <string>4000</string>
                         </property>
                     </item>
                     <item>
                         <property name="text">
-                            <string>4 1/2</string>
+                            <string>20000</string>
                         </property>
                     </item>
                     <item>
                         <property name="text">
-                            <string>4 3/4</string>
+                            <string>50000</string>
                         </property>
                     </item>
                     <item>
                         <property name="text">
-                            <string>5</string>
+                            <string>100000</string>
                         </property>
                     </item>
                     <item>
                         <property name="text">
-                            <string>5 1/2</string>
+                            <string>200000</string>
                         </property>
                     </item>
                     <item>
                         <property name="text">
-                            <string>5 3/4</string>
+                            <string>400000</string>
                         </property>
                     </item>
                     <item>
                         <property name="text">
-                            <string>6</string>
+                            <string>1000000</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>6000</string>
                         </property>
                     </item>
                     <property name="name">
@@ -488,6 +498,11 @@
                     <item>
                         <property name="text">
                             <string>14 bytes binary, continuous (VC820)</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>22 bytes ascii, continuous (IsoTech)</string>
                         </property>
                     </item>
                     <property name="name">
