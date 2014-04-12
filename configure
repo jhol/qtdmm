@@ -1,0 +1,106 @@
+#! /bin/sh
+
+if [ -z "$TMAKEPATH" ]
+then
+    echo "*******************************************************************************"
+    echo " TMAKEPATH is not set. This package requires a correctly set up"
+    echo " tmake. To get tmake go to ftp://ftp.troll.no/freebies/tmake"
+    echo "*******************************************************************************"
+    exit -1
+fi
+
+if [ ! -f "$TMAKEPATH/../../bin/tmake" ]
+then
+    echo "*******************************************************************************"
+    echo " The tmake utility was not found. This package requires a correctly"
+    echo " set up tmake. To get tmake go to ftp://ftp.troll.no/freebies/tmake"
+    echo "*******************************************************************************"
+    exit -1
+fi
+
+if [ ! -f "$QTDIR/bin/uic" ]
+then
+  echo "  uic seems not to be installed (part of Qt-Designer package)"
+  echo "  going to create Makefiles without uic support"
+  HAS_UIC=no
+fi
+
+for ac_option
+do                                                                                                                                    
+  case "$ac_option" in 
+    --no-uic)
+      HAS_UIC=no
+      ;;
+    --help)
+      echo "Usage: ./configure [--help|--no-uic]"
+      echo "   --help:   Print this message"
+      echo "   --no-uic: Create Makefile without uic usage"
+      exit 0
+      ;;
+  esac
+done
+
+echo "Creating Makefiles..." 
+
+cd src
+
+if [ x"$HAS_UIC" = xno ]
+then
+  echo "Creating regular Makefile without uic"
+  cp qtdmm_nouic.pro src.pro
+else
+  echo "Creating regular Makefile"
+  cp qtdmm.pro src.pro
+fi
+
+cd ..
+
+$TMAKEPATH/../../bin/tmake -o Makefile qtdmm.pro
+
+echo "Testing libraries & tools ..."
+
+if [ -z "$QTDIR" ]
+then
+    echo "*******************************************************************************"
+    echo " QTDIR is not set. This package requires a correctly set up"
+    echo " Qt. To get Qt, see http://www.trolltech.com"
+    echo "*******************************************************************************"
+    exit -1
+fi
+
+echo "#include <qglobal.h>" > qttest.cpp
+echo "#include <stdio.h>" >> qttest.cpp
+echo "int main(int argc, char **argv) { fprintf( stderr, \"Found QT Version %s: \", QT_VERSION_STR );" >> qttest.cpp
+echo "if (QT_VERSION >= 210) return 0; else return -1; }" >> qttest.cpp
+gcc -I$QTDIR/include qttest.cpp
+if ./a.out
+then
+echo "OK"
+rm qttest.cpp 2>/dev/null
+rm a.out 2>/dev/null
+else
+echo "Please upgrade your Qt installation"
+rm qttest.cpp 2>/dev/null
+rm a.out 2>/dev/null
+exit -1
+fi
+
+if [ ! -f "$QTDIR/bin/moc" ]
+then
+    echo "*******************************************************************************"
+    echo " The moc meta object compiler was not found. This package requires a"
+    echo " correctly set up Qt. To get Qt, see http://www.trolltech.com"
+    echo "*******************************************************************************"
+    exit -1
+fi
+
+echo ""
+echo "*******************************************************************************"
+echo "Type make to compile QtDMM. After that you'll"
+echo "find the binary in the bin directory."
+echo ""
+echo "Enjoy it! -- Matthias Toussaint <qtdmm@mtoussaint.de>"
+echo "*******************************************************************************"
+
+
+

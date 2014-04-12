@@ -1,0 +1,27 @@
+Requirements:
+-------------
+- Qt library >= 2.1.0 <http://www.trolltech.com> thread version
+- tmake (I think version >= 1.5 , but I'm not shure) <http://www.trolltech.com>
+- Additionally you may have Qt-Designer installed. If not the configure script
+  should figure this out (checks for the presence of uic). You may use the 
+  --no-uic option for the configure script to disable uic support.
+- A Metex/Voltcraft compatible DMM
+
+Compilation:
+------------
+Make shure QTDIR is set correctly and tmake, moc and eventually uic are installed. 
+
+- untar the tarball you've downloaded
+- enter the qtdmm directory
+- type ./configure [--help|--no-uic] 
+- type make 
+
+That's it. You should have the executable qtdmm now.
+
+If you encounter any problems don't hesitate to contact me <qtdmm@mtoussaint.de>
+
+The build process has been tested until now only with Linux and Qt 2.2.0. It would be
+nice to hear if QtDMM compiles and works with different system configurations.
+
+-- Matthias Toussaint
+ 
