@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>485</width>
-            <height>215</height>
+            <width>510</width>
+            <height>246</height>
         </rect>
     </property>
     <property name="caption">
@@ -52,6 +52,14 @@
                     <property name="name">
                         <cstring>ui_tip</cstring>
                     </property>
+                    <property name="sizePolicy">
+                        <sizepolicy>
+                            <hsizetype>7</hsizetype>
+                            <vsizetype>7</vsizetype>
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
                     <property name="minimumSize">
                         <size>
                             <width>400</width>
@@ -61,7 +69,7 @@
                     <property name="maximumSize">
                         <size>
                             <width>32767</width>
-                            <height>200</height>
+                            <height>32767</height>
                         </size>
                     </property>
                     <property name="frameShape">

@@ -21,10 +21,13 @@
 #include <colorbutton.h>
 #include <qcolordialog.h>
 #include <qpainter.h>
+#include <qimage.h>
+#include <qpixmap.h>
 
 ColorButton::ColorButton( QWidget *parent, const char *name ) :
   QPushButton( parent, name )
 {
+  m_color = QColor( 255, 255, 255 );
   setAutoDefault( false );
   
   connect( this, SIGNAL( clicked() ), this, SLOT( clickedSLOT() ));
@@ -37,13 +40,31 @@ ColorButton::~ColorButton()
 QColor
 ColorButton::color() const
 {
-  return backgroundColor();
+  return m_color; 
 }
 
 void
 ColorButton::setColor( const QColor & c )
 {
-  setBackgroundColor( c );
+  m_color = c;
+  
+  QImage img( 16, 12, 32 );
+  img.fill(m_color.rgb());
+  for (int i=0; i<16; ++i)
+  {
+    ((QRgb *)img.scanLine(0))[i] = 0;
+    ((QRgb *)img.scanLine(11))[i] = 0;
+  }
+
+  for (int i=0; i<12; ++i)
+  {
+    ((QRgb *)img.scanLine(i))[0] = 0;
+    ((QRgb *)img.scanLine(i))[15] = 0;
+  }
+
+  QPixmap pix;
+  pix.convertFromImage( img );
+  setPixmap( pix );
 }
 
 void
@@ -59,10 +80,12 @@ ColorButton::clickedSLOT()
     emit valueChanged( c );
   }
 }
-
+/*
 void
 ColorButton::drawButtonLabel( QPainter *p )
 {
   p->setBrush( color() );
   p->drawRoundRect( 6, 6, width()-12, height()-12, 30, 30 );
 }
+*/
+

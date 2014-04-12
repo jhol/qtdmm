@@ -22,6 +22,7 @@
 #define COLORBUTTON_HH
 
 #include <qpushbutton.h>
+#include <qcolor.h>
 
 class QPainter;
 
@@ -43,7 +44,8 @@ protected slots:
   void clickedSLOT();
 
 protected:
-  void drawButtonLabel( QPainter * );
+  QColor m_color;
+//  void drawButtonLabel( QPainter * );
 
 };
 

@@ -1,3 +1,7 @@
+20/11/2007 0.8.11
+           - GCC 4.3 compilation issues
+           - Make it compile on OSX
+
 30/09/2007 0.8.10
            - Added Sinometer MAS-343
            - Adedd PeakTech 3330

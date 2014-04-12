@@ -59,11 +59,13 @@ public slots:
   virtual void defaultsSLOT();
   virtual void factoryDefaultsSLOT();
   virtual void applySLOT();
-  
+
 protected slots:
   void modelSLOT( int );
   void loadSLOT();
   void saveSLOT();
+  // empty finction as damn moc doesn't know about defines
+  void scanDevicesSLOT();
   
 protected:
   QString m_path;

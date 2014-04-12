@@ -1,5 +1,8 @@
 TEMPLATE        = app
-CONFIG          = qt release warn_on thread
+CONFIG          += qt release warn_on thread
+macx {
+  CONFIG += static
+}
 INCLUDEPATH     = . moc xpm
 MOC_DIR         = moc
 OBJECTS_DIR     = tmp
@@ -70,8 +73,11 @@ SOURCES   = \
             simplecfg.cpp \
             tipdlg.cpp
 
-LIBS      = 
+macx {
+  LIBS      = -framework Carbon -framework QuickTime -lz $(QTDIR)/lib/libqt-mt.a
+  RC_FILE   = QtDMMIcon.icns
+}
 TARGET    = qtdmm
-VERSION   = 0.8.4
+VERSION   = 0.8.11
 DESTDIR   = ../bin
 

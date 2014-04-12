@@ -25,7 +25,8 @@
 
 const char *TipDlg::s_tipText[] = {
     "<font size=+2>Welcome</font><p>QtDMM is a small DMM "
-    "(Digital Multi Meter) readout software for Linux/UNIX."
+    "(Digital Multi Meter) readout software for Linux/UNIX"
+    " and since version 0.8.11 for Mac OSX."
     " If you don't want to see the tips of the day you "
     "can switch them of with"
     " the checkbox below this text. The tips can be switched "

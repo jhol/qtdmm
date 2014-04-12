@@ -52,7 +52,7 @@ main( int argc, char **argv )
   qInstallMsgHandler( myMessageOutput );
   QApplication app( argc, argv );
   
-  MainWin mainWin( 0 );
+  MainWin mainWin;
   
   // very simple parsing (tm)
   for (int i=0; i<argc; ++i)
@@ -66,6 +66,7 @@ main( int argc, char **argv )
   
   app.setMainWidget( &mainWin );
   mainWin.show();
+  mainWin.move( 100, 100 );
   
   return app.exec();
 }

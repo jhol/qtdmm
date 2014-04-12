@@ -1,9 +1,8 @@
-Installation QtDMM 0.8.10 (c) 2001-2007 M.Toussaint
+Installation QtDMM 0.8 (c) 2001-2005 M.Toussaint
 
 Requirements:
 -------------
-- Qt library 3.x <http://www.trolltech.com> developer version
-  (will not compile with Qt 4.x)
+- Qt library >= 3.0 <http://www.trolltech.com> developer version
 - A supported multimeter or a compatible model
 
 Compilation:
@@ -34,7 +33,7 @@ presets and future users can benefit from you help.
 If you encounter any problems don't hesitate to contact me 
 
 
--- 30/09/2007
+-- 15/08/2005
    Matthias Toussaint
    <qtdmm@mtoussaint.de>
 

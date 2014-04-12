@@ -15,7 +15,7 @@
 // thereof.  In no event will the author be liable  for any lost revenue
 // or profits or other special, indirect and consequential damages.
 //----------------------------------------------------------------------
-// (c) 2001 Matthias Toussaint
+// (c) 2001-2007 Matthias Toussaint
 //======================================================================
 
 #include <qapplication.h>
@@ -39,7 +39,7 @@
 #include <dmmgraph.h>
 
 #include <math.h> // RedHat needs it
-
+#include <cstdlib>
 #include <iostream>
 
 #include <icon.xpm>
@@ -1212,7 +1212,7 @@ DMMGraph::fillInfoBox( const QPoint & pos )
     if (fabs(val) < 1 && val != 0)
     {
       val *= 1000;
-      prefix = "";
+      prefix = "u";
     }
     if (fabs(val) < 1 && val != 0)
     {
@@ -1403,7 +1403,7 @@ DMMGraph::importDataSLOT()
       file.close();
     }
     
-    std::cerr << "sample=" << sample << std::endl;
+    //std::cerr << "sample=" << sample << std::endl;
     
     m_sampleTime = sample / (cnt>1 ? cnt-1 : 1); //m_graphStartDateTime.secsTo( graphEnd );
     
@@ -1461,11 +1461,11 @@ DMMGraph::importDataSLOT()
       computeUnitFactor();
     }
     
-std::cerr << "min=" << m_scaleMin << " max=" << m_scaleMax << std::endl;
-std::cerr << "factor=" << m_factor << " prefix=" << 
-  m_prefix.latin1() << " unit=" << m_unit.latin1() << std::endl;  
+//std::cerr << "min=" << m_scaleMin << " max=" << m_scaleMax << std::endl;
+//std::cerr << "factor=" << m_factor << " prefix=" << 
+//  m_prefix.latin1() << " unit=" << m_unit.latin1() << std::endl;  
 
-std::cerr << "size=" << size << "cnt*m_sampleTime=" << cnt*m_sampleTime << std::endl;
+//std::cerr << "size=" << size << "cnt*m_sampleTime=" << cnt*m_sampleTime << std::endl;
     // TEST    
     emit graphSize( size, cnt*m_sampleTime );
   }

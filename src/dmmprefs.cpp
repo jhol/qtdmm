@@ -24,6 +24,7 @@
 #include <qspinbox.h>
 #include <qtoolbutton.h>
 #include <qlineedit.h>
+#include <qpushbutton.h>
 #include <qfiledialog.h>
 #include <qdir.h>
 #include <qfileinfo.h>
@@ -57,13 +58,13 @@
 struct DMMInfo dmm_info[] = { 
                               {"Digitek DT-9062", 3, 5, 8, 1, 1, 0, 1},
                               
-                              {"Digitech QM1350", 0, 0, 7, 2, 1, 0, 1},
-                              {"Digitech QM1538", 3, 5, 8, 1, 1, 0, 1},
-                              {"Digitech QM1537", 3, 8, 8, 1, 1, 0, 1},
+                              {"Digitech QM1350", 0, 0, 7, 2, 1, 0, 1},  // no image
+                              {"Digitech QM1538", 3, 5, 8, 1, 1, 0, 1},  // no image
+                              {"Digitech QM1537", 3, 8, 8, 1, 1, 0, 1},  // no image
                               
-                              {"ELV M9803R", 5, 4, 7, 1, 1, 1, 1},
+                              {"ELV M9803R", 5, 4, 7, 1, 1, 1, 1},       // no image
                               
-                              {"Iso-Tech IDM 73", 6, 6, 7, 1, 1, 2, 8},
+                              {"Iso-Tech IDM 73", 6, 6, 7, 1, 1, 2, 8},   // no image
                               
                               {"MASTECH MAS-343", 0, 0, 7, 2, 1, 0, 1},
                               {"MASTECH MAS-345", 0, 0, 7, 2, 1, 0, 1},
@@ -73,7 +74,7 @@ struct DMMInfo dmm_info[] = {
                               {"McVoice M-980T", 5, 4, 7, 1, 1, 1, 1},
                               
                               {"Metex M-3660D", 1, 0, 7, 2, 1, 0, 1},
-                              {"Metex M-3830D", 1, 0, 7, 2, 4, 0, 1},
+                              {"Metex M-3830D", 1, 0, 7, 2, 4, 0, 1},      // no image
                               {"Metex M-3850D", 1, 0, 7, 2, 4, 0, 1},
                               {"Metex M-3850M", 5, 0, 7, 2, 4, 0, 1},
                               {"Metex ME-11", 0, 0, 7, 2, 1, 0, 1},
@@ -84,22 +85,22 @@ struct DMMInfo dmm_info[] = {
                               
                               {"PeakTech 3330", 3, 5, 8, 1, 1, 0, 1},
                               {"PeakTech 4010", 5, 0, 7, 2, 1, 0, 1},
-                              {"Peaktech 4360", 0, 0, 7, 2, 1, 0, 1},
+                              {"PeakTech 4360", 0, 0, 7, 2, 1, 0, 1},
                               {"PeakTech 4390", 5, 0, 7, 2, 4, 0, 1},
-                              {"PeakTech 451", 0, 1, 7, 2, 1, 0, 1},
+                              {"PeakTech 451", 0, 1, 7, 2, 1, 0, 1},       // no image
                               
                               {"Radioshack 22-805 DMM", 0, 0, 7, 2, 1, 0, 1},
-                              {"Radioshack RS22-168A", 1, 0, 7, 2, 1, 0, 1},
+                              {"Radioshack RS22-168A", 1, 0, 7, 2, 1, 0, 1},   // no image
                               
                               {"Sinometer MAS-343", 0, 0, 7, 2, 1, 0, 1},
                               
                               {"Uni-Trend UT30A", 3, 5, 8, 1, 1, 0, 1},
-                              {"Uni-Trend UT30E", 3, 5, 8, 1, 1, 0, 1},
+                              {"Uni-Trend UT30E", 3, 5, 8, 1, 1, 0, 1},   // no image
                              
-                              {"Voltcraft M-3610D", 1, 0, 7, 2, 1, 0, 1},
+                              {"Voltcraft M-3610D", 1, 0, 7, 2, 1, 0, 1},  // no image
                               {"Voltcraft M-3650D", 1, 0, 7, 2, 1, 0, 1},
-                              {"Voltcraft M-3860", 5, 0, 7, 2, 4, 0, 2},
-                              {"Voltcraft M-4650CR", 1, 2, 7, 2, 1, 0, 2 },
+                              {"Voltcraft M-3860", 5, 0, 7, 2, 4, 0, 2},   // no image
+                              {"Voltcraft M-4650CR", 1, 2, 7, 2, 1, 0, 2 }, // no image
                               {"Voltcraft M-4660", 1, 0, 7, 2, 4, 0, 3},
                               {"Voltcraft ME-11", 0, 0, 7, 2, 1, 0, 1},
                               {"Voltcraft ME-22T", 3, 0, 7, 2, 1, 0, 1},
@@ -149,10 +150,38 @@ DmmPrefs::DmmPrefs( QWidget *parent, const char *name ) :
            this, SLOT( saveSLOT()));
 
   m_path = QDir::currentDirPath();
+  
+#ifdef Q_WS_MACX
+  connect( ui_scanPorts, SIGNAL( clicked() ),
+           this, SLOT( scanDevicesSLOT() ));
+
+  portNumber->hide();
+  scanDevicesSLOT();
+#else
+  ui_scanPorts->hide();
+#endif
 }
 
 DmmPrefs::~DmmPrefs()
 {
+}
+
+void DmmPrefs::scanDevicesSLOT()
+{
+#ifdef Q_WS_MACX
+  port->clear();
+  QDir dir( "/dev" );
+  QStringList files = dir.entryList( "cu.*", QDir::System );
+  for (unsigned i=0; i<files.count(); ++i)
+  {
+    port->insertItem( QString( "/dev/" ) + files[i] );
+  }
+  files = dir.entryList( "tty.*", QDir::System );
+  for (unsigned i=0; i<files.count(); ++i)
+  {
+    port->insertItem( QString( "/dev/" ) + files[i] );
+  }
+#endif
 }
 
 QString DmmPrefs::deviceListText() const
@@ -376,9 +405,13 @@ DmmPrefs::dmmName() const
 QString
 DmmPrefs::device() const
 {
+#ifdef Q_WS_MACX
+  return port->currentText();
+#else
   QString txt;
   txt.sprintf( "%s%d", port->currentText().latin1(), portNumber->value() ); 
   return txt;
+#endif
 }
 
 void

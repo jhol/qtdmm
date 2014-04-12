@@ -32,7 +32,7 @@
 #include <specialchars.xpm>
 #include <minus.xpm>
 #include <G.xpm>
-#include <M.xpm>
+#include <cm.xpm>
 #include <k.xpm>
 #include <m.xpm>
 #include <u.xpm>
@@ -54,7 +54,7 @@
 #include <specialchars_small.xpm>
 #include <minus_small.xpm>
 #include <G_small.xpm>
-#include <M_small.xpm>
+#include <cm_small.xpm>
 #include <k_small.xpm>
 #include <m_small.xpm>
 #include <u_small.xpm>
