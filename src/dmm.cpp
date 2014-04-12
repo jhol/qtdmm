@@ -337,7 +337,7 @@ DMM::event( QEvent *ev )
         
         emit value( d_val, val, unit, special, true, re->id() );
 
-        m_error = tr( "Connected (" + m_name + ")" );
+        m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
       }
       else
       {        
@@ -584,7 +584,7 @@ DMM::event( QEvent *ev )
         }
           
         emit value( d_val, val, unit, special, showBar, re->id() );
-        m_error = tr( "Connected (" + m_name + ")" );
+        m_error = tr( "Connected" ) + " (" + m_name + " @ " + m_device + ")";
       }
     }
     else

@@ -61,6 +61,8 @@ public slots:
   void startSLOT();
   void stopSLOT();
   void configSLOT();
+  void configDmmSLOT();
+  void configRecorderSLOT();
   void printSLOT();
   void exportSLOT();
   void importSLOT();
@@ -88,6 +90,7 @@ protected:
 protected slots:
   void startExternalSLOT();
   void exitedSLOT();
+  void zoomedSLOT();
   
 };
 

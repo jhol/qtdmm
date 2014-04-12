@@ -1,7 +1,7 @@
 //======================================================================
-// File:		engnumbervalidator.h
+// File:		executeprefs.h
 // Author:	Matthias Toussaint
-// Created:	Fri Oct 11 20:29:37 CEST 2002
+// Created:	Sat Oct 19 15:26:02 CEST 2002
 //----------------------------------------------------------------------
 // Permission to use, copy, modify, and distribute this software and its
 // documentation  for any  purpose and  without fee is  hereby  granted,
@@ -18,22 +18,34 @@
 // (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
-#ifndef ENGNUMBERVALIDATOR_HH
-#define ENGNUMBERVALIDATOR_HH
+#ifndef EXECUTEPREFS_HH
+#define EXECUTEPREFS_HH
 
-#include <qvalidator.h>
+#include <uiexecuteprefs.h>
 
-class EngNumberValidator : public QValidator
+class ExecutePrefs : public UIExecutePrefs
 {
+  Q_OBJECT
 public:
-  EngNumberValidator( QWidget *parent=0, const char *name=0 );
-  virtual ~EngNumberValidator();
+  ExecutePrefs( QWidget *parent=0, const char *name=0 );
+  virtual ~ExecutePrefs();
+
+  bool startExternal() const;
+  bool externalFalling() const;
+  double externalThreshold() const;
+  bool disconnectExternal() const;
+  QString externalCommand() const;
+  void setThreshold( double );
   
-  QValidator::State validate( QString &, int & ) const;
+public slots:
+  virtual void defaultsSLOT();
+  virtual void factoryDefaultsSLOT();
+  virtual void applySLOT();
   
-  static double value( const QString & );
-  static QString engValue( double );
-  
+protected slots:
+  void browseExecSLOT();
+
 };
-  
-#endif // ENGNUMBERVALIDATOR_HH
+
+#endif // EXECUTEPREFS_HH
+

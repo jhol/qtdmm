@@ -82,3 +82,56 @@ EngNumberValidator::value( const QString & string )
   
   return string.toDouble() * factor;
 }
+
+QString
+EngNumberValidator::engValue( double value )
+{
+  QString suffix = "";
+  
+  if (fabs(value) < 1.)
+  {
+    value *= 1000;
+    suffix = "m";
+  }
+  if (fabs(value) < 1.)
+  {
+    value *= 1000;
+    suffix = "µ";
+  }
+  if (fabs(value) < 1.)
+  {
+    value *= 1000;
+    suffix = "n";
+  }
+  if (fabs(value) < 1.)
+  {
+    value *= 1000;
+    suffix = "p";
+  }
+  if (fabs(value) >= 1000.)
+  {
+    value /= 1000;
+    suffix = "k";
+  }
+  if (fabs(value) >= 1000.)
+  {
+    value /= 1000;
+    suffix = "M";
+  }
+  if (fabs(value) >= 1000.)
+  {
+    value /= 1000;
+    suffix = "G";
+  }
+  if (fabs(value) >= 1000.)
+  {
+    value /= 1000;
+    suffix = "T";
+  }
+  
+  QString str;
+  str.setNum( ((int)qRound( value * 10. )) / 10. );
+  str += suffix;
+  
+  return str;
+}

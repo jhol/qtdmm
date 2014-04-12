@@ -12,7 +12,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>609</width>
+            <width>605</width>
             <height>496</height>
         </rect>
     </property>
@@ -96,7 +96,7 @@
                     <property>
                         <name>whatsThis</name>
                         <string>This is the plotting area for the transient recorder. It is widely configurable by clicking the &lt;b&gt;config ...&lt;/b&gt; button to the right. Data aquisition may be started by hand, at a specific time or automatically triggered by the measured value itself &lt;i&gt;(See configuration dialog)&lt;/i&gt;&lt;p&gt;
-The maximum resolution for data aquisition is one second, but may also be configured to sample once a week or what ever you want.
+The maximum resolution for data aquisition is 1/10th of a second, but may also be configured to sample once a week or what ever you want.
 &lt;p&gt;
 &lt;b&gt;Note:&lt;/b&gt; Connecting to the DMM as well as a change of the measuring unit automatically clears the graph.</string>
                     </property>

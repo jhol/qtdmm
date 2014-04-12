@@ -1,7 +1,7 @@
 //======================================================================
-// File:		engnumbervalidator.h
+// File:		configitem.cpp
 // Author:	Matthias Toussaint
-// Created:	Fri Oct 11 20:29:37 CEST 2002
+// Created:	Sat Oct 19 17:38:54 CEST 2002
 //----------------------------------------------------------------------
 // Permission to use, copy, modify, and distribute this software and its
 // documentation  for any  purpose and  without fee is  hereby  granted,
@@ -18,22 +18,16 @@
 // (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
-#ifndef ENGNUMBERVALIDATOR_HH
-#define ENGNUMBERVALIDATOR_HH
+#include <configitem.h>
 
-#include <qvalidator.h>
-
-class EngNumberValidator : public QValidator
+ConfigItem::ConfigItem( int id, const QPixmap & pixmap,
+                        const QString & label, QListView *parent ) :
+  QListViewItem( parent, label ),
+  m_id( id )
 {
-public:
-  EngNumberValidator( QWidget *parent=0, const char *name=0 );
-  virtual ~EngNumberValidator();
-  
-  QValidator::State validate( QString &, int & ) const;
-  
-  static double value( const QString & );
-  static QString engValue( double );
-  
-};
-  
-#endif // ENGNUMBERVALIDATOR_HH
+  setPixmap( 0, pixmap );
+}
+
+ConfigItem::~ConfigItem()
+{
+}

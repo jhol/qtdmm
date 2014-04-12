@@ -1,7 +1,7 @@
 //======================================================================
-// File:		engnumbervalidator.h
+// File:		recorderprefs.h
 // Author:	Matthias Toussaint
-// Created:	Fri Oct 11 20:29:37 CEST 2002
+// Created:	Sat Oct 19 14:34:19 CEST 2002
 //----------------------------------------------------------------------
 // Permission to use, copy, modify, and distribute this software and its
 // documentation  for any  purpose and  without fee is  hereby  granted,
@@ -18,22 +18,35 @@
 // (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
-#ifndef ENGNUMBERVALIDATOR_HH
-#define ENGNUMBERVALIDATOR_HH
+#ifndef RECORDERPREFS_HH
+#define RECORDERPREFS_HH
 
-#include <qvalidator.h>
+#include <uirecorderprefs.h>
+#include <dmmgraph.h>
 
-class EngNumberValidator : public QValidator
+class RecorderPrefs : public UIRecorderPrefs
 {
+  Q_OBJECT
 public:
-  EngNumberValidator( QWidget *parent=0, const char *name=0 );
-  virtual ~EngNumberValidator();
+  RecorderPrefs( QWidget *parent=0, const char *name=0 );
+  virtual ~RecorderPrefs();
   
-  QValidator::State validate( QString &, int & ) const;
+  DMMGraph::SampleMode sampleMode() const;
+  int sampleStep() const;
+  int sampleLength() const;
+  double fallingThreshold() const;
+  double raisingThreshold() const;
+  QTime startTime() const;
+  void setThreshold( double );
   
-  static double value( const QString & );
-  static QString engValue( double );
+public slots:
+  virtual void defaultsSLOT();
+  virtual void factoryDefaultsSLOT();
+  virtual void applySLOT();
+
+  void setSampleTimeSLOT( int sampleTime );
   
 };
-  
-#endif // ENGNUMBERVALIDATOR_HH
+
+#endif // RECORDERPREFS_HH
+

@@ -1,7 +1,7 @@
 //======================================================================
-// File:		engnumbervalidator.h
+// File:		scaleprefs.h
 // Author:	Matthias Toussaint
-// Created:	Fri Oct 11 20:29:37 CEST 2002
+// Created:	Sat Oct 19 15:33:41 CEST 2002
 //----------------------------------------------------------------------
 // Permission to use, copy, modify, and distribute this software and its
 // documentation  for any  purpose and  without fee is  hereby  granted,
@@ -18,22 +18,35 @@
 // (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
-#ifndef ENGNUMBERVALIDATOR_HH
-#define ENGNUMBERVALIDATOR_HH
+#ifndef SCALEPREFS_HH
+#define SCALEPREFS_HH
 
-#include <qvalidator.h>
+#include <uiscaleprefs.h>
 
-class EngNumberValidator : public QValidator
+class ScalePrefs : public UIScalePrefs
 {
+  Q_OBJECT
 public:
-  EngNumberValidator( QWidget *parent=0, const char *name=0 );
-  virtual ~EngNumberValidator();
+  ScalePrefs( QWidget *parent=0, const char *name=0 );
+  virtual ~ScalePrefs();
+
+  bool automaticScale() const;
+  bool includeZero() const;
+  double scaleMin() const;
+  double scaleMax() const;
+  int windowSeconds() const;
+  int totalSeconds() const;
   
-  QValidator::State validate( QString &, int & ) const;
+public slots:
+  virtual void defaultsSLOT();
+  virtual void factoryDefaultsSLOT();
+  virtual void applySLOT();
   
-  static double value( const QString & );
-  static QString engValue( double );
+  void zoomInSLOT( double fac );
+  void zoomOutSLOT( double fac );
+  void setGraphSizeSLOT( int size, int length );
   
 };
-  
-#endif // ENGNUMBERVALIDATOR_HH
+
+#endif // SCALEPREFS_HH
+

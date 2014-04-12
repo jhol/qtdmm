@@ -21,15 +21,16 @@
 #ifndef DMMGRAPH_HH
 #define DMMGRAPH_HH
 
-#include <qwidget.h>
 #include <qarray.h>
 #include <qdatetime.h>
 #include <qpointarray.h>
+#include <qwidget.h>
 
-class QPainter;
-class QScrollBar;
-class QPrinter;
 class QLabel;
+class QPainter;
+class QPopupMenu;
+class QPrinter;
+class QScrollBar;
 
 class DMMGraph : public QWidget
 {
@@ -63,6 +64,14 @@ public:
     Dot
   };
     
+  enum CursorMode
+  {
+    NoCursor = 0,
+    Trigger,
+    External,
+    Integration
+  };
+  
   DMMGraph( QWidget *parent=0, const char *name=0 );
   virtual ~DMMGraph();
   
@@ -75,7 +84,7 @@ public:
   void setMode( DMMGraph::SampleMode mode ) { m_mode = mode; }
   void print( QPrinter *prt, const QString &, const QString & );
   void setThresholds( double falling, double raising );
-  void setScale( bool autoScale, double min, double max );
+  void setScale( bool autoScale, bool includeZero, double min, double max );
   void setColors( const QColor & bg, const QColor & grid,
                   const QColor & data, const QColor & cursor,
                   const QColor & start, const QColor & external,
@@ -97,6 +106,7 @@ signals:
   void externalTriggered();
   void zoomIn( double );
   void zoomOut( double );
+  void thresholdChanged( DMMGraph::CursorMode, double );
   
 public slots:
   void clearSLOT();
@@ -168,6 +178,15 @@ protected:
   bool                      m_showIntegration;
   double                    m_factor;
   QString                   m_prefix;
+  QRect                     m_graphRect;
+  int                       m_fontHeight;
+  int                       m_triggerThresholdY;
+  int                       m_integrationThresholdY;
+  int                       m_externalThresholdY;
+  CursorMode                m_cursorMode;
+  bool                      m_includeZero;
+  QPopupMenu               *m_popup;
+  bool                      m_mousePan;
   
   void paintEvent( QPaintEvent * );
   void resizeEvent( QResizeEvent * );
@@ -175,7 +194,8 @@ protected:
   void mouseMoveEvent( QMouseEvent * );
   void mouseReleaseEvent( QMouseEvent * );
   void wheelEvent( QWheelEvent * );
-
+  void timerEvent( QTimerEvent * );
+  
   double createYScale( int h, double & ystep );
   double createTimeScale( int w, double & xstep, double & hUnitFact,
                           double & maxUnit, QString & hUnit );
@@ -185,20 +205,19 @@ protected:
               double yfactor, double ystep,
               double maxUnit, double hUnitFact, 
               const QString & hUnit, bool color, bool printer );
-  void paintHorizontalGrid( QPainter *p, int w, int h, 
-                            double yfactor, double ystep, bool color );
-  void paintVerticalGrid( QPainter *p, int w, int h, 
-                          double xfactor, double xstep,
+  void paintHorizontalGrid( QPainter *p, double yfactor, double ystep, bool color );
+  void paintVerticalGrid( QPainter *p, double xfactor, double xstep,
                           double maxUnit, double hUnitFact, 
                           const QString & hUnit, bool color );
-  void paintData( QPainter *p, int w, int h, double xfactor, 
+  void paintData( QPainter *p, double xfactor, 
                   double yfactor, bool color, bool printer );
-  void paintThresholds( QPainter *p, int w, int h, double xfactor, 
+  void paintThresholds( QPainter *p, double xfactor, 
                   double yfactor, bool color, bool printer );    
   void drawCursor( const QPoint & );
   void fillInfoBox( const QPoint & );
   void drawPoint( PointMode, QPainter *, int, int );
   void computeUnitFactor();
+  bool computeMinMax( double );
   
 private:
   Qt::PenStyle penStyle( LineMode );

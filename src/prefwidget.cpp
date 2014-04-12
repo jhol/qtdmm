@@ -1,7 +1,7 @@
 //======================================================================
-// File:		engnumbervalidator.h
+// File:		prefwidget.cpp
 // Author:	Matthias Toussaint
-// Created:	Fri Oct 11 20:29:37 CEST 2002
+// Created:	Sat Oct 19 14:32:35 CEST 2002
 //----------------------------------------------------------------------
 // Permission to use, copy, modify, and distribute this software and its
 // documentation  for any  purpose and  without fee is  hereby  granted,
@@ -18,22 +18,13 @@
 // (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
-#ifndef ENGNUMBERVALIDATOR_HH
-#define ENGNUMBERVALIDATOR_HH
+#include <prefwidget.h>
 
-#include <qvalidator.h>
-
-class EngNumberValidator : public QValidator
+PrefWidget::PrefWidget( QWidget *parent, const char *name ) :
+  QWidget( parent, name )
 {
-public:
-  EngNumberValidator( QWidget *parent=0, const char *name=0 );
-  virtual ~EngNumberValidator();
-  
-  QValidator::State validate( QString &, int & ) const;
-  
-  static double value( const QString & );
-  static QString engValue( double );
-  
-};
-  
-#endif // ENGNUMBERVALIDATOR_HH
+}
+
+PrefWidget::~PrefWidget()
+{
+}

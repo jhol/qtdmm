@@ -1,7 +1,7 @@
 //======================================================================
-// File:		engnumbervalidator.h
+// File:		graphprefs.h
 // Author:	Matthias Toussaint
-// Created:	Fri Oct 11 20:29:37 CEST 2002
+// Created:	Sat Oct 19 15:28:30 CEST 2002
 //----------------------------------------------------------------------
 // Permission to use, copy, modify, and distribute this software and its
 // documentation  for any  purpose and  without fee is  hereby  granted,
@@ -18,22 +18,35 @@
 // (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
-#ifndef ENGNUMBERVALIDATOR_HH
-#define ENGNUMBERVALIDATOR_HH
+#ifndef GRAPHPREFS_HH
+#define GRAPHPREFS_HH
 
-#include <qvalidator.h>
+#include <uigraphprefs.h>
 
-class EngNumberValidator : public QValidator
+class GraphPrefs : public UIGraphPrefs
 {
+  Q_OBJECT
 public:
-  EngNumberValidator( QWidget *parent=0, const char *name=0 );
-  virtual ~EngNumberValidator();
+  GraphPrefs( QWidget *parent=0, const char *name=0 );
+  virtual ~GraphPrefs();
   
-  QValidator::State validate( QString &, int & ) const;
-  
-  static double value( const QString & );
-  static QString engValue( double );
+  QColor bgColor() const;
+  QColor gridColor() const;
+  QColor dataColor() const;
+  QColor startColor() const;
+  QColor externalColor() const;
+  QColor cursorColor() const;
+  int    lineWidth() const;
+  int    lineMode() const;
+  int    pointMode() const;
+  bool   crosshair() const;
+
+public slots:
+  virtual void defaultsSLOT();
+  virtual void factoryDefaultsSLOT();
+  virtual void applySLOT();
   
 };
-  
-#endif // ENGNUMBERVALIDATOR_HH
+
+#endif // GRAPHPREFS_HH
+

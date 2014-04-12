@@ -1,7 +1,7 @@
 //======================================================================
-// File:		engnumbervalidator.h
+// File:		prefwidget.h
 // Author:	Matthias Toussaint
-// Created:	Fri Oct 11 20:29:37 CEST 2002
+// Created:	Sat Oct 19 14:22:16 CEST 2002
 //----------------------------------------------------------------------
 // Permission to use, copy, modify, and distribute this software and its
 // documentation  for any  purpose and  without fee is  hereby  granted,
@@ -18,22 +18,42 @@
 // (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
-#ifndef ENGNUMBERVALIDATOR_HH
-#define ENGNUMBERVALIDATOR_HH
+#ifndef PREFWIDGET_HH
+#define PREFWIDGET_HH
 
-#include <qvalidator.h>
+#include <qwidget.h>
+#include <qpixmap.h>
 
-class EngNumberValidator : public QValidator
+class SimpleCfg;
+
+class PrefWidget : public QWidget
 {
+  Q_OBJECT
 public:
-  EngNumberValidator( QWidget *parent=0, const char *name=0 );
-  virtual ~EngNumberValidator();
+  PrefWidget( QWidget *parent=0, const char *name=0 );
+  virtual ~PrefWidget();
+
+  QString label() const { return m_label; }
+  QString description() const { return m_description; }
+  QPixmap pixmap() const { return *m_pixmap; }
   
-  QValidator::State validate( QString &, int & ) const;
+  void setId( int id ) { m_id = id; }
+  int id() const { return m_id; }
   
-  static double value( const QString & );
-  static QString engValue( double );
+  void setCfg( SimpleCfg *cfg ) { m_cfg = cfg; }
   
+public slots:
+  virtual void defaultsSLOT() = 0;
+  virtual void factoryDefaultsSLOT() = 0;
+  virtual void applySLOT() = 0;
+
+protected:
+  SimpleCfg *m_cfg;
+  QString    m_label;
+  QString    m_description;
+  QPixmap   *m_pixmap;
+  int        m_id;
+
 };
-  
-#endif // ENGNUMBERVALIDATOR_HH
+
+#endif // PREFWIDGET_HH

@@ -31,20 +31,20 @@
 #include <qstatusbar.h>
 #include <displaywid.h>
 
-#include <xpm/connect_on.xpm>
-#include <xpm/reset.xpm>
-#include <xpm/start.xpm>
-#include <xpm/stop.xpm>
-#include <xpm/clear.xpm>
-#include <xpm/print.xpm>
-#include <xpm/export.xpm>
-#include <xpm/import.xpm>
-#include <xpm/config.xpm>
-#include <xpm/quit.xpm>
-#include <xpm/help.xpm>
-#include <xpm/icon.xpm>
+#include <connect_on.xpm>
+#include <reset.xpm>
+#include <start.xpm>
+#include <stop.xpm>
+#include <clear.xpm>
+#include <print.xpm>
+#include <export.xpm>
+#include <import.xpm>
+#include <config.xpm>
+#include <quit.xpm>
+#include <help.xpm>
+#include <icon.xpm>
 
-#define VERSION_STRING "0.8.1"
+#define VERSION_STRING "0.8.2"
 
 MainWin::MainWin( QWidget *parent, const char *name ) :
   QMainWindow( parent, name ),
@@ -178,7 +178,23 @@ MainWin::createActions()
                                   tr("Configure ..."), 
                                   Key_F2, 
                                   this );
+  m_configDmmAction   = new QAction ( tr("Configure"), 
+                                  QIconSet(QPixmap((const char **)config_xpm)), 
+                                  tr("Configure ..."), 
+                                  SHIFT+Key_F2, 
+                                  this );
+  m_configRecorderAction   = new QAction ( tr("Configure"), 
+                                  QIconSet(QPixmap((const char **)config_xpm)), 
+                                  tr("Configure ..."), 
+                                  CTRL+Key_F2, 
+                                  this );
   m_configAction->setWhatsThis( tr("<b>Configure QtDMM</b><p>This will open QtDMM's configuration"
+      " dialog. Here you can configure it's visual appearance and all options regarding the "
+      "multimeter hardware and the recorder." ));
+  m_configDmmAction->setWhatsThis( tr("<b>Configure QtDMM</b><p>This will open QtDMM's configuration"
+      " dialog. Here you can configure it's visual appearance and all options regarding the "
+      "multimeter hardware and the recorder." ));
+  m_configRecorderAction->setWhatsThis( tr("<b>Configure QtDMM</b><p>This will open QtDMM's configuration"
       " dialog. Here you can configure it's visual appearance and all options regarding the "
       "multimeter hardware and the recorder." ));
   m_quitAction     = new QAction ( tr("Quit"), 
@@ -224,6 +240,10 @@ MainWin::createActions()
            m_wid, SLOT( exportSLOT() ));
   connect( m_configAction, SIGNAL( activated() ),
            m_wid, SLOT( configSLOT() ));
+  connect( m_configDmmAction, SIGNAL( activated() ),
+           m_wid, SLOT( configDmmSLOT() ));
+  connect( m_configRecorderAction, SIGNAL( activated() ),
+           m_wid, SLOT( configRecorderSLOT() ));
   connect( m_quitAction, SIGNAL( activated() ),
            m_wid, SLOT( quitSLOT() ));
   connect( m_helpAction, SIGNAL( activated() ),
@@ -275,9 +295,10 @@ MainWin::versionSLOT()
          "<table><tr><td><b>ELV</b></td><td>M9803R</td></tr>"
          "<tr><td><b>Metex</b></td><td>M-3660D, M-3830D, M-3850D, ME-11, ME-22, ME-32 and Universal system 9160</td></tr>"
          "<tr><td><b>PeakTech</b></td><td>4010 and 451</td></tr>"
-         "<tr><td><b>Voltcraft</b></td><td>M-4660, ME-11, ME-22T and ME-32</td></tr>"
+         "<tr><td><b>RadioShack</b></td><td>22-805</td></tr>"
+         "<tr><td><b>Voltcraft</b></td><td>M-3650D, M-4660, ME-11, ME-22T, ME-32 and VC&nbsp;670</td></tr>"
          "<tr><td colspan=2>Implemented, but not yet confirmed by a user are:</td></tr>"
-         "<tr><td><b>Voltcraft</b></td><td>ME-42, M-3860, M-4660A, M-4660M, MXD-4660A, VC&nbsp;630, VC&nbsp;650, VC&nbsp;670"
+         "<tr><td><b>Voltcraft</b></td><td>ME-42, M-3860, M-4660A, M-4660M, MXD-4660A, VC&nbsp;630, VC&nbsp;650"
          ", VC&nbsp;635 and VC&nbsp;655</td></tr></table>"
          "Other compatible models may work also.<p>"
          "QtDMM features min/max memory and a configurable "
@@ -363,6 +384,8 @@ MainWin::createMenu()
   QPopupMenu *dmm = new QPopupMenu( menu );
   m_connectAction->addTo( dmm );
   m_resetAction->addTo( dmm );
+  dmm->insertSeparator();
+  m_configDmmAction->addTo( dmm );
   
   menu->insertItem( tr("DMM"), dmm );
   
@@ -371,6 +394,8 @@ MainWin::createMenu()
   m_stopAction->addTo( recorder );
   recorder->insertSeparator();
   m_clearAction->addTo( recorder );
+  recorder->insertSeparator();
+  m_configRecorderAction->addTo( recorder );
   
   menu->insertItem( tr("Recorder"), recorder );
   

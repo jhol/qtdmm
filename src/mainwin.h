@@ -59,6 +59,8 @@ protected:
   QAction     *m_exportAction;
   QAction     *m_importAction;
   QAction     *m_configAction;
+  QAction     *m_configDmmAction;
+  QAction     *m_configRecorderAction;
   QAction     *m_quitAction;
   QAction     *m_helpAction;
   QAction     *m_showTipsAction;

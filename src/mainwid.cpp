@@ -33,7 +33,7 @@
 #include <displaywid.h>
 #include <tipdlg.h>
 
-#include <xpm/icon.xpm>
+#include <icon.xpm>
 
 #include <iostream>
 
@@ -71,6 +71,8 @@ MainWid::MainWid( QWidget *parent, const char *name ) :
            this, SLOT( runningSLOT( bool ) ));
   connect( m_configDlg, SIGNAL( accepted() ),
            this, SLOT( applySLOT() ));
+  connect( m_configDlg, SIGNAL( zoomed() ),
+           this, SLOT( zoomedSLOT() ));
   connect( ui_graph, SIGNAL( sampleTime( int ) ),
            m_configDlg, SLOT( setSampleTimeSLOT( int ) ));
   connect( ui_graph, SIGNAL( graphSize( int,int ) ),
@@ -84,10 +86,12 @@ MainWid::MainWid( QWidget *parent, const char *name ) :
            m_configDlg, SLOT( zoomOutSLOT( double ) ));
   connect( ui_graph, SIGNAL( zoomIn( double ) ),
            m_configDlg, SLOT( zoomInSLOT( double ) ));
+  connect( ui_graph, SIGNAL( thresholdChanged( DMMGraph::CursorMode, double ) ),
+           m_configDlg, SLOT( thresholdChangedSLOT( DMMGraph::CursorMode, double ) ));
   
   //resetSLOT();
   
-  startTimer( 1000 );
+  startTimer( 100 );
   
   if (m_configDlg->showTip())
   {
@@ -275,12 +279,37 @@ MainWid::configSLOT()
 }
 
 void
+MainWid::configDmmSLOT()
+{
+  m_configDlg->show();
+  m_configDlg->raise();
+  
+  m_configDlg->showPage( ConfigDlg::DMM );
+}
+
+void
+MainWid::configRecorderSLOT()
+{
+  m_configDlg->show();
+  m_configDlg->raise();
+  
+  m_configDlg->showPage( ConfigDlg::Recorder );
+}
+
+void
 MainWid::applySLOT()
 {
   readConfig();
   
   ui_graph->setAlertUnsaved( m_configDlg->alertUnsavedData() );
   m_dmm->setName( m_configDlg->dmmName() );
+}
+
+void
+MainWid::zoomedSLOT()
+{
+  ui_graph->setGraphSize( m_configDlg->windowSeconds(),
+                          m_configDlg->totalSeconds() );  
 }
 
 void
@@ -328,6 +357,14 @@ MainWid::stopSLOT()
 void
 MainWid::readConfig()
 {
+  bool reopen = false;
+  
+  if (m_dmm->isOpen())
+  {
+    m_dmm->close();
+    reopen = true;
+  }
+  
   m_dmm->setDevice( m_configDlg->device() );
   m_dmm->setSpeed( m_configDlg->speed() );
   m_dmm->setFormat( m_configDlg->format() );
@@ -341,12 +378,14 @@ MainWid::readConfig()
   
   ui_graph->setSampleTime( m_configDlg->sampleStep() );
   ui_graph->setSampleLength( m_configDlg->sampleLength() );
+  
   ui_graph->setCrosshair( m_configDlg->crosshair() );
   
   ui_graph->setThresholds( m_configDlg->fallingThreshold(), 
                            m_configDlg->raisingThreshold() );
   
   ui_graph->setScale( m_configDlg->automaticScale(), 
+                      m_configDlg->includeZero(),
                       m_configDlg->scaleMin(),
                       m_configDlg->scaleMax() );
   
@@ -410,6 +449,11 @@ MainWid::readConfig()
   }
   
   emit useTextLabel( m_configDlg->useTextLabel() );
+  
+  if (reopen)
+  {
+    m_dmm->open();
+  }
 }
 
 void

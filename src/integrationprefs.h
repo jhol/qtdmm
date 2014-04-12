@@ -1,7 +1,7 @@
 //======================================================================
-// File:		engnumbervalidator.h
+// File:		integrationprefs.h
 // Author:	Matthias Toussaint
-// Created:	Fri Oct 11 20:29:37 CEST 2002
+// Created:	Sat Oct 19 15:31:10 CEST 2002
 //----------------------------------------------------------------------
 // Permission to use, copy, modify, and distribute this software and its
 // documentation  for any  purpose and  without fee is  hereby  granted,
@@ -18,22 +18,35 @@
 // (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
-#ifndef ENGNUMBERVALIDATOR_HH
-#define ENGNUMBERVALIDATOR_HH
+#ifndef INTEGRATIONPREFS_HH
+#define INTEGRATIONPREFS_HH
 
-#include <qvalidator.h>
+#include <uiintegrationprefs.h>
 
-class EngNumberValidator : public QValidator
+class IntegrationPrefs : public UIIntegrationPrefs
 {
+  Q_OBJECT
 public:
-  EngNumberValidator( QWidget *parent=0, const char *name=0 );
-  virtual ~EngNumberValidator();
+  IntegrationPrefs( QWidget *parent=0, const char *name=0 );
+  virtual ~IntegrationPrefs();
   
-  QValidator::State validate( QString &, int & ) const;
-  
-  static double value( const QString & );
-  static QString engValue( double );
+  double intScale() const;
+  double intThreshold() const;
+  double intOffset() const;
+  bool   showIntegration() const;
+  QColor intColor() const;
+  QColor intThresholdColor() const;
+  int    intLineWidth() const;
+  int    intLineMode() const;
+  int    intPointMode() const;
+  void   setThreshold( double );
+
+public slots:
+  virtual void defaultsSLOT();
+  virtual void factoryDefaultsSLOT();
+  virtual void applySLOT();
   
 };
-  
-#endif // ENGNUMBERVALIDATOR_HH
+
+#endif // INTEGRATIONPREFS_HH
+

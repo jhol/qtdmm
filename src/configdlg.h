@@ -1,7 +1,7 @@
 //======================================================================
 // File:		configdlg.h
 // Author:	Matthias Toussaint
-// Created:	Tue Apr 10 17:22:30 CEST 2001
+// Created:	Sat Oct 19 14:53:06 CEST 2002
 //----------------------------------------------------------------------
 // Permission to use, copy, modify, and distribute this software and its
 // documentation  for any  purpose and  without fee is  hereby  granted,
@@ -15,40 +15,46 @@
 // thereof.  In no event will the author be liable  for any lost revenue
 // or profits or other special, indirect and consequential damages.
 //----------------------------------------------------------------------
-// (c) 2001 Matthias Toussaint
+// (c) 2000-2002 Matthias Toussaint
 //======================================================================
 
 #ifndef CONFIGDLG_HH
 #define CONFIGDLG_HH
 
 #include <uiconfigdlg.h>
-#include <simplecfg.h>
-#include <qcombobox.h>
 #include <dmmgraph.h>
 #include <readevent.h>
 
+class SimpleCfg;
 class QPrinter;
-
-struct DMMInfo
-{
-  char *name;
-  int   baud;
-  int   protocol;
-  int   bits;
-  int   stopBits;
-  int   numValues;
-  int   parity;
-  int   display;
-};
+class RecorderPrefs;
+class ScalePrefs;
+class DmmPrefs;
+class GuiPrefs;
+class GraphPrefs;
+class IntegrationPrefs;
+class ExecutePrefs;
 
 class ConfigDlg : public UIConfigDlg
 {
   Q_OBJECT
 public:
+  enum PageType
+  {
+    Recorder = 0,
+    Scale,
+    DMM,
+    GUI,
+    Graph,
+    Integration,
+    External,
+    NumItems
+  };
+    
   ConfigDlg( QWidget *parent=0, const char *name=0 );
   virtual ~ConfigDlg();
-  
-  QString device() const { return port->currentText(); }
+
+  QString device() const;
   int speed() const;
   int windowSeconds() const;
   int totalSeconds() const;
@@ -61,6 +67,7 @@ public:
   double scaleMin() const;
   double scaleMax() const;
   bool automaticScale() const;
+  bool includeZero() const;
   bool showMinMax() const;
   bool showBar() const;
   ReadEvent::DataFormat format() const;
@@ -105,6 +112,7 @@ public:
   bool showTip() const;
   int currentTipId() const;
   QString dmmName() const;
+  void showPage( PageType );
   
 public slots:
   void connectSLOT( bool );
@@ -115,36 +123,30 @@ public slots:
   void setCurrentTipSLOT( int );
   void zoomInSLOT( double );
   void zoomOutSLOT( double );
+  void cancelSLOT();
+  void thresholdChangedSLOT( DMMGraph::CursorMode, double );
   
 signals:
   void accepted();
   void showTips( bool );
+  void zoomed();
   
 protected:
-  SimpleCfg *m_cfg;
-  QPrinter  *m_printer;
-  QRect      m_winRect;
+  SimpleCfg         *m_cfg;
+  QPrinter          *m_printer;
+  QRect              m_winRect;
+  RecorderPrefs     *m_recorder;
+  ScalePrefs        *m_scale;
+  DmmPrefs          *m_dmm;
+  GuiPrefs          *m_gui;
+  GraphPrefs        *m_graph;
+  IntegrationPrefs  *m_integration;
+  ExecutePrefs      *m_execute;
   
 protected slots:
-  void cancelSLOT();
-  void helpSLOT();
-  void modelSLOT( int );
-  void recorderDefaultSLOT();
-  void recorderFactorySLOT();
-  void scaleDefaultSLOT();
-  void scaleFactorySLOT();
-  void dmmDefaultSLOT();
-  void dmmFactorySLOT();
-  void preferencesDefaultSLOT();
-  void preferencesFactorySLOT();
-  void executeDefaultSLOT();
-  void executeFactorySLOT();
-  void graphDefaultSLOT();
-  void graphFactorySLOT();
-  void browseExecSLOT();
-  void descriptionSLOT( QWidget * );
+  void pageSelectedSLOT( QListViewItem *item );
+  void factoryDefaultsSLOT();
   
 };
 
 #endif // CONFIGDLG_HH
-
