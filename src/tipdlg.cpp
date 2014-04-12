@@ -19,7 +19,6 @@
 //======================================================================
 
 #include <tipdlg.h>
-#include <qtextview.h>
 #include <qpushbutton.h>
 #include <qcheckbox.h>
 #include <QCloseEvent>
