@@ -29,6 +29,8 @@ do
     --help)
       echo "Usage: ./configure [--help]"
       echo "   --help:   Print this message"
+      echo
+      cat INSTALL
       exit 0
       ;;
   esac

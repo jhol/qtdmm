@@ -21,6 +21,8 @@
 #ifndef READEVENT_HH
 #define READEVENT_HH
 
+#include <qevent.h>
+
 class ReadEvent : public QCustomEvent
 {
 public:
@@ -28,19 +30,22 @@ public:
   {
     Metex14 = 0,
     PeakTech10,
-    Voltcraft14Continuous
+    Voltcraft14Continuous,
+    Voltcraft15Continuous,
+    M9803RContinuous
   };
     
-  ReadEvent( QString str, DataFormat df ) : 
-    QCustomEvent( QEvent::User ),
-    m_str( str ),
-    m_format (df ) {}
-  QString string() const { return m_str; }
+  ReadEvent( char *str, int len, int id, DataFormat df );
+  ~ReadEvent();
+  
+  const char *string() const { return m_str; }
   DataFormat format() const { return m_format; }
+  int id() const { return m_id; }
   
 private:
-  QString    m_str;
+  char       m_str[20];
   DataFormat m_format;
+  int        m_id;
   
 };  
 #endif // READEVENT_HH

@@ -19,13 +19,18 @@ HEADERS   = configdlg.h \
             displaywid.h \
             qprocess.h \
             qprocess_unix.h \
-            qcleanuphandler.h
+            qcleanuphandler.h \
+            engnumbervalidator.h \
+            tipdlg.h
+
 INTERFACES = uiconfigdlg.ui \
              uimainwid.ui \
-             uiprintdlg.ui
+             uiprintdlg.ui \
+             uitipdlg.ui
                         
 SOURCES   = main.cpp \
             configdlg.cpp \
+            readevent.cpp \
             dmm.cpp \
             dmmbar.cpp \
             dmmgraph.cpp \
@@ -37,10 +42,12 @@ SOURCES   = main.cpp \
             colorbutton.cpp \
             displaywid.cpp \
             qprocess.cpp \
-            qprocess_unix.cpp
+            qprocess_unix.cpp \
+            engnumbervalidator.cpp \
+            tipdlg.cpp
 
 LIBS      = 
 TARGET    = qtdmm
-VERSION   = 0.7
+VERSION   = 0.7.1
 DESTDIR   = ../bin
 

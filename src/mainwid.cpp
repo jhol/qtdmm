@@ -31,11 +31,16 @@
 #include <printdlg.h>
 #include <dmm.h>
 #include <displaywid.h>
+#include <tipdlg.h>
 
 #include <xpm/icon.xpm>
 
+#include <iostream>
+
 MainWid::MainWid( QWidget *parent, const char *name ) :
-  UIMainWid( parent, name )
+  UIMainWid( parent, name ),
+  m_display( 0 ),
+  m_tipDlg( 0 )
 {
   setIcon( QPixmap((const char **)icon_xpm ) );
   
@@ -51,9 +56,11 @@ MainWid::MainWid( QWidget *parent, const char *name ) :
   m_printDlg->hide();
   
   connect( m_dmm, SIGNAL( value( double, const QString &, 
-                                 const QString &, const QString & )),
+                                 const QString &, const QString &, 
+                                 bool, int )),
            this,  SLOT( valueSLOT( double, const QString &, 
-                                   const QString &, const QString & )));
+                                   const QString &, const QString &, 
+                                   bool, int )));
   connect( m_dmm, SIGNAL( error( const QString & ) ),
            this, SIGNAL( error( const QString & )));
   connect( ui_graph, SIGNAL( info( const QString & ) ),
@@ -73,12 +80,24 @@ MainWid::MainWid( QWidget *parent, const char *name ) :
   connect( m_external, SIGNAL( processExited() ),
            this, SLOT( exitedSLOT() ));  
   
-  resetSLOT();
+  //resetSLOT();
   
+  startTimer( 1000 );
+  
+  if (m_configDlg->showTip())
+  {
+    showTipsSLOT();
+  }
 }
 
 MainWid::~MainWid()
 {
+}
+
+void
+MainWid::setDisplay( DisplayWid *display )
+{
+  m_display = display;
 }
 
 bool
@@ -144,58 +163,74 @@ MainWid::parentRect() const
 }
 
 void
-MainWid::valueSLOT( double dval,
-                    const QString & val, const QString & u, const QString & s )
+MainWid::timerEvent( QTimerEvent * )
 {
-  ui_display->setValue( val );
+  ui_graph->addValue( m_dval );
+}
+
+void
+MainWid::valueSLOT( double dval,
+                    const QString & val, 
+                    const QString & u, 
+                    const QString & s,
+                    bool showBar,
+                    int id )
+{
+/*  cerr << "valueSLOT " << dval
+       << " val=" << val.latin1()
+       << " u=" << u.latin1() 
+       << " s=" << s.latin1()
+       << " showBar=" << showBar
+       << " id=" << id << endl;  */
   
-  if (m_lastUnit != s)
-  {
-    resetSLOT();
-    ui_graph->setUnit( u );
-  }
-  m_lastUnit = s;
+  m_display->setShowBar( showBar );
+  m_display->setValue( id, val );
   
-  ui_display->setMode( s );
-  
+  m_display->setMode( id, s );
+
   QString tmpUnit = u;
+
+  m_display->setUnit( id, tmpUnit );
   
-  if (s == "AC ")
+  if (0 == id)
   {
-    tmpUnit += " AC";
+    if (m_lastUnit != s)
+    {
+      resetSLOT();
+      ui_graph->setUnit( u );
+    }
+    m_lastUnit = s;
+  
+    if (dval > m_max)
+    {
+      m_max = dval;  
+      m_display->setMaxUnit( u );
+      m_display->setMaxValue( val );
+    }
+
+    if (dval < m_min)
+    {
+      m_min = dval;  
+      m_display->setMinUnit( u );
+      m_display->setMinValue( val );
+    }
+    
+    m_dval = dval;
   }
   
-  if (dval > m_max)
-  {
-    m_max = dval;  
-    ui_display->setMaxUnit( u );
-    ui_display->setMaxValue( val );
-  }
-  
-  if (dval < m_min)
-  {
-    m_min = dval;  
-    ui_display->setMinUnit( u );
-    ui_display->setMinValue( val );
-  }
-  
-  ui_display->setUnit( tmpUnit );
-  
-  ui_graph->addValue( dval );
-  
-  ui_display->update();
+  m_display->update();
 }
 
 void
 MainWid::resetSLOT()
 {
-  m_min =  1.0E9;
-  m_max = -1.0E9;
+  m_min =  1.0E20;
+  m_max = -1.0E20;
   
-  ui_display->setMinValue( "" );
-  ui_display->setMaxValue( "" );
-  ui_display->setMinUnit( "" );
-  ui_display->setMaxUnit( "" );
+  m_display->setMinValue( "" );
+  m_display->setMaxValue( "" );
+  m_display->setMinUnit( "" );
+  m_display->setMaxUnit( "" );
 }
 
 void
@@ -240,6 +275,7 @@ MainWid::applySLOT()
   readConfig();
   
   ui_graph->setAlertUnsaved( m_configDlg->alertUnsavedData() );
+  m_dmm->setName( m_configDlg->dmmName() );
 }
 
 void
@@ -290,7 +326,8 @@ MainWid::readConfig()
   m_dmm->setDevice( m_configDlg->device() );
   m_dmm->setSpeed( m_configDlg->speed() );
   m_dmm->setFormat( m_configDlg->format() );
-  m_dmm->setPortSettings( m_configDlg->bits(), m_configDlg->stopBits() );
+  m_dmm->setPortSettings( m_configDlg->bits(), m_configDlg->stopBits(), 
+                          m_configDlg->parity() );
   
   ui_graph->setGraphSize( m_configDlg->windowSeconds(),
                           m_configDlg->totalSeconds() );
@@ -330,8 +367,11 @@ MainWid::readConfig()
   cg.setColor( QColorGroup::Background, m_configDlg->displayBgColor() );
   cg.setColor( QColorGroup::Foreground, m_configDlg->displayTextColor() );
   
-  ui_display->setPalette( QPalette( cg, cg, cg ) );
-      
+  m_display->setPalette( QPalette( cg, cg, cg ) );
+  m_display->setDisplayMode( m_configDlg->display(), m_configDlg->showMinMax(),
+                             m_configDlg->showBar(), m_configDlg->numValues() );      
+  m_dmm->setNumValues( m_configDlg->numValues() );
+  
   ui_graph->setLine( m_configDlg->lineWidth(), m_configDlg->intLineWidth() );
   
   ui_graph->setIntegration( m_configDlg->showIntegration(),
@@ -398,7 +438,7 @@ MainWid::startExternalSLOT()
     switch (question.exec())
     {
     case QMessageBox::Yes:
-      m_external->hangUp();
+      m_external->kill();
       break;
     default:
       return;
@@ -451,3 +491,24 @@ MainWid::exitedSLOT()
   emit error( msg );
 }
 
+void
+MainWid::showTipsSLOT()
+{
+  if (!m_tipDlg)
+  {
+    m_tipDlg = new TipDlg( this );
+    
+    m_tipDlg->setShowTipsSLOT( m_configDlg->showTip() );
+    m_tipDlg->setCurrentTip( m_configDlg->currentTipId() );
+    
+    connect( m_tipDlg, SIGNAL( showTips( bool ) ),
+             m_configDlg, SLOT( setShowTipsSLOT( bool ) ));
+    connect( m_configDlg, SIGNAL( showTips( bool ) ),
+             m_tipDlg, SLOT( setShowTipsSLOT( bool ) ));
+    connect( m_tipDlg, SIGNAL( currentTip( int ) ),
+             m_configDlg, SLOT( setCurrentTipSLOT( int ) ));
+    
+  }
+  
+  m_tipDlg->show();
+}

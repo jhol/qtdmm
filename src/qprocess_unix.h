@@ -1,5 +1,5 @@
 /****************************************************************************
-** $Id: qprocess_unix.h,v 1.1 2001/09/05 09:19:54 mt Exp $
+** $Id: qprocess_unix.h,v 1.3 2002/10/11 20:08:59 mt Exp $
 **
 ** Implementation of QProcess class for Unix
 **

@@ -33,16 +33,19 @@ public:
   DisplayWid( QWidget *parent=0, const char *name=0 );
   virtual ~DisplayWid();
   
-  void setValue( const QString & );
-  void setUnit( const QString & );
+  void setValue( int, const QString & );
+  void setUnit( int, const QString & );
   void setMinValue( const QString & );
   void setMaxValue( const QString & );
   void setMinUnit( const QString & );
   void setMaxUnit( const QString & );
-  void setMode( const QString & );
+  void setMode( int, const QString & );
+  void setDisplayMode( int, bool minMax, bool bar, int numValues );
+  void setShowBar( bool );
   
 protected:
   QBitmap *m_bigDigit;
+  QBitmap *m_bigSpecialChar;
   QBitmap *m_bigDecimal;
   QBitmap *m_bigMinus;
   QBitmap *m_bigL;
@@ -57,9 +60,13 @@ protected:
   QBitmap *m_bigF;
   QBitmap *m_bigV;
   QBitmap *m_bigA;
+  QBitmap *m_bigH;
+  QBitmap *m_bigW;
+  QBitmap *m_bigDBM;
   QBitmap *m_bigOhm;
   QBitmap *m_bigDeg;
   QBitmap *m_smallDigit;
+  QBitmap *m_smallSpecialChar;
   QPixmap *m_smallDecimal;
   QPixmap *m_smallMinus;
   QPixmap *m_smallL;
@@ -74,6 +81,9 @@ protected:
   QPixmap *m_smallF;
   QPixmap *m_smallV;
   QPixmap *m_smallA;
+  QPixmap *m_smallH;
+  QPixmap *m_smallW;
+  QPixmap *m_smallDBM;
   QPixmap *m_smallOhm;
   QPixmap *m_smallDeg;
   QBitmap *m_minStr;
@@ -81,13 +91,24 @@ protected:
   QBitmap *m_diode;
   QBitmap *m_ac;
   QBitmap *m_dc;
-  QString  m_value;
+  QBitmap *m_bar[6];
+  QString  m_value[4];
   QString  m_minValue;
   QString  m_maxValue;
-  QString  m_unit;
+  QString  m_unit[4];
   QString  m_minUnit;
   QString  m_maxUnit;
-  QString  m_mode;
+  QString  m_mode[4];
+  int      m_displayMode;
+  int      m_range;
+  bool     m_showMinMax;
+  bool     m_showBar;
+  bool     m_paintBar;
+  int      m_numValues;
+  int      m_minMaxW;
+  int      m_extraH;
+  int      m_minW;
+  int      m_extraW;
   
   void paintEvent( QPaintEvent *ev );
   void drawSmallNumber( QPainter *, const QString & str );
@@ -97,7 +118,7 @@ protected:
   
 private:
   QBitmap *createBitmap( const char ** );
-
+  
 };
 
 #endif // DISPLAYWID_HH

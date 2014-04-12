@@ -25,8 +25,14 @@
 #include <qthread.h>
 #include <readevent.h>
 
-class ReaderThread : public QThread
+#define FIFO_LENGTH 100
+
+class QSocketNotifier;
+
+class ReaderThread : public QObject, public QThread
 {
+  Q_OBJECT
+      
 public:
   enum ReadStatus
   {
@@ -43,21 +49,37 @@ public:
   void startRead();
   void setHandle( int handle );
   void setFormat( ReadEvent::DataFormat );
-  void setIgnoreLines( int );
   
   ReadStatus status() const { return m_status; }
+  void setNumValues( int num ) { m_numValues = num; }
   
 protected:
   QObject              *m_receiver;
   int                   m_handle;
   ReadStatus            m_status;
   bool                  m_readValue;
-  char                  m_buffer[100];
+  char                  m_fifo[FIFO_LENGTH];
+  char                  m_buffer[FIFO_LENGTH];
   ReadEvent::DataFormat m_format;
-  int                   m_ignoreLines;
+  QSocketNotifier      *m_notifier;
+  int                   m_length;
+  bool                  m_sendRequest;
+  int                   m_id;
+  int                   m_numValues;
   
   void readDMM();
+  void readMetex14();
+  void readVoltcraft14Continuous();
+  void readVoltcraft15Continuous();
+  void readM9803RContinuous();
+  void readPeakTech10();
   
+  int formatLength() const;
+  bool checkFormat();
+  
+protected slots:
+  void socketNotifierSLOT( int );
+
 };
 
 #endif // READERTHREAD_HH

@@ -23,12 +23,18 @@
 #include <iostream.h>
 #include <stdio.h>
 
+#include <qsocketnotifier.h>
+
 ReaderThread::ReaderThread( QObject *receiver ) :
   QThread(),
   m_receiver( receiver ),
   m_readValue( false ),
   m_format( ReadEvent::Metex14 ),
-  m_ignoreLines( 0 )
+  m_notifier( 0 ),
+  m_length( 0 ),
+  m_sendRequest( true ),
+  m_id( 0 ),
+  m_numValues( 1 )
 {
   m_buffer[14] = '\0';
 }
@@ -42,7 +48,7 @@ ReaderThread::setFormat( ReadEvent::DataFormat format )
 {
   m_format = format;
 }
-  
+
 void 
 ReaderThread::setHandle( int handle ) 
 { 
@@ -52,12 +58,15 @@ ReaderThread::setHandle( int handle )
   {
     m_status = ReaderThread::NotConnected;
   }
-}
-
-void 
-ReaderThread::setIgnoreLines( int lines )
-{
-  m_ignoreLines = lines;
+  else
+  {
+    delete m_notifier;
+    
+    m_notifier = new QSocketNotifier( m_handle, QSocketNotifier::Read );
+    
+    connect( m_notifier, SIGNAL( activated(int) ),
+             this, SLOT( socketNotifierSLOT(int) ));
+  }
 }
 
 void
@@ -69,8 +78,6 @@ ReaderThread::run()
     {
       readDMM();
       m_readValue = false;
-      
-      QThread::postEvent( m_receiver, new ReadEvent( m_buffer, m_format ) );
     }
     msleep( 10 );
   }
@@ -80,172 +87,214 @@ void
 ReaderThread::startRead()
 {
   m_readValue = true;
+  m_sendRequest = true;
+}
+
+void
+ReaderThread::socketNotifierSLOT( int socket )
+{
+  if (m_handle != socket) return;
+
+  if (-1 == m_handle) 
+  {
+    m_status = ReaderThread::NotConnected;
+    return;
+  }
+
+  int  retval;
+  char byte;
+ 
+  m_status = ReaderThread::Ok;
+  
+  {
+    retval = ::read( m_handle, &byte, 1);  
+
+    if (-1 == retval)
+    {
+      m_status = ReaderThread::Error;
+      return;
+    }
+    else if (0 == retval)
+    {
+      m_status = ReaderThread::Timeout;
+      return;
+    }
+    else
+    { 
+      m_fifo[m_length] = byte;
+
+      if (checkFormat())
+      {
+        m_length = (m_length-formatLength()+1+FIFO_LENGTH)%FIFO_LENGTH;
+
+        for (int i=0; i<formatLength(); ++i)
+        {
+          m_buffer[i] = m_fifo[m_length];
+          m_length = (m_length+1)%FIFO_LENGTH;
+        }
+
+        m_sendRequest = true;
+        m_length = 0;
+
+        QThread::postEvent( m_receiver, 
+            new ReadEvent( m_buffer, formatLength(), m_id, m_format ) );
+        
+        m_id = (m_id+1) % m_numValues;
+      }
+      else
+      {
+        m_length = (m_length+1) % FIFO_LENGTH;
+      }
+    }
+  }
+}
+
+int 
+ReaderThread::formatLength() const
+{
+  switch (m_format)
+  {
+  case ReadEvent::Metex14:
+    return 14;
+  case ReadEvent::Voltcraft14Continuous:
+    return 14;
+  case ReadEvent::Voltcraft15Continuous:
+    return 15;
+  case ReadEvent::M9803RContinuous:
+    return 11;
+  case ReadEvent::PeakTech10:
+    return 12;
+  }
+  
+  return 0;
 }
 
 void
 ReaderThread::readDMM()
 {
-  memset( m_buffer, ' ', 14 );
+  m_id = 0;
+  memset( m_buffer, 0, 20 );
+    
+  if (m_format == ReadEvent::Metex14)
+  {
+    readMetex14();
+  }
+  else if (m_format == ReadEvent::Voltcraft14Continuous)
+  {
+    readVoltcraft14Continuous();
+  }
+  else if (m_format == ReadEvent::Voltcraft15Continuous)
+  {
+    readVoltcraft15Continuous();
+  }
+  else if (m_format == ReadEvent::M9803RContinuous)
+  {
+    readM9803RContinuous();
+  }
+  else if (m_format == ReadEvent::PeakTech10)
+  {
+    readPeakTech10();
+  }
+}
+
+bool
+ReaderThread::checkFormat()
+{
+  if (m_format == ReadEvent::Metex14)
+  {
+    if (m_fifo[m_length] == 0x0d) return true;
+  }
+  else if (m_format == ReadEvent::Voltcraft14Continuous)
+  {
+    if (m_fifo[m_length] == 0x0d) return true;
+  }
+  else if (m_format == ReadEvent::Voltcraft15Continuous)
+  {
+    if (m_fifo[(m_length-1+FIFO_LENGTH)%FIFO_LENGTH] == 0x0d && 
+        m_fifo[m_length] == 0x0a) return true; 
+  }
+  else if (m_format == ReadEvent::M9803RContinuous && m_length >= 10)
+  {
+    if (m_fifo[(m_length-1+FIFO_LENGTH)%FIFO_LENGTH] == 0x0d && 
+        m_fifo[m_length] == 0x0a) return true; 
+  }
+  else if (m_format == ReadEvent::PeakTech10 && m_length >= 11)
+  {
+    if (m_fifo[(m_length-11+FIFO_LENGTH)%FIFO_LENGTH] == '#') return true; 
+  }
   
-  char byte;
+  return false;
+}
+
+void
+ReaderThread::readMetex14()
+{
+  if (m_sendRequest)
+  {
+    ::write( m_handle, "D\n", 2 );
+    m_sendRequest = false;
+  }
+}  
+
+void
+ReaderThread::readVoltcraft14Continuous()
+{
+}
+
+
+void
+ReaderThread::readVoltcraft15Continuous()
+{
+}  
+
+void
+ReaderThread::readM9803RContinuous()
+{
+}
+
+void
+ReaderThread::readPeakTech10()
+{
+/*  char byte;
   int  i = -1;
   int  retval;
   bool flag = false;
   
-  if (m_format == ReadEvent::Metex14)
-  {
-    ::write( m_handle, "D\n", 2 );
-  
-    do 
-    {    
-      if (-1 == m_handle) 
+  while(false == flag)
+  {    
+    if (-1 == m_handle) 
+    {
+      m_status = ReaderThread::NotConnected;
+      return;
+    }
+
+    retval = ::read( m_handle, &byte, 1);
+
+    if (-1 == retval)
+    {
+      m_status = ReaderThread::Error;
+
+      return;
+    }
+    else if (0 == retval)
+    {
+      m_status = ReaderThread::Timeout;
+
+      return;
+    }
+    else
+    {
+      // wait for #
+      // (Dr. Ralf Wieland)
+      if(byte=='#')
       {
-        m_status = ReaderThread::NotConnected;
-        return;
-      }
-
-      retval = ::read( m_handle, &byte, 1);
-      
-      if (-1 == retval)
-      {
-        m_status = ReaderThread::Error;
-
-        return;
-      }
-      else if (0 == retval)
-      {
-        m_status = ReaderThread::Timeout;
-
-        return;
-      }
-      else
-      { 
-        m_buffer[(++i)%14] = byte;
-      }
-    } 
-    while ('\r' != byte);
-
-    // ignore additional lines
-    // <Michael Petruzelka>                          
-    for (int i=0; i<m_ignoreLines; i++)                                     
-    {                                                                 
-      do                                                              
-      {                                                               
-        retval = ::read( m_handle, &byte, 1);      
-                
-        // Do some errorchecking (mt)           
-        if (-1 == retval)
+	      flag=true;
+	      for(i=0; i<11; i++)
         {
-          m_status = ReaderThread::Error;
-
-          return;
-        }
-        else if (0 == retval)
-        {
-          m_status = ReaderThread::Timeout;
-
-          return;
-        }
-      }                                                               
-      while ('\r' != byte);                                           
-    }        
-  }
-  else if (m_format == ReadEvent::Voltcraft14Continuous)
-  {
-    do 
-    {    
-      if (-1 == m_handle) 
-      {
-        m_status = ReaderThread::NotConnected;
-        return;
+	        retval = ::read( m_handle, &byte, 1);
+	        m_buffer[i] = byte;
+	      }
       }
-
-      retval = ::read( m_handle, &byte, 1);
-      
-      if (-1 == retval)
-      {
-        m_status = ReaderThread::Error;
-
-        return;
-      }
-      else if (0 == retval)
-      {
-        m_status = ReaderThread::Timeout;
-
-        return;
-      }
-      else
-      { 
-        m_buffer[(++i)%14] = byte;
-      }
-    } 
-    while ('\r' != byte);
-
-    // ignore additional lines
-    // <Michael Petruzelka>                          
-    for (int i=0; i<m_ignoreLines; i++)                                     
-    {                                                                 
-      do                                                              
-      {                                                               
-        retval = ::read( m_handle, &byte, 1);      
-                
-        // Do some errorchecking (mt)           
-        if (-1 == retval)
-        {
-          m_status = ReaderThread::Error;
-
-          return;
-        }
-        else if (0 == retval)
-        {
-          m_status = ReaderThread::Timeout;
-
-          return;
-        }
-      }                                                               
-      while ('\r' != byte);                                           
-    }        
-  }
-  else if (m_format == ReadEvent::PeakTech10)
-  {
-    while(false == flag)
-    {    
-      if (-1 == m_handle) 
-      {
-        m_status = ReaderThread::NotConnected;
-        return;
-      }
-
-      retval = ::read( m_handle, &byte, 1);
-
-      if (-1 == retval)
-      {
-        m_status = ReaderThread::Error;
-
-        return;
-      }
-      else if (0 == retval)
-      {
-        m_status = ReaderThread::Timeout;
-
-        return;
-      }
-      else
-      {
-        // wait for #
-        // (Dr. Ralf Wieland)
-        if(byte=='#')
-        {
-	        flag=true;
-	        for(i=0; i<11; i++)
-          {
-	          retval = ::read( m_handle, &byte, 1);
-	          m_buffer[i] = byte;
-	        }
-        }
-      }
-    } 
-  }
-   
-  m_status = ReaderThread::Ok;
-}
+    }
+  } */
+}  

@@ -29,6 +29,7 @@
 #include <qmessagebox.h>
 #include <qlabel.h>
 #include <qstatusbar.h>
+#include <displaywid.h>
 
 #include <xpm/connect_on.xpm>
 #include <xpm/reset.xpm>
@@ -43,7 +44,7 @@
 #include <xpm/help.xpm>
 #include <xpm/icon.xpm>
 
-#define VERSION_STRING "0.7"
+#define VERSION_STRING "0.8"
 
 MainWin::MainWin( QWidget *parent, const char *name ) :
   QMainWindow( parent, name ),
@@ -57,6 +58,8 @@ MainWin::MainWin( QWidget *parent, const char *name ) :
   createActions();
   createMenu();
   createToolBars();
+  
+  m_wid->setDisplay( m_display );
   
   setMinimumSize( 500, 450 );
   
@@ -192,6 +195,9 @@ MainWin::createActions()
                                   this );
   m_helpAction->setWhatsThis( tr("<b>Direct Help</b><p>Enter the direct help mode. You have done this"
       " already when reading this text :)" ));
+  m_showTipsAction  = new QAction ( this );
+  m_showTipsAction->setText( tr("Show tip of the day") );
+  m_showTipsAction->setMenuText( tr("Tip of the day...") );
   m_versionAction  = new QAction ( this );
   m_versionAction->setText( tr("On version") );
   m_versionAction->setMenuText( tr("On version...") );
@@ -222,6 +228,8 @@ MainWin::createActions()
            m_wid, SLOT( quitSLOT() ));
   connect( m_helpAction, SIGNAL( activated() ),
            m_wid, SLOT( helpSLOT() ));
+  connect( m_showTipsAction, SIGNAL( activated() ),
+           m_wid, SLOT( showTipsSLOT() ));
   connect( m_versionAction, SIGNAL( activated() ),
            this, SLOT( versionSLOT() ));
   
@@ -262,18 +270,26 @@ MainWin::versionSLOT()
   QString msg = "<h1>";
   msg += ver;
   msg += "</h1><hr>"
-         "<div align=right><i>A simple recorder for DMM's</i></div><p><br>"
-         "<div align=justify>A simple display software for <b>Metex</b> and compatible hand held"
-         " digital multimeter including min/max memory and a configurable "
+         "<div align=right><i>A simple recorder for DMM's</i></div><p>"
+         "<div align=justify>A simple display software for a variety of digital multimeter such as:<p>"
+         "<table><tr><td><b>ELV</b></td><td>M9803R</td></tr>"
+         "<tr><td><b>Metex</b></td><td>M-3660D, M-3830D, M-3850D, ME-11, ME-22, ME-32 and Universal system 9160</td></tr>"
+         "<tr><td><b>PeakTech</b></td><td>4010 and 451</td></tr>"
+         "<tr><td><b>Voltcraft</b></td><td>M-4660, ME-11, ME-22T and ME-32</td></tr>"
+         "<tr><td colspan=2>Implemented, but not yet confirmed by a user are:</td></tr>"
+         "<tr><td><b>Voltcraft</b></td><td>ME-42, M-3860, M-4660A, M-4660M, MXD-4660A, VC&nbsp;630, VC&nbsp;650, VC&nbsp;670"
+         ", VC&nbsp;635 and VC&nbsp;655</td></tr></table>"
+         "Other compatible models may work also.<p>"
+         "QtDMM features min/max memory and a configurable "
          "recorder with import/export and printing function. Sampling may"
          " be started manually, at a given time or triggered by a measured threshold. "
-         "Additionally an external program may be started when given thresholds are reached.</div><p><br>"
+         "Additionally an external program may be started when given thresholds are reached.</div>"
          "<div align=justify><b>QtDMM</b> uses the platform independent toolkit "
          "<b>Qt</b> version ";
   msg += qVersion();
   msg += " from Trolltech AS Norway <font color=blue><u>www.trolltech.com</u></font>"
          " and is licensed under <b>GPL</b>.</div><br>"
-         "&copy; 2001 Matthias Toussaint<br><font color=blue><u>qtdmm@mtoussaint.de</u></font>"
+         "&copy; 2001, 2002 Matthias Toussaint &nbsp;-&nbsp;&nbsp;<font color=blue><u>qtdmm@mtoussaint.de</u></font>"
          "<p><br>The icons (except the DMM icon) are taken from the KDE project.<p>";
           
   QMessageBox version( tr("QtDMM: Welcome!" ),
@@ -315,6 +331,10 @@ MainWin::createToolBars()
   
   m_helpTB = new QToolBar( this );
   m_helpAction->addTo( m_helpTB );
+  
+  m_displayTB = new QToolBar( this );
+  m_display = new DisplayWid( m_displayTB );
+  addToolBar( m_displayTB, tr("Display"), Top, true );
 }
 
 void
@@ -356,6 +376,7 @@ MainWin::createMenu()
   
   QPopupMenu *help = new QPopupMenu( menu );
   m_versionAction->addTo( help );
+  m_showTipsAction->addTo( help );
   m_helpAction->addTo( help );
   
   menu->insertSeparator();

@@ -1,26 +1,69 @@
-02/03/2002 Added Voltcraft ME-42, M-3860, M-4660A, M-4660M, MXD-4660A,
-           Added protocol for Voltcraft VC 630, VC 650, VC 670
-           Bugfix in 14 byte, polling protocol
-           Fixed small configuration dialog bug
-15/12/2001 More drawing options and integration curve
-25/11/2001 Completed online help and minor internal cleanup.
-24/11/2001 Chromified display
-           Shows lines at triggers in graph
-27/10/2001 Added Metex M-3660D
-           Added some online help chrome
-05/09/2001 Can start external commands at reached thresholds now
-04/09/2001 Improved data import
-01/09/2001 Added more DMM's
-           Added import of data
-           Configuration dialog is nonmodal now
-           Added some GUI chrome
-           Persistent printer settings
-           Added support for 22-805 Radioshack DMM (Roger M.)
-           Added support for Metex/Voltcraft ME-11 (Dough LaRue)
-           Added support for Voltcraft ME-22T (Radek Liboska PhD)
-09/05/2001 Added support for Voltcraft M-4660 (Michael Petruzelka)
-08/05/2001 Added support for PeakTech 451 (Dr. Ralf Wieland)
-15/04/2001 Initial release version 0.1
+13/10/2002  0.8
+           - Added Protocol for ELV M9803R (Thanks to Ralph Fischer for providing
+             me such a multimeter for testing)
+           - Added Protocol for Voltraft VC 635 and VC 655
+           - Display resides in toolbar now
+           - Bargraph for Display
+           - More configuration options for display
+           - Added parity setting for serial port
+           - Added setting for display digits (3 1/3 = 2000 digits, 
+             3 3/4 = 4000 digits, 4 1/2 = 20000 disgits and 
+             4 3/4 = 50000 digits)
+           - Improved graph scale
+           - Display shows up to four values now (not in graph yet)
+           - Bugfix for continuous polling protocolls. This should
+             fix the problems reported by some users
+           - Display update separated from graph (displays as fast as
+             the multimeter provides data)
+           - numerous small bugfixes
+           - introduced "tip of the day" dialog (still missing some text)
 
--- Matthias Toussaint
+02/03/2002 0.7
+           - Added Voltcraft ME-42, M-3860, M-4660A, M-4660M, MXD-4660A,
+           - Added protocol for Voltcraft VC 630, VC 650, VC 670
+           - Bugfix in 14 byte, polling protocol
+           - Fixed small configuration dialog bug
+           
+15/12/2001 0.6.2
+           - More drawing options and integration curve
+           
+25/11/2001 0.6.1
+           - Completed online help and minor internal cleanup.
+           
+24/11/2001 0.6
+           - Chromified display
+           - Shows lines at triggers in graph
+           
+27/10/2001 0.5.1
+           - Added Metex M-3660D
+           - Added some online help chrome
+           
+05/09/2001 0.5
+           - Can start external commands at reached thresholds now
+           
+04/09/2001 0.4.1
+           - Improved data import
+           
+01/09/2001 0.4
+           - Added more DMM's
+           - Added import of data
+           - Configuration dialog is nonmodal now
+           - Added some GUI chrome
+           - Persistent printer settings
+           - Added support for 22-805 Radioshack DMM (Roger M.)
+           - Added support for Metex/Voltcraft ME-11 (Dough LaRue)
+           - Added support for Voltcraft ME-22T (Radek Liboska PhD)
+           
+09/05/2001 0.3
+           - Added support for Voltcraft M-4660 (Michael Petruzelka)
+           
+08/05/2001 0.2
+           - Added support for PeakTech 451 (Dr. Ralf Wieland)
+           
+15/04/2001 0.1
+           - Initial release version 0.1
+
+-- 03/03/2002
+   Matthias Toussaint
+   <qtdmm@mtoussaint.de>
  

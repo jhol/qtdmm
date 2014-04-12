@@ -43,27 +43,33 @@ public:
   QString errorString() const { return m_error; }
   bool isOpen() const { return m_handle >= 0; }
   void setFormat( ReadEvent::DataFormat );
-  void setPortSettings( int bits, int stopBits );
-  void setIgnoreLines( int );
+  void setName( const QString & );
+  void setPortSettings( int bits, int stopBits, int parity );
+  void setNumValues( int );
   
 signals:
   void value( double dval,
               const QString & val, 
               const QString & unit, 
-              const QString & special );
+              const QString & special,
+              bool showBar, 
+              int id );
   void error( const QString & );
   
 protected:
   int                       m_handle;
   int                       m_speed;
+  int                       m_parity;
   QString                   m_device;
   QString                   m_error;
   ReaderThread             *m_readerThread;
   tcflag_t                  m_c_cflag;
   ReaderThread::ReadStatus  m_oldStatus;
+  QString                   m_name;
   
   void timerEvent( QTimerEvent * );
   bool event( QEvent * );
+  QString insertComma( const QString &, int );
   
 };
 

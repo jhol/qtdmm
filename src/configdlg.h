@@ -36,7 +36,9 @@ struct DMMInfo
   int   protocol;
   int   bits;
   int   stopBits;
-  int   ignoreLines;
+  int   numValues;
+  int   parity;
+  int   display;
 };
 
 class ConfigDlg : public UIConfigDlg
@@ -59,10 +61,14 @@ public:
   double scaleMin() const;
   double scaleMax() const;
   bool automaticScale() const;
+  bool showMinMax() const;
+  bool showBar() const;
   ReadEvent::DataFormat format() const;
+  int parity() const;
+  int display() const;
   int bits() const;
   int stopBits() const;
-  int ignoreLines() const;
+  int numValues() const;
   QColor bgColor() const;
   QColor gridColor() const;
   QColor dataColor() const;
@@ -96,16 +102,22 @@ public:
   double intThreshold() const;
   double intOffset() const;
   bool showIntegration() const;
+  bool showTip() const;
+  int currentTipId() const;
+  QString dmmName() const;
   
 public slots:
   void connectSLOT( bool );
   void applySLOT();
   void setSampleTimeSLOT( int );
   void setGraphSizeSLOT( int,int );
+  void setShowTipsSLOT( bool );
+  void setCurrentTipSLOT( int );
   
 signals:
   void accepted();
-
+  void showTips( bool );
+  
 protected:
   SimpleCfg *m_cfg;
   QPrinter  *m_printer;

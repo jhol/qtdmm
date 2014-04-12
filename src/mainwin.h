@@ -27,6 +27,7 @@ class MainWid;
 class QAction;
 class QToolBar;
 class QLabel;
+class DisplayWid;
 
 class MainWin : public QMainWindow
 {
@@ -47,6 +48,8 @@ protected:
   QToolBar    *m_graphTB;
   QToolBar    *m_fileTB;
   QToolBar    *m_helpTB;
+  QToolBar    *m_displayTB;
+  DisplayWid  *m_display;
   QAction     *m_connectAction;
   QAction     *m_resetAction;
   QAction     *m_startAction;
@@ -58,6 +61,7 @@ protected:
   QAction     *m_configAction;
   QAction     *m_quitAction;
   QAction     *m_helpAction;
+  QAction     *m_showTipsAction;
   QAction     *m_versionAction;
   bool         m_running;
   QLabel      *m_error;

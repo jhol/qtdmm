@@ -28,6 +28,8 @@ class DMM;
 class PrintDlg;
 class QProcess;
 class ConfigDlg;
+class DisplayWid;
+class TipDlg;
 
 class MainWid : public UIMainWid
 {
@@ -38,7 +40,8 @@ public:
 
   bool closeWin();
   QRect winRect() const;
-
+  void setDisplay( DisplayWid * );
+  
 signals:
   void running( bool );
   void info( const QString & );
@@ -48,7 +51,8 @@ signals:
   void setConnect( bool );
   
 public slots:
-  void valueSLOT( double, const QString &, const QString &, const QString & );
+  void valueSLOT( double, const QString &, const QString &, 
+                  const QString &, bool, int );
   void resetSLOT();
   void connectSLOT( bool );
   void quitSLOT();
@@ -62,19 +66,24 @@ public slots:
   void importSLOT();
   void runningSLOT( bool );
   void applySLOT();
+  void showTipsSLOT();
   
 protected:
-  DMM       *m_dmm;
-  double     m_min;
-  double     m_max;
-  QString    m_lastUnit;
-  ConfigDlg *m_configDlg;
-  PrintDlg  *m_printDlg;
-  QPrinter   m_printer;
-  QProcess  *m_external;
+  DMM        *m_dmm;
+  double      m_min;
+  double      m_max;
+  QString     m_lastUnit;
+  ConfigDlg  *m_configDlg;
+  PrintDlg   *m_printDlg;
+  QPrinter    m_printer;
+  QProcess   *m_external;
+  DisplayWid *m_display;
+  double      m_dval;
+  TipDlg      *m_tipDlg;
   
   void readConfig();
   QRect parentRect() const;
+  void timerEvent( QTimerEvent * );
   
 protected slots:
   void startExternalSLOT();

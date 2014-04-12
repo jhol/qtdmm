@@ -49,7 +49,11 @@ public:
     Circle,
     Square,
     Diamond,
-    X
+    X,
+    LargeCircle,
+    LargeSquare,
+    LargeDiamond,
+    LargeX
   };
     
   enum LineMode
@@ -160,6 +164,8 @@ protected:
   double                    m_integrationThreshold;
   double                    m_integrationOffset;
   bool                      m_showIntegration;
+  double                    m_factor;
+  QString                   m_prefix;
   
   void paintEvent( QPaintEvent * );
   void resizeEvent( QResizeEvent * );
@@ -188,7 +194,8 @@ protected:
   void drawCursor( const QPoint & );
   void fillInfoBox( const QPoint & );
   void drawPoint( PointMode, QPainter *, int, int );
-
+  void computeUnitFactor();
+  
 private:
   Qt::PenStyle penStyle( LineMode );
 
