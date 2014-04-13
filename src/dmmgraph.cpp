@@ -1347,7 +1347,7 @@ DMMGraph::importDataSLOT()
       if (!line.isNull())
       {
         QRegExp re( "[0-9]+\\.[0-9]+\\.[0-9]+\t[0-9]+:[0-9]+:[0-9]+\t[0-9]*\\.[0-9]+\t.*" );
-        if (re.match(line) == -1)
+        if (!re.exactMatch(line))
         {
           emit error( tr("Oops! Seems not to be a valid file") );
           

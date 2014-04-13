@@ -42,8 +42,8 @@ EngNumberValidator::validate( QString & input, int & pos ) const
   input = input.stripWhiteSpace();
   pos = QMIN( (int)input.length(), pos );
   
-  if (fullRe.match( input ) == 0) return Acceptable;
-  if (doubleRe.match( input ) == 0) return Intermediate;
+  if (fullRe.exactMatch( input )) return Acceptable;
+  if (doubleRe.exactMatch( input )) return Intermediate;
 
   return Invalid;  
 }
