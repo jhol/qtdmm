@@ -1164,7 +1164,7 @@ void
 DMMGraph::drawCursor( const QPoint & pos )
 {
   QPainter p(this);
-  p.setRasterOp( Qt::XorROP );
+  p.setCompositionMode( QPainter::RasterOp_SourceXorDestination );
   p.setPen( Qt::white );
   p.drawLine( pos.x(), m_graphRect.y(), pos.x(), m_graphRect.height()+m_graphRect.y()-1 );
   
