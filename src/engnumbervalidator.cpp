@@ -53,7 +53,7 @@ EngNumberValidator::value( const QString & string )
 {
   double factor = 1.;
   
-  switch (string[string.length()-1])
+  switch (string[string.length()-1].toAscii())
   {
   case 'm':
     factor = 1e-3;
