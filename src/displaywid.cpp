@@ -165,7 +165,7 @@ QBitmap *
 DisplayWid::createBitmap( const char **data )
 {
   QBitmap *bm = new QBitmap;
-  *bm = QImage(data).convertDepth( 1, ThresholdDither ); 
+  *bm = QImage(data).convertDepth( 1, Qt::ThresholdDither );
   bm->setMask( *bm );
   
   return bm;  
