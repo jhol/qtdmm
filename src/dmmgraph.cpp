@@ -1600,7 +1600,7 @@ DMMGraph::setExternal( bool on, bool falling, double threshold )
 void
 DMMGraph::drawPoint( PointMode mode, QPainter *p, int x, int y )
 {
-  static QPointArray arr(4);
+  QPoint arr[4];
   
   switch (mode)
   {
@@ -1613,11 +1613,11 @@ DMMGraph::drawPoint( PointMode mode, QPainter *p, int x, int y )
     p->drawEllipse( x-2, y-2, 5, 5 );
     return;
   case Diamond:
-    arr.setPoint( 0, QPoint( x-3, y ) );
-    arr.setPoint( 1, QPoint( x, y+3 ) );
-    arr.setPoint( 2, QPoint( x+3, y ) );
-    arr.setPoint( 3, QPoint( x, y-3 ) );
-    p->drawPolygon( arr );
+    arr[0] = QPoint( x-3, y );
+    arr[1] = QPoint( x, y+3 );
+    arr[2] = QPoint( x+3, y );
+    arr[3] = QPoint( x, y-3 );
+    p->drawPolygon( arr, 4 );
     return;
   case X:
     p->drawLine( x-3, y-3, x+3, y+3 );
@@ -1630,11 +1630,11 @@ DMMGraph::drawPoint( PointMode mode, QPainter *p, int x, int y )
     p->drawEllipse( x-3, y-3, 7, 7 );
     return;
   case LargeDiamond:
-    arr.setPoint( 0, QPoint( x-4, y ) );
-    arr.setPoint( 1, QPoint( x, y+4 ) );
-    arr.setPoint( 2, QPoint( x+4, y ) );
-    arr.setPoint( 3, QPoint( x, y-4 ) );
-    p->drawPolygon( arr );
+    arr[0] = QPoint( x-4, y );
+    arr[1] = QPoint( x, y+4 );
+    arr[2] = QPoint( x+4, y );
+    arr[3] = QPoint( x, y-4 );
+    p->drawPolygon( arr, 4 );
     return;
   case LargeX:
     p->drawLine( x-4, y-4, x+4, y+4 );
