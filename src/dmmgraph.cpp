@@ -97,8 +97,6 @@ DMMGraph::DMMGraph( QWidget *parent, const char *name ) :
   m_infoBox->setFrameStyle( QFrame::Box | QFrame::Plain );
   m_infoBox->setPalette( QToolTip::palette() );
   
-  setBackgroundMode( QWidget::NoBackground );
-  
   startTimer( 200 );
   
   setMouseTracking( true );

@@ -156,8 +156,6 @@ DisplayWid::DisplayWid( QWidget *parent, const char *name ) :
   m_bar[5] = createBitmap((const char **)fifty_bar_xpm);   
   m_bar[6] = createBitmap((const char **)sixty_bar_xpm);   
   
-  setBackgroundMode( QWidget::NoBackground );
-  
   setDisplayMode( 1, true, true, 1 );
 }
 
