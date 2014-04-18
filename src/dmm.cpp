@@ -284,7 +284,7 @@ DMM::open()
   
   timerEvent( 0 );
   
-  startTimer( 1000 );
+  m_timerId = startTimer( 1000 );
   
   return true;
 }
@@ -293,7 +293,7 @@ void
 DMM::close()
 {
   QTime t; t.start();
-  killTimers();
+  killTimer(m_timerId);
   
   m_error = tr( "Not connected" );
   emit error( m_error );

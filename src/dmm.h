@@ -78,6 +78,7 @@ protected:
   bool                      m_consoleLogging;
   bool                      m_externalSetup;
   int                       m_flags;
+  int                       m_timerId;
   
   void timerEvent( QTimerEvent * );
   void customEvent( QCustomEvent * );
